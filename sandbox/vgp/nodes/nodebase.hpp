@@ -54,7 +54,13 @@ struct NodeBase : boost::noncopyable {
 	/// 
 	template <class OUTPUT_TYPE>
 	boost::function<OUTPUT_TYPE()> getfunc() const {
+		try {
 		return boost::any_cast<boost::function<OUTPUT_TYPE()> >(getfunc());			
+		}
+		catch(boost::bad_any_cast &e) {
+			std::cerr << *this;
+			throw;
+		}
 	}
 	virtual boost::any getfunc() const = 0;
 
