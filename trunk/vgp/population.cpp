@@ -77,4 +77,15 @@ std::string Population::best(std::size_t n) const {
 	return ret.str();
 }
 
+std::string Population::worst(std::size_t n) const {
+	std::stringstream ret;
+	ret << "Worst " << n << " organisms:" << std::endl;
+	const_iterator i = begin();
+	std::size_t limit = std::min(n, size());
+	for(std::size_t count = 0; count < limit; count++) {
+		ret << *i++ << std::endl;
+	}
+	return ret.str();
+}
+
 } // namespace vgp

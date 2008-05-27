@@ -11,6 +11,8 @@
 #include <boost/function_types/parameter_types.hpp>
 
 #include <boost/mpl/front.hpp>
+#include <boost/mpl/at.hpp>
+#include <boost/mpl/int.hpp>
 
 #include <vgp/nodes/node.hpp>
 #include <vgp/nodes/terminal.hpp>
@@ -21,6 +23,7 @@
 
 namespace vgp {
 namespace ft = ::boost::function_types;
+namespace mpl = ::boost::mpl;
 
 template <typename FPTR>
 detail::NodeBase* makenode(FPTR fptr, std::string name)
@@ -35,24 +38,37 @@ detail::NodeBase* maketerminal(FPTR fptr, MUTATEPTR mutateptr, INITPTR initptr, 
 	return new detail::Terminal_mi<FPTR, MUTATEPTR, INITPTR>(fptr, mutateptr, initptr, name);
 }
 
-template <typename FPTR>
-detail::NodeBase* maketerminal(FPTR fptr, std::string name)
-{
-	return new detail::Terminal_simple<FPTR>(fptr, name);
-}
-#if 0
 template <typename FPTR, typename MUTATEPTR>
 detail::NodeBase* maketerminal_m(FPTR fptr, MUTATEPTR mutateptr, std::string name)
 {
-	return new detail::Terminal<FPTR, MUTATEPTR, NULL_PTR_T>(fptr, mutateptr, NULL, name);
+	return new detail::Terminal_m<FPTR, MUTATEPTR>(fptr, mutateptr, name);
 }
 
 template <typename FPTR, typename INITPTR>
 detail::NodeBase* maketerminal_i(FPTR fptr, INITPTR initptr, std::string name)
 {
-	return new detail::Terminal<FPTR, NULL_PTR_T, INITPTR>(fptr, NULL, initptr, name);
+	return new detail::Terminal_i<FPTR, INITPTR>(fptr, initptr, name);
 }
-#endif
+
+template <typename FPTR>
+detail::NodeBase* maketerminal(FPTR fptr, std::string name)
+{
+	return new detail::Terminal_simple<FPTR>(fptr, name);
+}
+
+namespace detail {
+template <typename SOURCE, typename TARGET>
+TARGET adapter(SOURCE s) {return s;}
+} // end namespace detail
+
+template <typename FPTR_SOURCE, typename FPTR_TARGET, typename PARAM_INDEX>
+detail::NodeBase* makeadapter(FPTR_SOURCE fptrsrc, FPTR_TARGET fptrtarget) {
+	typedef typename ft::result_type<FPTR_SOURCE>::type source_type;
+	typedef typename ft::parameter_types<FPTR_TARGET>::type target_types;
+	typedef typename mpl::at<target_types, PARAM_INDEX>::type target_type;
+	return new detail::Node<target_type(*)(source_type)>
+		(detail::adapter<source_type, target_type>);
+}
 
 } // end namespace vgp
 

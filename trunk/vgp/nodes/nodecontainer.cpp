@@ -45,6 +45,8 @@ detail::NodeBase* NodeContainer::getrandomnode(const std::type_info& t, std::siz
 		boost::tie(cur, end) = terminalsbyresulttype.equal_range(util::TypeInfo(t));
 	else
 		boost::tie(cur, end) = nodesbyresulttype.equal_range(util::TypeInfo(t));
+	if(cur==end)
+		throw std::invalid_argument(std::string("Bad type given for random lookup: ")+t.name());
 	for(unsigned int i = 0; i < index; i++, cur++);
 	return (*cur)->clone();
 }

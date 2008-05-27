@@ -77,6 +77,7 @@ struct Population {
 	 * to work properly
 	 */
 	std::string best(std::size_t n) const;
+	std::string worst(std::size_t n) const;
 
 	std::size_t size() const { return organisms.size(); }
 	Organisms::iterator begin() { return organisms.begin(); }
