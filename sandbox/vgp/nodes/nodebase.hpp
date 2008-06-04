@@ -6,11 +6,14 @@
 #include <string>
 #include <ostream>
 #include <typeinfo>
+
 #include <boost/function.hpp>
 #include <boost/any.hpp>
 #include <boost/utility.hpp>
-#include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/serialize_ptr_vector.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/scoped_ptr.hpp>
 
 #include <vgp/organism/organism_fwd.hpp>
 
@@ -127,10 +130,6 @@ struct NodeBase : boost::noncopyable {
 	virtual NodeBase* clone() const = 0;
 
 protected:
-	/** Internal use only.
-	 * @bug should be protected, but for some reason Node<> can't access it.
-	 * gcc bug 2617? http://gcc.gnu.org/ml/gcc-prs/2001-04/msg00434.html
-	 */
 	ptr_vector children;
 
 	friend struct ::vgp::Organism;
@@ -138,14 +137,23 @@ protected:
 	friend std::ostream& operator<<(std::ostream&, const NodeBase&);
 	util::TypeInfoVector param_types;
 private:
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int /* version */) {
+		ar & _name;
+		ar & result_type;
+		ar & _arity;
+		ar & param_types;
+		ar & children;
+	}
 	util::TypeInfo result_type;
 	std::size_t _arity;
 	std::string _name;
 };
 
 std::ostream& operator<<(std::ostream&, const NodeBase&);
-typedef boost::scoped_ptr<NodeBase> NodePtr;
 NodeBase* new_clone(const NodeBase &);
+typedef boost::scoped_ptr<NodeBase> NodePtr;
 
 } // namespace detail
 } // namespace vgp

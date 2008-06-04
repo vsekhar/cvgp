@@ -90,19 +90,40 @@ TARGET adapter(SOURCE s) {return s;}
  * function SOURCE can be provided as the INDEX'th argument of function
  * TARGET (INDEX counts from zero)
  * 
- * e.g.
+ * @example
  * @code
  * int targetfunction(char i, double d) {return i + d}
  * int sourcefunction() {return 7;}
  * @endcode
  * @code
- * makeadapter<0>(sourcefunction, targetfunction)
+ * makeadapter<0>(sourcefunction, targetfunction);
  * @endcode
  * creates an adapter that accepts int and returns char
  * @code
- * makeadapter<1>(sourcefunction, targetfunction)
+ * makeadapter<1>(sourcefunction, targetfunction);
  * @endcode
  * creates an adapter that accepts int and returns double
+ * 
+ * @note Any state a function takes counts as the first (i.e. 0th) argument.
+ * 
+ * @example
+ * With declarations
+ * @code
+ * int function_with_state(int& state, int parameter) {...}
+ * void mutate(int& state) {...}
+ * int target(int parameter) {...}
+ * maketerminal_m(function_with_state, mutate, "example");
+ * makenode(target, "target");
+ * @endcode
+ * the following code is undefined:
+ * @code
+ * makeadapter<0>(function_with_state, target);
+ * @endcode
+ * The following works:
+ * @code
+ * makeadapter<1>(function_with_state, target);
+ * @endcode
+ * 
  */
 template <unsigned int INDEX, typename FPTR_SOURCE, typename FPTR_TARGET>
 detail::NodeBase* makeadapter(FPTR_SOURCE, FPTR_TARGET) {

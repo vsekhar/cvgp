@@ -65,4 +65,11 @@ void Organism::mutateall(detail::NodeBase& curnode) {
 		mutateall(*i);
 }
 
+std::ostream& operator<<(std::ostream& os, const Organism &org) {
+	if(org.root)
+		return os << *org.root;
+	else
+		return os << "[empty organism]";		
+}
+
 } // namespace vgp

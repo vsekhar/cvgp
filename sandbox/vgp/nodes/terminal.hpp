@@ -16,6 +16,9 @@
 #include <boost/function_types/parameter_types.hpp>
 #include <boost/function_types/function_arity.hpp>
 
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+
 #include <vgp/util/typestoobjs.hpp>
 #include <vgp/util/typeinfo.hpp>
 
@@ -81,6 +84,18 @@ struct Terminal_mi : NodeBase
 	MUTATEPTR mutatefunction;
 	INITPTR initfunction;
 	state_type state;
+	
+private:
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int /*version*/) {
+		ar & boost::serialization::base_object<NodeBase>(*this);
+		ar & function;
+		ar & boundfunction;
+		ar & mutatefunction;
+		ar & initfunction;
+		ar & state;
+	}
 };
 
 template <typename FPTR, typename MUTATEPTR>
@@ -124,6 +139,17 @@ struct Terminal_m : NodeBase
 	boost::any boundfunction;
 	MUTATEPTR mutatefunction;
 	state_type state;
+
+private:
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int /*version*/) {
+		ar & boost::serialization::base_object<NodeBase>(*this);
+		ar & function;
+		ar & boundfunction;
+		ar & mutatefunction;
+		ar & state;
+	}
 };
 
 template <typename FPTR, typename INITPTR>
@@ -169,6 +195,17 @@ struct Terminal_i : NodeBase
 	boost::any boundfunction;
 	INITPTR initfunction;
 	state_type state;
+	
+private:
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int /*version*/) {
+		ar & boost::serialization::base_object<NodeBase>(*this);
+		ar & function;
+		ar & boundfunction;
+		ar & initfunction;
+		ar & state;
+	}
 };
 
 template <typename FPTR>
@@ -181,9 +218,13 @@ struct Terminal_simple : NodeBase
 	
 	Terminal_simple(FPTR fptr, std::string name) :
 		NodeBase(name, util::TypeInfo(typeid(result_type)), arity),
-		function(fptr) {}
+		function(fptr) {
+		boundfunction = boost::function<result_type()>(function);
+	}
 	
-	Terminal_simple(const Terminal_simple& t) :	NodeBase(t), function(t.function) {}
+	Terminal_simple(const Terminal_simple& t) :	NodeBase(t), function(t.function) {
+		boundfunction = boost::function<result_type()>(function);
+	}
 	
 	NodeBase* clone() const {
 		return new Terminal_simple<FPTR>(*this);
@@ -198,6 +239,15 @@ struct Terminal_simple : NodeBase
 	void inline init() {}
 
 	FPTR function;
+	boost::any boundfunction;
+	
+private:
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int /*version*/) {
+		ar & function;
+		ar & boundfunction;
+	}
 };
 
 } // end namespace detail

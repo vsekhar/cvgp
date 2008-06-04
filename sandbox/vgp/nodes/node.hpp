@@ -14,6 +14,8 @@
 #include <boost/function_types/parameter_types.hpp>
 #include <boost/function_types/function_arity.hpp>
 
+#include <boost/serialization/base_object.hpp>
+
 #include <vgp/util/typestoobjs.hpp>
 #include <vgp/util/typeinfo.hpp>
 
@@ -69,6 +71,13 @@ private:
 		}
 		util::TypeInfoVector& vector;
 	};
+	
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int /* version */) {
+		ar & boost::serialization::base_object<NodeBase>(*this);
+		ar & function;
+	}
 
 	typedef detail::FunctionBinder<FPTR> Binder;
 	FPTR function;

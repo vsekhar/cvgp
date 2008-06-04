@@ -8,6 +8,8 @@
 #include <boost/any.hpp>
 #include <boost/function.hpp>
 
+#include <boost/serialization/access.hpp>
+
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/format.hpp>
@@ -78,6 +80,9 @@ struct Organism {
 	 */
 	void reset() {root.reset();}
 	
+	/** True if the organism has no root node */
+	inline bool empty() const {return !root;}
+	
 	/** Randomly generate the organism's tree
 	 * \param t a type_info describing the type (as provided by typeid())  
 	 * \return The number 
@@ -144,7 +149,33 @@ protected:
 	detail::NodePtr root;
 	double fitness;
 	
-	friend std::ostream& operator<<(std::ostream& os, const Organism &org) {return os<<*org.root;}
+	friend std::ostream& operator<<(std::ostream& os, const Organism &org);
+	
+private:
+	friend class boost::serialization::access;
+	template <class Archive>
+	void save(Archive &ar, const unsigned int /* version */) const {
+		const bool hasroot = !empty();
+		ar << hasroot;
+		if(!empty())
+			ar << root;
+		ar << fitness;
+	}
+	template <class Archive>
+	void load(Archive &ar, const unsigned int /* version */) {
+		bool hasroot = false;
+		ar >> hasroot;
+		if(hasroot) {
+			detail::NodeBase* newnode;
+			ar >> newnode;
+			detail::NodePtr newroot(newnode);
+			root.swap(newroot);
+		}
+		else if(root)
+			root.reset();
+		ar >> fitness;
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 } // namespace vgp
