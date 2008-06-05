@@ -16,8 +16,11 @@
 #include <boost/function_types/parameter_types.hpp>
 #include <boost/function_types/function_arity.hpp>
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
+#include <boost/serialization/export.hpp>
 
 #include <vgp/util/typestoobjs.hpp>
 #include <vgp/util/typeinfo.hpp>
@@ -47,8 +50,9 @@ struct Terminal_mi : NodeBase
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	typedef typename getfirstparam_wo_reference<FPTR>::type state_type;
 
-	static const unsigned int arity = ft::function_arity<FPTR>::value;
-	BOOST_STATIC_ASSERT((arity == 1));
+	static const unsigned int arity = 0; // it's a terminal
+	static const unsigned int functionarity = ft::function_arity<FPTR>::value;
+	BOOST_STATIC_ASSERT((functionarity == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<MUTATEPTR>::value == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<INITPTR>::value == 1));
 	
@@ -106,8 +110,9 @@ struct Terminal_m : NodeBase
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	typedef typename getfirstparam_wo_reference<FPTR>::type state_type;
 
-	static const unsigned int arity = ft::function_arity<FPTR>::value;
-	BOOST_STATIC_ASSERT((arity == 1));
+	static const unsigned int arity = 0; // terminal
+	static const unsigned int functionarity = ft::function_arity<FPTR>::value;
+	BOOST_STATIC_ASSERT((functionarity == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<MUTATEPTR>::value == 1));
 	
 	typedef typename getfirstparam_wo_reference<MUTATEPTR>::type mutate_type;
@@ -160,8 +165,9 @@ struct Terminal_i : NodeBase
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	typedef typename getfirstparam_wo_reference<FPTR>::type state_type;
 
-	static const unsigned int arity = ft::function_arity<FPTR>::value;
-	BOOST_STATIC_ASSERT((arity == 1));
+	static const unsigned int arity = 0; // terminal
+	static const unsigned int functionarity = ft::function_arity<FPTR>::value;
+	BOOST_STATIC_ASSERT((functionarity == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<INITPTR>::value == 1));
 	
 	typedef typename getfirstparam_wo_reference<INITPTR>::type init_type;
@@ -240,14 +246,6 @@ struct Terminal_simple : NodeBase
 
 	FPTR function;
 	boost::any boundfunction;
-	
-private:
-	friend class boost::serialization::access;
-	template <class Archive>
-	void serialize(Archive &ar, const unsigned int /*version*/) {
-		ar & function;
-		ar & boundfunction;
-	}
 };
 
 } // end namespace detail

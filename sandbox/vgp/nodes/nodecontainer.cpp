@@ -23,10 +23,15 @@ void NodeContainer::push_back(const detail::NodeBase* n) {
 		nodes.push_back(n);
 }
 
-detail::NodeBase* NodeContainer::getnode(const std::string& str, std::size_t depth) const {
+detail::NodeBase* NodeContainer::getnode(const std::string& str) const {
 	NodesByID_t::const_iterator i = nodesbyID.find(str);
-	if(i == nodesbyID.end())
-		return 0;
+	if(i == nodesbyID.end()) {
+		i = terminalsbyID.find(str);
+		if(i == terminalsbyID.end())
+			return 0;
+		else
+			return (*i)->clone();
+	}
 	else
 		return (*i)->clone();
 }
@@ -135,6 +140,10 @@ std::ostream& operator<<(std::ostream &o, const NodeContainer& container) {
 	NodeContainer::NodesBySequence_t::const_iterator itr
 		= container.nodes.begin();
 	for( ; itr != container.nodes.end(); itr++) {
+		o << (*itr)->getID() << std::endl;
+	}
+	itr = container.terminals.begin();
+	for( ; itr != container.terminals.end(); itr++) {
 		o << (*itr)->getID() << std::endl;
 	}
 	return o;

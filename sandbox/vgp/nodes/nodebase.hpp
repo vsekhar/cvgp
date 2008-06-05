@@ -12,8 +12,6 @@
 #include <boost/utility.hpp>
 #include <boost/ptr_container/serialize_ptr_vector.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/scoped_ptr.hpp>
 
 #include <vgp/organism/organism_fwd.hpp>
 
@@ -72,7 +70,7 @@ struct NodeBase : boost::noncopyable {
 	 * current node.
 	 * E.g. for a node with two terminal children, node->count() == 3
 	 */
-	std::size_t count() const {
+	inline std::size_t count() const {
 		std::size_t ret = 1;
 		ptr_vector::const_iterator i = children.begin();
 		for( ; i != children.end(); i++)
@@ -102,6 +100,7 @@ struct NodeBase : boost::noncopyable {
 	bool isterminal() const {return arity() == 0;}
 	virtual bool ismutatable() const = 0;
 	virtual bool isinitiable() const = 0;
+	inline bool hasstate() const {return isterminal() && (ismutatable() || isinitiable());}
 	virtual void init() {
 		ptr_vector::iterator i = children.begin();
 		for( ; i != children.end(); i++) i->init();
@@ -136,16 +135,8 @@ protected:
 	//template <class T1, class T2> friend struct ::vgp::detail::Node<T1,T2>;
 	friend std::ostream& operator<<(std::ostream&, const NodeBase&);
 	util::TypeInfoVector param_types;
+
 private:
-	friend class boost::serialization::access;
-	template <class Archive>
-	void serialize(Archive &ar, const unsigned int /* version */) {
-		ar & _name;
-		ar & result_type;
-		ar & _arity;
-		ar & param_types;
-		ar & children;
-	}
 	util::TypeInfo result_type;
 	std::size_t _arity;
 	std::string _name;
