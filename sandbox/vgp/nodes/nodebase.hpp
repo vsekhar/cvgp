@@ -17,6 +17,7 @@
 
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/accesscontrol.hpp>
+#include <vgp/util/treeserializer_fwd.hpp>
 
 namespace vgp {
 
@@ -132,6 +133,7 @@ protected:
 	ptr_vector children;
 
 	friend struct ::vgp::Organism;
+	friend struct ::vgp::detail::TreeSerializer;
 	//template <class T1, class T2> friend struct ::vgp::detail::Node<T1,T2>;
 	friend std::ostream& operator<<(std::ostream&, const NodeBase&);
 	util::TypeInfoVector param_types;

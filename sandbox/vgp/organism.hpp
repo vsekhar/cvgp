@@ -11,10 +11,12 @@
 #include <boost/serialization/access.hpp>
 
 #include <vgp/nodes/nodebase.hpp>
+#include <vgp/nodes/terminalbase.hpp>
 #include <vgp/nodes/nodecontainer.hpp>
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/format.hpp>
 #include <vgp/util/accesscontrol.hpp>
+#include <vgp/util/treeserializer.hpp>
 
 namespace vgp {
 
@@ -155,53 +157,22 @@ private:
 	friend class boost::serialization::access;
 	
 	template <class Archive>
-	void save_recursive(Archive& ar, detail::NodeBase* curnode) const {
-		const std::string id = curnode->getID();
-		ar << id;
-		if(curnode->hasstate()) {
-			// TODO: save state
-		}
-		detail::NodeBase::ptr_vector::iterator itr = curnode->children.begin();
-		for( ; itr != curnode->children.end(); itr++)
-			save_recursive(ar, &(*itr));
-	}
-	template <class Archive>
 	void save(Archive &ar, const unsigned int /* version */) const {
 		const bool hasroot = !empty();
 		ar << hasroot;
 		if(!empty()) 
-			save_recursive(ar, root.get());
+			detail::TreeSerializer::save_recursive(ar, root.get());
 		ar << fitness;		
 	}
 	
-	template <class Archive>
-	detail::NodeBase* load_node(Archive &ar) {
-		std::string newnodeid;
-		ar >> newnodeid;
-		detail::NodeBase* newnode = vgp::Nodes.getnode(newnodeid);
-		if(!newnode)
-			throw std::exception();
-		return newnode;
-	}
-	template <class Archive>
-	void load_recursive(Archive &ar, detail::NodeBase* curnode) {
-		for(unsigned int i = 0; i < curnode->arity(); i++) {
-			detail::NodeBase* newnode = load_node(ar);
-			if(newnode->hasstate()) {
-				// TODO: load state
-			}
-			curnode->children.push_back(newnode);
-			load_recursive(ar, newnode);
-		}
-	}
 	template <class Archive>
 	void load(Archive &ar, const unsigned int /* version */) {
 		bool hasroot = false;
 		ar >> hasroot;
 		if(hasroot) {
-			detail::NodePtr newnode(load_node(ar));
+			detail::NodePtr newnode(detail::TreeSerializer::load_node(ar));
 			root.swap(newnode);
-			load_recursive(ar, root.get());
+			detail::TreeSerializer::load_recursive(ar, root.get());
 		}
 		else if(root)
 			root.reset();
