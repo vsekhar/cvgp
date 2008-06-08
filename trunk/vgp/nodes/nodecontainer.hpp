@@ -82,7 +82,7 @@ struct NodeContainer : boost::noncopyable {
 	std::size_t size() const {return nodes.size() + terminals.size();}
 	
 	/// Get a specific node by its globally unique ID string
-	detail::NodeBase* getnode(const std::string&, std::size_t depth) const;
+	detail::NodeBase* getnode(const std::string&) const;
 	
 	/// Select a random node returning the given type
 	detail::NodeBase* getrandomnode(const std::type_info&, std::size_t depth) const;

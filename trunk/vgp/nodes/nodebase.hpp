@@ -6,16 +6,18 @@
 #include <string>
 #include <ostream>
 #include <typeinfo>
+
 #include <boost/function.hpp>
 #include <boost/any.hpp>
 #include <boost/utility.hpp>
-#include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/serialize_ptr_vector.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #include <vgp/organism/organism_fwd.hpp>
 
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/accesscontrol.hpp>
+#include <vgp/util/treeserializer_fwd.hpp>
 
 namespace vgp {
 
@@ -69,7 +71,7 @@ struct NodeBase : boost::noncopyable {
 	 * current node.
 	 * E.g. for a node with two terminal children, node->count() == 3
 	 */
-	std::size_t count() const {
+	inline std::size_t count() const {
 		std::size_t ret = 1;
 		ptr_vector::const_iterator i = children.begin();
 		for( ; i != children.end(); i++)
@@ -99,6 +101,7 @@ struct NodeBase : boost::noncopyable {
 	bool isterminal() const {return arity() == 0;}
 	virtual bool ismutatable() const = 0;
 	virtual bool isinitiable() const = 0;
+	inline bool hasstate() const {return isterminal() && (ismutatable() || isinitiable());}
 	virtual void init() {
 		ptr_vector::iterator i = children.begin();
 		for( ; i != children.end(); i++) i->init();
@@ -127,16 +130,14 @@ struct NodeBase : boost::noncopyable {
 	virtual NodeBase* clone() const = 0;
 
 protected:
-	/** Internal use only.
-	 * @bug should be protected, but for some reason Node<> can't access it.
-	 * gcc bug 2617? http://gcc.gnu.org/ml/gcc-prs/2001-04/msg00434.html
-	 */
 	ptr_vector children;
 
 	friend struct ::vgp::Organism;
+	friend struct ::vgp::detail::TreeSerializer;
 	//template <class T1, class T2> friend struct ::vgp::detail::Node<T1,T2>;
 	friend std::ostream& operator<<(std::ostream&, const NodeBase&);
 	util::TypeInfoVector param_types;
+
 private:
 	util::TypeInfo result_type;
 	std::size_t _arity;
@@ -144,8 +145,8 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const NodeBase&);
-typedef boost::scoped_ptr<NodeBase> NodePtr;
 NodeBase* new_clone(const NodeBase &);
+typedef boost::scoped_ptr<NodeBase> NodePtr;
 
 } // namespace detail
 } // namespace vgp

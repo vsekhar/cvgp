@@ -16,10 +16,16 @@
 #include <boost/function_types/parameter_types.hpp>
 #include <boost/function_types/function_arity.hpp>
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/export.hpp>
+
 #include <vgp/util/typestoobjs.hpp>
 #include <vgp/util/typeinfo.hpp>
 
-#include <vgp/nodes/nodebase.hpp>
+#include <vgp/nodes/terminalbase.hpp>
 #include <vgp/nodes/nodecontainer.hpp>
 #include <vgp/nodes/functionbinder.hpp>
 
@@ -36,16 +42,17 @@ struct getfirstparam_wo_reference :
 	>
 {};
 
-template <typename FPTR, typename MUTATEPTR, typename INITPTR>
-struct Terminal_mi : NodeBase
+template <typename FPTR, typename MUTATEPTR, typename INITPTR, typename ARCHIVES>
+struct Terminal_mi : TerminalBase_stateful<ARCHIVES>
 {
 	BOOST_STATIC_ASSERT(ft::is_function_pointer<FPTR>::value);
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	typedef typename getfirstparam_wo_reference<FPTR>::type state_type;
 
-	static const unsigned int arity = ft::function_arity<FPTR>::value;
-	BOOST_STATIC_ASSERT((arity == 1));
+	static const unsigned int arity = 0; // it's a terminal
+	static const unsigned int functionarity = ft::function_arity<FPTR>::value;
+	BOOST_STATIC_ASSERT((functionarity == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<MUTATEPTR>::value == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<INITPTR>::value == 1));
 	
@@ -55,19 +62,21 @@ struct Terminal_mi : NodeBase
 	BOOST_STATIC_ASSERT((boost::is_same<init_type, state_type>::value));
 	
 	Terminal_mi(FPTR fptr, MUTATEPTR mutateptr, INITPTR initptr, std::string name) :
-		NodeBase(name, util::TypeInfo(typeid(result_type)), arity),
+		TerminalBase(name, util::TypeInfo(typeid(result_type)), arity),
+		TerminalBase_stateful<ARCHIVES>(name, util::TypeInfo(typeid(result_type)), arity),
 		function(fptr), mutatefunction(mutateptr), initfunction(initptr) {
 		boundfunction = boost::function<result_type()>(boost::bind(fptr, boost::ref(state)));
 	}
 	
 	Terminal_mi(const Terminal_mi& t) :
-		NodeBase(t), function(t.function), boundfunction(t.boundfunction),
+		TerminalBase(t),
+		TerminalBase_stateful<ARCHIVES>(t), function(t.function), boundfunction(t.boundfunction),
 		mutatefunction(t.mutatefunction), initfunction(t.initfunction), state(t.state) {
 		boundfunction = boost::function<result_type()>(boost::bind(function, boost::ref(state)));
 	}
 	
 	NodeBase* clone() const {
-		return new Terminal_mi<FPTR, MUTATEPTR, INITPTR>(*this);
+		return new Terminal_mi<FPTR, MUTATEPTR, INITPTR, ARCHIVES>(*this);
 	}
 	
 	boost::any inline getfunc() const {return boundfunction;}
@@ -75,24 +84,27 @@ struct Terminal_mi : NodeBase
 	bool inline isinitiable() const {return true;}
 	void inline mutate() {mutatefunction(state);}
 	void inline init() {initfunction(state);}
+	void inline save_state(typename ARCHIVES::oarchive_type &ar) {ar << state;}
+	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
 	FPTR function;
 	boost::any boundfunction;
 	MUTATEPTR mutatefunction;
 	INITPTR initfunction;
-	state_type state;
+	state_type state;	
 };
 
-template <typename FPTR, typename MUTATEPTR>
-struct Terminal_m : NodeBase
+template <typename FPTR, typename MUTATEPTR, typename ARCHIVES>
+struct Terminal_m : TerminalBase_stateful<ARCHIVES>
 {
 	BOOST_STATIC_ASSERT(ft::is_function_pointer<FPTR>::value);
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	typedef typename getfirstparam_wo_reference<FPTR>::type state_type;
 
-	static const unsigned int arity = ft::function_arity<FPTR>::value;
-	BOOST_STATIC_ASSERT((arity == 1));
+	static const unsigned int arity = 0; // terminal
+	static const unsigned int functionarity = ft::function_arity<FPTR>::value;
+	BOOST_STATIC_ASSERT((functionarity == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<MUTATEPTR>::value == 1));
 	
 	typedef typename getfirstparam_wo_reference<MUTATEPTR>::type mutate_type;
@@ -111,7 +123,7 @@ struct Terminal_m : NodeBase
 	}
 	
 	NodeBase* clone() const {
-		return new Terminal_m<FPTR, MUTATEPTR>(*this);
+		return new Terminal_m<FPTR, MUTATEPTR, ARCHIVES>(*this);
 	}
 	
 	boost::any inline getfunc() const {return boundfunction;}
@@ -119,6 +131,8 @@ struct Terminal_m : NodeBase
 	bool inline isinitiable() const {return false;}
 	void inline mutate() {mutatefunction(state);}
 	void inline init() {}
+	void inline save_state(typename ARCHIVES::oarchive_type &ar) {ar << state;}
+	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
 	FPTR function;
 	boost::any boundfunction;
@@ -126,16 +140,17 @@ struct Terminal_m : NodeBase
 	state_type state;
 };
 
-template <typename FPTR, typename INITPTR>
-struct Terminal_i : NodeBase
+template <typename FPTR, typename INITPTR, typename ARCHIVES>
+struct Terminal_i : TerminalBase_stateful<ARCHIVES>
 {
 	BOOST_STATIC_ASSERT(ft::is_function_pointer<FPTR>::value);
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	typedef typename getfirstparam_wo_reference<FPTR>::type state_type;
 
-	static const unsigned int arity = ft::function_arity<FPTR>::value;
-	BOOST_STATIC_ASSERT((arity == 1));
+	static const unsigned int arity = 0; // terminal
+	static const unsigned int functionarity = ft::function_arity<FPTR>::value;
+	BOOST_STATIC_ASSERT((functionarity == 1));
 	BOOST_STATIC_ASSERT((ft::function_arity<INITPTR>::value == 1));
 	
 	typedef typename getfirstparam_wo_reference<INITPTR>::type init_type;
@@ -154,7 +169,7 @@ struct Terminal_i : NodeBase
 	}
 	
 	NodeBase* clone() const {
-		return new Terminal_i<FPTR, INITPTR>(*this);
+		return new Terminal_i<FPTR, INITPTR, ARCHIVES>(*this);
 	}
 	
 	boost::any inline getfunc() const {return boundfunction;}
@@ -164,6 +179,8 @@ struct Terminal_i : NodeBase
 		std::cerr << "ERROR: tried to mutate a non-mutatable terminal (no-op)" << std::endl;
 	}
 	void inline init() {initfunction(state);}
+	void inline save_state(typename ARCHIVES::oarchive_type &ar) {ar << state;}
+	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
 	FPTR function;
 	boost::any boundfunction;
@@ -172,7 +189,7 @@ struct Terminal_i : NodeBase
 };
 
 template <typename FPTR>
-struct Terminal_simple : NodeBase
+struct Terminal_simple : TerminalBase
 {
 	BOOST_STATIC_ASSERT(ft::is_function_pointer<FPTR>::value);
 	typedef typename ft::result_type<FPTR>::type result_type;
@@ -180,10 +197,14 @@ struct Terminal_simple : NodeBase
 	static const unsigned int arity = ft::function_arity<FPTR>::value;
 	
 	Terminal_simple(FPTR fptr, std::string name) :
-		NodeBase(name, util::TypeInfo(typeid(result_type)), arity),
-		function(fptr) {}
+		TerminalBase(name, util::TypeInfo(typeid(result_type)), arity),
+		function(fptr) {
+		boundfunction = boost::function<result_type()>(function);
+	}
 	
-	Terminal_simple(const Terminal_simple& t) :	NodeBase(t), function(t.function) {}
+	Terminal_simple(const Terminal_simple& t) :	TerminalBase(t), function(t.function) {
+		boundfunction = boost::function<result_type()>(function);
+	}
 	
 	NodeBase* clone() const {
 		return new Terminal_simple<FPTR>(*this);
@@ -198,6 +219,7 @@ struct Terminal_simple : NodeBase
 	void inline init() {}
 
 	FPTR function;
+	boost::any boundfunction;
 };
 
 } // end namespace detail

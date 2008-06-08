@@ -8,10 +8,15 @@
 #include <boost/any.hpp>
 #include <boost/function.hpp>
 
+#include <boost/serialization/access.hpp>
+
 #include <vgp/nodes/nodebase.hpp>
+#include <vgp/nodes/terminalbase.hpp>
+#include <vgp/nodes/nodecontainer.hpp>
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/format.hpp>
 #include <vgp/util/accesscontrol.hpp>
+#include <vgp/util/treeserializer.hpp>
 
 namespace vgp {
 
@@ -31,7 +36,6 @@ struct Organism {
 	Organism(detail::NodeBase* r) : hasfitness(false), fitness(0) {
 		detail::NodePtr src(r);
 		root.swap(src);
-		//std::cout << "Org created with specified root: " << *r << std::endl;
 	}
 	
 	/// Initialize all nodes in the tree
@@ -77,6 +81,9 @@ struct Organism {
 	 * \post *this is an empty organism
 	 */
 	void reset() {root.reset();}
+	
+	/** True if the organism has no root node */
+	inline bool empty() const {return !root;}
 	
 	/** Randomly generate the organism's tree
 	 * \param t a type_info describing the type (as provided by typeid())  
@@ -144,7 +151,35 @@ protected:
 	detail::NodePtr root;
 	double fitness;
 	
-	friend std::ostream& operator<<(std::ostream& os, const Organism &org) {return os<<*org.root;}
+	friend std::ostream& operator<<(std::ostream& os, const Organism &org);
+	
+private:
+	friend class boost::serialization::access;
+	
+	template <class Archive>
+	void save(Archive &ar, const unsigned int /* version */) const {
+		const bool hasroot = !empty();
+		ar << hasroot;
+		if(!empty()) 
+			detail::TreeSerializer::save_recursive(ar, root.get());
+		ar << fitness;		
+	}
+	
+	template <class Archive>
+	void load(Archive &ar, const unsigned int /* version */) {
+		bool hasroot = false;
+		ar >> hasroot;
+		if(hasroot) {
+			// Load the root node manually as starting point
+			detail::NodePtr newnode(detail::TreeSerializer::load_node(ar));
+			root.swap(newnode);
+			detail::TreeSerializer::load_recursive(ar, root.get());
+		}
+		else if(root)
+			root.reset();
+		ar >> fitness;
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 } // namespace vgp

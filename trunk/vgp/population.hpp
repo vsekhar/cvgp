@@ -62,7 +62,7 @@ struct Population {
 	
 	/** the average number of nodes in the organisms in the population
 	 */
-	std::size_t avgnodecount() const {return nodecount() / size();}
+	double avgnodecount() const {return (double)nodecount() / size();}
 	
 	/** the average fitness value of all organisms in the population
 	 */
