@@ -170,6 +170,7 @@ private:
 		bool hasroot = false;
 		ar >> hasroot;
 		if(hasroot) {
+			// Load the root node manually as starting point
 			detail::NodePtr newnode(detail::TreeSerializer::load_node(ar));
 			root.swap(newnode);
 			detail::TreeSerializer::load_recursive(ar, root.get());

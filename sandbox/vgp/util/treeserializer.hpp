@@ -13,7 +13,6 @@ struct TreeSerializer {
 		const std::string id = curnode->getID();
 		ar << id;
 		if(curnode->hasstate()) {
-			std::cout << "Saving node with state: " << id << std::endl;
 			detail::TerminalBase_savable<Archive> *castednode = 
 			dynamic_cast<typename detail::TerminalBase_savable<Archive>*>(curnode);
 			if(!castednode) {
@@ -39,14 +38,12 @@ struct TreeSerializer {
 	template <class Archive>
 	static void load_recursive(Archive &ar, detail::NodeBase* curnode) {
 		for(unsigned int i = 0; i < curnode->arity(); i++) {
-			// TODO: CHECK FOR EOF?? might be the reason for failing the dynamic cast whenever
-			// counter[i] is in a non-root position (ie. when loading the state of a non-root node)
 			detail::NodeBase* newnode = load_node(ar);
 			if(newnode->hasstate()) {
 				detail::TerminalBase_loadable<Archive> *castednode = 
-				dynamic_cast<typename detail::TerminalBase_loadable<Archive>*>(curnode);
+				dynamic_cast<typename detail::TerminalBase_loadable<Archive>*>(newnode);
 				if(!castednode) {
-					std::cerr << "Failed casting node: " << newnode->getID() << std::endl;
+					std::cerr << "Failed casting node while loading: " << newnode->getID() << std::endl;
 					exit(1);
 				}
 				castednode->load_state(ar);
