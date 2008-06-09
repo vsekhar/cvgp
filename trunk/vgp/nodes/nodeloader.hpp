@@ -5,6 +5,8 @@
 
 #include <boost/static_assert.hpp>
 
+#include <boost/preprocessor/stringize.hpp>
+
 #include <boost/function_types/is_function_pointer.hpp>
 #include <boost/function_types/function_arity.hpp>
 #include <boost/function_types/result_type.hpp>
@@ -141,6 +143,8 @@ struct NodeLoader {
 	}
 	
 };
+
+#define VGP_LOAD_NODE(loader, function) loader.makenode(function, BOOST_PP_STRINGIZE(function))
 
 
 } // end namespace vgp

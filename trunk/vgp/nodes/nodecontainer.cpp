@@ -61,8 +61,9 @@ detail::NodeBase* NodeContainer::getrandomnode(const std::string& name, std::siz
 		return 0;
 	NodesByName_t::const_iterator cur, end;
 	boost::tie(cur, end) = nodesbyname.equal_range(name);
-	util::RandomRangedInt random(0, nodecount-1);
-	unsigned int chosennode = random();
+	boost::uniform_int<int> random(0, nodecount-1);
+	//util::RandomRangedInt random(0, nodecount-1);
+	unsigned int chosennode = random(vgp::util::default_generator);
 	for(std::size_t i = 0; i < chosennode; i++) cur++;
 	return (*cur)->clone();
 }
@@ -124,13 +125,13 @@ NodeContainer::weightedpick(std::size_t nodecount, std::size_t terminalcount, st
 	util::RandomBool random;
 	if(random(p_node) && nodecount) {
 		//node
-		util::RandomRangedInt random_int(0, nodecount-1);
-		return boost::make_tuple(false, random_int());
+		boost::uniform_int<int> random(0, nodecount-1);
+		return boost::make_tuple(false, random(vgp::util::default_generator));
 	}
 	else if(terminalcount) {
 		//terminal
-		util::RandomRangedInt random_int(0, terminalcount-1);
-		return boost::make_tuple(true, random_int());
+		boost::uniform_int<int> random(0, terminalcount-1);
+		return boost::make_tuple(true, random(vgp::util::default_generator));
 	}
 	else
 		throw std::invalid_argument("weightedpick: Failed to find random node");

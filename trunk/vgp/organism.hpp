@@ -58,7 +58,9 @@ struct Organism {
 	 * specified to the operator.  
 	 */
 	template <class T>
-	T run() const {return root->getfunc<T>()();}
+	T run() const {
+		return root->getfunc<T>()();
+	}
 	
 	/** \brief Get a function object returning the specified type
 	 * 

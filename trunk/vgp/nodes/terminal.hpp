@@ -111,13 +111,15 @@ struct Terminal_m : TerminalBase_stateful<ARCHIVES>
 	BOOST_STATIC_ASSERT((boost::is_same<mutate_type, state_type>::value));
 	
 	Terminal_m(FPTR fptr, MUTATEPTR mutateptr, std::string name) :
-		NodeBase(name, util::TypeInfo(typeid(result_type)), arity),
+		TerminalBase(name, util::TypeInfo(typeid(result_type)), arity),
+		TerminalBase_stateful<ARCHIVES>(name, util::TypeInfo(typeid(result_type)), arity),
 		function(fptr), mutatefunction(mutateptr) {
 		boundfunction = boost::function<result_type()>(boost::bind(fptr, boost::ref(state)));
 	}
 	
 	Terminal_m(const Terminal_m& t) :
-		NodeBase(t), function(t.function), boundfunction(t.boundfunction),
+		TerminalBase(t),
+		TerminalBase_stateful<ARCHIVES>(t), function(t.function), boundfunction(t.boundfunction),
 		mutatefunction(t.mutatefunction), state(t.state) {
 		boundfunction = boost::function<result_type()>(boost::bind(function, boost::ref(state)));
 	}
@@ -131,7 +133,10 @@ struct Terminal_m : TerminalBase_stateful<ARCHIVES>
 	bool inline isinitiable() const {return false;}
 	void inline mutate() {mutatefunction(state);}
 	void inline init() {}
-	void inline save_state(typename ARCHIVES::oarchive_type &ar) {ar << state;}
+	void inline save_state(typename ARCHIVES::oarchive_type &ar) {
+		const state_type& const_state = state;
+		ar << const_state;
+	}
 	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
 	FPTR function;
@@ -157,13 +162,15 @@ struct Terminal_i : TerminalBase_stateful<ARCHIVES>
 	BOOST_STATIC_ASSERT((boost::is_same<init_type, state_type>::value));
 	
 	Terminal_i(FPTR fptr, INITPTR initptr, std::string name) :
-		NodeBase(name, util::TypeInfo(typeid(result_type)), arity),
+		TerminalBase(name, util::TypeInfo(typeid(result_type)), arity),
+		TerminalBase_stateful<ARCHIVES>(name, util::TypeInfo(typeid(result_type)), arity),
 		function(fptr), initfunction(initptr) {
 		boundfunction = boost::function<result_type()>(boost::bind(fptr, boost::ref(state)));
 	}
 	
 	Terminal_i(const Terminal_i& t) :
-		NodeBase(t), function(t.function), boundfunction(t.boundfunction),
+		TerminalBase(t),
+		TerminalBase_stateful<ARCHIVES>(t), function(t.function), boundfunction(t.boundfunction),
 		initfunction(t.initfunction), state(t.state) {
 		boundfunction = boost::function<result_type()>(boost::bind(function, boost::ref(state)));
 	}

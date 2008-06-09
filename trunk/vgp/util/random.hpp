@@ -24,26 +24,18 @@ struct TimeSeededGenerator : GENERATOR {
 	TimeSeededGenerator() : GENERATOR(std::time(0)) {};
 };
 
-typedef TimeSeededGenerator<boost::mt19937> time_seeded_mersenne;
-typedef singleton0<time_seeded_mersenne> default_generator;
+typedef TimeSeededGenerator<boost::mt19937> time_seeded_mersenne_t;
+typedef time_seeded_mersenne_t default_generator_t;
+extern default_generator_t default_generator;
 
-struct RandomRangedInt :
-boost::variate_generator<default_generator::object_type&, boost::uniform_int<int> > {
-	RandomRangedInt(int low, int high) : 
-		boost::variate_generator<
-			default_generator::object_type&,
-			boost::uniform_int<int>
-		>
-	(default_generator::instance(), boost::uniform_int<int>(low, high)) {}
-};
-
-typedef boost::uniform_01<default_generator::object_type> RandomBool_base;
+typedef boost::uniform_01<time_seeded_mersenne_t> RandomBool_base;
 struct RandomBool : RandomBool_base {
-	RandomBool() : RandomBool_base(default_generator::instance()) {}
+	RandomBool() : RandomBool_base(default_generator) {}
 	result_type operator()(double probability_of_true) {
 		return RandomBool_base::operator()() < probability_of_true;
 	}
 };
+
 
 } // namespace util
 } // namespace vgp

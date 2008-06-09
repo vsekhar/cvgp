@@ -26,6 +26,13 @@ struct RandomState_impl {
 	DIST distribution;
 	boost::variate_generator<GENERATOR&, DIST> var;
 	OUTPUT state;
+	template <class Archive>
+	void serialize(Archive &ar, const unsigned int /* version */) {
+		ar & generator;
+		ar & distribution;
+		//ar & var;
+		ar & state;
+	}
 };
 
 template <class OUTPUT, class GENERATOR, class DIST, int low, int high>

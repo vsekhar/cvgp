@@ -60,7 +60,7 @@ struct NodeBase : boost::noncopyable {
 		return boost::any_cast<boost::function<OUTPUT_TYPE()> >(getfunc());			
 		}
 		catch(boost::bad_any_cast &e) {
-			std::cerr << *this;
+			std::cerr << "NodeBase ERROR: " << *this;
 			throw;
 		}
 	}
