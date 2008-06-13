@@ -15,7 +15,6 @@
 #include <vgp/nodes/nodecontainer.hpp>
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/format.hpp>
-#include <vgp/util/accesscontrol.hpp>
 #include <vgp/util/treeserializer.hpp>
 
 namespace vgp {

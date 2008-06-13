@@ -22,7 +22,6 @@
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/export.hpp>
 
-#include <vgp/util/typestoobjs.hpp>
 #include <vgp/util/typeinfo.hpp>
 
 #include <vgp/nodes/terminalbase.hpp>

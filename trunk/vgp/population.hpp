@@ -10,6 +10,7 @@
 #include <boost/ref.hpp>
 #include <boost/function.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/serialization/access.hpp>
 
 #include <vgp/organism.hpp>
 
@@ -101,6 +102,11 @@ private:
 		for( ; i != p.organisms.end(); i++)
 			o << *i << std::endl;
 		return o;
+	}
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize (Archive &ar, const unsigned int /* version */) {
+		ar & organisms;
 	}
 };
 

@@ -145,7 +145,10 @@ struct NodeLoader {
 };
 
 #define VGP_LOAD_NODE(loader, function) loader.makenode(function, BOOST_PP_STRINGIZE(function))
-
+#define VGP_LOAD_TERMINAL(loader, function) loader.maketerminal(function, BOOST_PP_STRINGIZE(function))
+#define VGP_LOAD_TERMINAL_I(loader, function, init) loader.maketerminal_i(function, init, BOOST_PP_STRINGIZE(function))
+#define VGP_LOAD_TERMINAL_M(loader, function, mutate) loader.maketerminal_m(function, mutate, BOOST_PP_STRINGIZE(function))
+#define VGP_LOAD_TERMINAL_MI(loader, function, mutate, init) loader.maketerminal(function, mutate, init, BOOST_PP_STRINGIZE(function))
 
 } // end namespace vgp
 

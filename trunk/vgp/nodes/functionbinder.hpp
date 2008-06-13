@@ -4,7 +4,7 @@
 #define FUNCTIONBINDER_HPP_
 
 #ifndef VGP_MAX_NODE_ARITY
-#define VGP_MAX_NODE_ARITY 4
+#define VGP_MAX_NODE_ARITY 3
 #endif
 
 // Includes (when put here, they are included only once)

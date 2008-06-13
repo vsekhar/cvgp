@@ -4,13 +4,12 @@
 #include <boost/ref.hpp>
 
 #include <vgp/nodehelpers.hpp>
-#include <vgp/util/singleton.hpp>
 
 namespace vgp {
 namespace nodes {
 namespace selection {
 
-//util::singleton0<boost::reference_wrapper
+// TODO: wtf?
 
 } // namespace selection
 } // namespace nodes

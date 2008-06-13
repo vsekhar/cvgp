@@ -8,12 +8,9 @@
 
 #include <boost/any.hpp>
 
-#include <vgp/util/singleton.hpp>
-
 namespace vgp {
 
 typedef std::map<std::string, const boost::any> SourceData_t;
-//typedef util::singleton0<SourceDataMap> SourceData;
 extern SourceData_t SourceData;
 
 void addsourcedata(const std::string&, const boost::any);

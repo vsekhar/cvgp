@@ -16,7 +16,6 @@
 
 #include <boost/serialization/base_object.hpp>
 
-#include <vgp/util/typestoobjs.hpp>
 #include <vgp/util/typeinfo.hpp>
 
 #include <vgp/nodes/nodebase.hpp>

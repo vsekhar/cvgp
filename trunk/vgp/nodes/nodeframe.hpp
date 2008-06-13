@@ -8,6 +8,8 @@
 
 #include <vgp/nodes/nodebase.hpp>
 
+// TODO: what's up with this? necessary? what about for tree manipulation?
+
 namespace vgp {
 
 struct NodeFrame; // fwd declare

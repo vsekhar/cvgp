@@ -16,7 +16,6 @@
 #include <vgp/organism/organism_fwd.hpp>
 
 #include <vgp/util/typeinfo.hpp>
-#include <vgp/util/accesscontrol.hpp>
 #include <vgp/util/treeserializer_fwd.hpp>
 
 namespace vgp {
