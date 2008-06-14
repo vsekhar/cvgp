@@ -26,28 +26,32 @@ struct TreeSerializer {
 			save_recursive(ar, &(*itr));
 	}
 	
+	// load_node is factored out of load_recursive because the loading of a single
+	// node is separately needed for loading the root of an organism
 	template <class Archive>
 	static detail::NodeBase* load_node(Archive &ar) {
 		std::string newnodeid;
 		ar >> newnodeid;
 		detail::NodeBase* newnode = vgp::Nodes.getnode(newnodeid);
-		if(!newnode)
+		if(!newnode) {
+			std::cerr << "ERROR: tree serializer could not create node" << std::endl;
 			throw std::exception();
+		}
+		if(newnode->hasstate()) {
+			detail::TerminalBase_loadable<Archive> *castednode = 
+			dynamic_cast<typename detail::TerminalBase_loadable<Archive>*>(newnode);
+			if(!castednode) {
+				std::cerr << "Failed casting node while loading: " << newnode->getID() << std::endl;
+				exit(1);
+			}
+			castednode->load_state(ar);
+		}
 		return newnode;
 	}
 	template <class Archive>
 	static void load_recursive(Archive &ar, detail::NodeBase* curnode) {
 		for(unsigned int i = 0; i < curnode->arity(); i++) {
 			detail::NodeBase* newnode = load_node(ar);
-			if(newnode->hasstate()) {
-				detail::TerminalBase_loadable<Archive> *castednode = 
-				dynamic_cast<typename detail::TerminalBase_loadable<Archive>*>(newnode);
-				if(!castednode) {
-					std::cerr << "Failed casting node while loading: " << newnode->getID() << std::endl;
-					exit(1);
-				}
-				castednode->load_state(ar);
-			}
 			curnode->children.push_back(newnode);
 			load_recursive(ar, newnode);
 		}

@@ -7,10 +7,12 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include <boost/foreach.hpp>
 #include <boost/ref.hpp>
 #include <boost/function.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/serialization/access.hpp>
+#include <boost/serialization/list.hpp>
 
 #include <vgp/organism.hpp>
 
@@ -93,6 +95,14 @@ struct Population {
 	typedef Organisms::reverse_iterator reverse_iterator;
 	typedef Organisms::const_iterator const_iterator;
 	typedef Organisms::const_reverse_iterator const_reverse_iterator;
+	
+	template <class RESULT_TYPE>
+	std::list<RESULT_TYPE> getresults() const {
+		std::list<RESULT_TYPE> ret;
+		BOOST_FOREACH(const Organism &o, *this)
+			ret.push_back(o.run<RESULT_TYPE>());
+		return ret;
+	}
 	
 private:
 	Organisms organisms;

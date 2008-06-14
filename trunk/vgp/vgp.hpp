@@ -8,5 +8,6 @@
 #include <vgp/sourcedata.hpp>
 #include <vgp/organism.hpp>
 #include <vgp/population.hpp>
+#include <vgp/fitnessupdater.hpp>
 
 #endif /*VGP_HPP_*/
