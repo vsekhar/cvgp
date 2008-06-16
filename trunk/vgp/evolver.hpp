@@ -2,6 +2,7 @@
 #define EVOLVER_HPP_
 
 #include <vgp/population.hpp>
+#include <vgp/evolverbase.hpp>
 
 namespace vgp {
 
@@ -9,10 +10,10 @@ namespace vgp {
 /// Evolver documentation
 ///
 
-struct Evolver {
-	// TODO: wtf?
+struct Evolver : EvolverBase {
 	
 };
+
 
 } // namespace vgp
 

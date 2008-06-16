@@ -3,6 +3,7 @@
 
 #include <string>
 #include <ostream>
+#include <stdexcept>
 
 #include <boost/ref.hpp>
 #include <boost/static_assert.hpp>
@@ -53,12 +54,10 @@ struct Node : NodeBase
 	bool ismutatable() const {return false;}
 	bool isinitiable() const {return false;}
 	void mutate() {
-		std::cerr << "ERROR: tried to mutate a non-terminal" << std::endl;
-		exit(1);
+		throw std::invalid_argument("ERROR: tried to mutate a non-terminal");
 	}
 	void init() {
-		std::cerr << "ERROR: tried to init a non-terminal" << std::endl;
-		exit(1);
+		throw std::invalid_argument("ERROR: tried to init a non-terminal");
 	}
 	NodeBase* clone() const {return new Node<FPTR>(*this);}
 private:
