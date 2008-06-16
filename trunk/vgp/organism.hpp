@@ -163,7 +163,6 @@ private:
 		ar << hasroot;
 		if(!empty()) 
 			detail::TreeSerializer::save_recursive(ar, root.get());
-		ar << fitness;		
 	}
 	
 	template <class Archive>
@@ -178,7 +177,6 @@ private:
 		}
 		else if(root)
 			root.reset();
-		ar >> fitness;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
