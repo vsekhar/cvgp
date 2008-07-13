@@ -22,9 +22,9 @@ namespace vgp {
 
 namespace detail {
 
-/// Base class for all nodes.
-
-/** NodeBase is a non-templated base class for all nodes available to organisms.
+/** Base class for all nodes
+ * 
+ * NodeBase is a non-templated base class for all nodes available to organisms.
  * It provides most functionality related to manipulating self-similar trees.
  */
 
@@ -65,10 +65,11 @@ struct NodeBase : boost::noncopyable {
 	}
 	virtual boost::any getfunc() const = 0;
 
-	/// Returns the number of nodes in this [sub-]tree
-	/** Counts recursively down the tree, starting from the 
+	/** Returns the number of nodes in this [sub-]tree
+	 * 
+	 * Counts recursively down the tree, starting from the 
 	 * current node.
-	 * E.g. for a node with two terminal children, node->count() == 3
+	 * \example for a node with two terminal children, node->count() == 3
 	 */
 	inline std::size_t count() const {
 		std::size_t ret = 1;
@@ -107,7 +108,7 @@ struct NodeBase : boost::noncopyable {
 	}
 
 	/// Name of node
-	/** Node names must be globally unique based on functionality (not types).
+	/** Node names must (with types added) must be globally unique.
 	 * E.g. add[i](i,i) and add[d](d,d) can co-exist, but zero[i] and zero[i] cannot
 	 */
 	std::string name() const {return _name;}

@@ -12,7 +12,6 @@
 #include <boost/function_types/result_type.hpp>
 #include <boost/function_types/parameter_types.hpp>
 
-#include <boost/mpl/front.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/not.hpp>
@@ -20,8 +19,9 @@
 
 #include <vgp/nodes/node.hpp>
 #include <vgp/nodes/terminal.hpp>
-#include <vgp/nodes/nodecontainer.hpp>
+#include <vgp/nodes/nodestorage.hpp>
 #include <vgp/nodes/adapter.hpp>
+#include <vgp/population.hpp>
 
 /** \file
  * Factory functions to generate nodes, terminals and adapters from user-provided code
@@ -41,10 +41,13 @@ namespace mpl = ::boost::mpl;
 
 template <class Archive>
 struct NodeLoader {
+	NodeLoader(NodeContainer& n) : nodes(n) {}
+	NodeContainer &nodes;
+	
 	/// Make a node (no internal state)
 	template <typename FPTR>
 	void makenode(FPTR fptr, std::string name) {
-		vgp::Nodes.push_back(new detail::Node<FPTR>(fptr, name));
+		nodes.push_back(new detail::Node<FPTR>(fptr, name));
 	}
 
 	/** Make a terminal, with the specified mutate and initialization functions
@@ -56,7 +59,7 @@ struct NodeLoader {
 	 */
 	template <typename FPTR, typename MUTATEPTR, typename INITPTR>
 	void maketerminal(FPTR functionptr, MUTATEPTR mutateptr, INITPTR initptr, std::string name) {
-		vgp::Nodes.push_back(new detail::Terminal_mi<FPTR, MUTATEPTR, INITPTR, Archive>(functionptr, mutateptr, initptr, name));
+		nodes.push_back(new detail::Terminal_mi<FPTR, MUTATEPTR, INITPTR, Archive>(functionptr, mutateptr, initptr, name));
 	}
 
 	/** Make a terminal with a mutate function only (no initialize function, only
@@ -64,7 +67,7 @@ struct NodeLoader {
 	 */
 	template <typename FPTR, typename MUTATEPTR>
 	void maketerminal_m(FPTR fptr, MUTATEPTR mutateptr, std::string name) {
-		vgp::Nodes.push_back(new detail::Terminal_m<FPTR, MUTATEPTR, Archive>(fptr, mutateptr, name));
+		nodes.push_back(new detail::Terminal_m<FPTR, MUTATEPTR, Archive>(fptr, mutateptr, name));
 	}
 
 	/** Make a terminal with an initialization function only (terminal's state is
@@ -72,14 +75,14 @@ struct NodeLoader {
 	 */
 	template <typename FPTR, typename INITPTR>
 	void maketerminal_i(FPTR fptr, INITPTR initptr, std::string name) {
-		vgp::Nodes.push_back(new detail::Terminal_i<FPTR, INITPTR, Archive>(fptr, initptr, name));
+		nodes.push_back(new detail::Terminal_i<FPTR, INITPTR, Archive>(fptr, initptr, name));
 	}
 
 	/** Make a simple terminal with no state at all
 	 */
 	template <typename FPTR>
 	void maketerminal(FPTR fptr, std::string name) {
-		vgp::Nodes.push_back(new detail::Terminal_simple<FPTR>(fptr, name));
+		nodes.push_back(new detail::Terminal_simple<FPTR>(fptr, name));
 	}
 
 	/** Make an adapter that provides conversion such that the result of

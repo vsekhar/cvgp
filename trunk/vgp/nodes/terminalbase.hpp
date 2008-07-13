@@ -33,7 +33,7 @@ struct TerminalBase_stateful :
 		TerminalBase(name, t, arity),
 		TerminalBase_savable<typename ARCHIVES::oarchive_type>(name, t, arity),
 		TerminalBase_loadable<typename ARCHIVES::iarchive_type>(name, t, arity)
-		{}
+	{}
 };
 
 

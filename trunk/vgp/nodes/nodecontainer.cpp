@@ -11,8 +11,6 @@
 
 namespace vgp {
 
-NodeContainer Nodes;
-
 // TODO: fix the lookups here to check nodes and terminals when appropriate
 // TODO: make all functions throw exceptions instead of return null 
 

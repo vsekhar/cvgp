@@ -175,8 +175,6 @@ private:
 	
 };
 
-extern NodeContainer Nodes;
-
 } // namespace vgp
 
 #endif /*NODECONTAINER_HPP_*/

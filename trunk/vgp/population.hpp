@@ -16,6 +16,7 @@
 #include <boost/ptr_container/serialize_ptr_list.hpp>
 
 #include <vgp/organism.hpp>
+#include <vgp/util/typeinfo.hpp>
 
 namespace vgp {
 
@@ -53,12 +54,7 @@ struct Population : Organisms {
 	std::string summary() const;
 	
 private:
-	friend std::ostream& operator<<(std::ostream& o, const Population& p) {
-		const_iterator i = p.begin();
-		for( ; i != p.end(); i++)
-			o << *i << std::endl;
-		return o;
-	}
+	friend std::ostream& operator<<(std::ostream& o, const Population& p);
 	friend class boost::serialization::access;
 	template <class Archive>
 	void serialize (Archive &ar, const unsigned int /* version */) {

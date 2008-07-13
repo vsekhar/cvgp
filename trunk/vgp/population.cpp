@@ -7,6 +7,7 @@
 #include <boost/foreach.hpp>
 
 #include <vgp/util/rounder.hpp>
+#include <vgp/organism.hpp>
 
 namespace vgp {
 
@@ -46,6 +47,13 @@ std::string Population::summary() const {
 	std::stringstream ret;
 	ret << "Population: " << size() << " organisms, " << nodecount() << " nodes, " << avgfitness() << " average fitness";
 	return ret.str();
+}
+
+std::ostream& operator<<(std::ostream& o, const Population& p) {
+	Population::const_iterator i = p.begin();
+	for( ; i != p.end(); i++)
+		o << *i << std::endl;
+	return o;
 }
 
 } // namespace vgp

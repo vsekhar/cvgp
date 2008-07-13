@@ -20,34 +20,23 @@
 namespace vgp {
 
 struct Organism {
-	/// Default constructor, resets fitness to 0
-	Organism() : hasfitness(false), fitness(0) {}
+	Organism() : fitness(0) {}
 	
 	/// Copy constructor uses assignment operator for actual copying
-	Organism(const Organism &o) {
-		*this=o;
-	}
+	Organism(const Organism &o) {*this=o;}
 	
 	/** \brief Create an organism with a given node tree
 	 * 
-	 * Creates a new organism and takes ownership of the given node tree
+	 * Creates a new organism and takes ownership of the given node trees
 	 */ 
-	Organism(detail::NodeBase* r) : hasfitness(false), fitness(0) {
-		detail::NodePtr src(r);
-		root.swap(src);
-	}
+	Organism(detail::NodeBase*, detail::NodeBase*, detail::NodeBase*);
 	
 	/// Initialize all nodes in the tree
-	inline void init() {if(root) root->init();}
+	void init();
 
 	/// Get the result type of the organism (if a root exists)
 	/// \throw Throws std::runtime_error if the organism hasn't been initialized with a node tree
-	const std::type_info& getresulttype() const {
-		if(root)
-			return root->getresulttype();
-		else
-			throw std::runtime_error("getresulttype(): No root node");
-	}
+	const std::type_info& getresulttype() const;
 	
 	/** \brief Execute the organism and return it's result
 	 * 
@@ -78,10 +67,14 @@ struct Organism {
 	 */ 
 	boost::any getfunc() const { return root->getfunc(); }
 	
-	/** Reset the organism, destroying any tree that might be present
+	/** Reset the organism, destroying any trees that might be present
 	 * \post *this is an empty organism
 	 */
-	void reset() {root.reset();}
+	void reset() {
+		root.reset();
+		selectroot.reset();
+		crossoverroot.reset();
+	}
 	
 	/** True if the organism has no root node */
 	inline bool empty() const {return !root;}
@@ -96,14 +89,24 @@ struct Organism {
 	
 	/** @brief Mutate every node in the tree
 	 * 
-	 * Calls the node-specific mutate function for every node in the tree.
+	 * Calls the node-specific mutate function for every node in the trees.
 	 * @note This is not normally how organisms are mutated and is put here for testing
 	 * purposes only.
 	 */
-	void mutateall() { if(root) mutateall(*root); }
+	void mutateall() { 
+		if(root) mutateall(*root);
+		if(selectroot) mutateall(*selectroot);
+		if(crossoverroot) mutateall(*crossoverroot);
+	}
 	
-	/// Returns the number of nodes in the tree (0 if there is no tree)
-	std::size_t nodecount() const { if(root) return root->count(); else return 0; }
+	/// Returns the number of nodes in the trees (0 if there is no tree)
+	std::size_t nodecount() const {
+		std::size_t ret = 0;
+		if(root) ret += root->count();
+		if(selectroot) ret += selectroot->count();
+		if(crossoverroot) ret += crossoverroot->count();
+		return ret;
+	}
 	
 	/** @brief Returns the average depth of the tree
 	 * 
@@ -114,7 +117,7 @@ struct Organism {
 	/** Set the organism's fitness level
 	 * @sa getfitness
 	 */
-	void setfitness(double d) {fitness = d; hasfitness = true;}
+	void setfitness(double d) {fitness = d;}
 	/** Get the organism's fitness level, set using setfitness()
 	 * @sa setfitness
 	 */
@@ -127,32 +130,19 @@ struct Organism {
 	bool operator<(const Organism& o) const {return fitness<o.fitness;}
 	
 	/// Assignment operator copies the tree (if present) and fitness value
-	Organism& operator=(const Organism& o) {
-		if(o.root) {
-			detail::NodePtr newnode(o.root->clone());
-			root.swap(newnode);
-			fitness = o.fitness;
-			hasfitness = true;
-		}
-		else {
-			root.reset();
-			fitness = 0;
-			hasfitness = false;
-		}
-		return *this;
-	}
+	Organism& operator=(const Organism&);
 	
-	/// For internal testing use
-	bool hasfitness;
 protected:
-	static std::size_t generate_recursive(detail::NodeBase*, std::size_t);
+	static std::size_t generate_recursive(detail::NodeBase*, std::size_t, const NodeContainer&);
 	void mutateall(detail::NodeBase&);
 	void avgdepth(const detail::NodeBase&, std::size_t, std::list<std::size_t> &) const;
 	
 	detail::NodePtr root;
+	detail::NodePtr selectroot;
+	detail::NodePtr crossoverroot;
 	double fitness;
 	
-	friend std::ostream& operator<<(std::ostream& os, const Organism &org);
+	friend std::ostream& operator<<(std::ostream&, const Organism&);
 	
 private:
 	friend class boost::serialization::access;
