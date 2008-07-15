@@ -8,7 +8,7 @@
 namespace vgp {
 namespace selection {
 
-class SelectResult {};
+typedef Population::const_iterator SelectResult;
 
 double avgfitness();
 std::size_t nodecount();
