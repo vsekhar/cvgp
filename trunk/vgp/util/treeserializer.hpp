@@ -1,5 +1,5 @@
-#ifndef TREESERIALIZER_HPP_
-#define TREESERIALIZER_HPP_
+#ifndef VGP_TREESERIALIZER_HPP_
+#define VGP_TREESERIALIZER_HPP_
 
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/nodes/terminalbase.hpp>
@@ -14,7 +14,7 @@ struct TreeSerializer {
 		const std::string id = curnode->getID();
 		ar << id;
 		if(curnode->hasstate()) {
-			detail::TerminalBase_savable<Archive> *castednode = 
+			detail::TerminalBase_savable<Archive> *castednode =
 			dynamic_cast<typename detail::TerminalBase_savable<Archive>*>(curnode);
 			if(!castednode) {
 				std::cerr << "Failed casting node while saving: " << curnode->getID() << std::endl;
@@ -26,7 +26,7 @@ struct TreeSerializer {
 		for( ; itr != curnode->children.end(); itr++)
 			save_recursive(ar, &(*itr));
 	}
-	
+
 	// load_node is factored out of load_recursive because the loading of a single
 	// node is separately needed for loading the root of an organism
 	template <class Archive>
@@ -39,7 +39,7 @@ struct TreeSerializer {
 			throw std::exception();
 		}
 		if(newnode->hasstate()) {
-			detail::TerminalBase_loadable<Archive> *castednode = 
+			detail::TerminalBase_loadable<Archive> *castednode =
 			dynamic_cast<typename detail::TerminalBase_loadable<Archive>*>(newnode);
 			if(!castednode) {
 				std::cerr << "Failed casting node while loading: " << newnode->getID() << std::endl;
@@ -62,4 +62,4 @@ struct TreeSerializer {
 } // end namespace detail
 } // end namespace vgp
 
-#endif /*TREESERIALIZER_HPP_*/
+#endif /*VGP_TREESERIALIZER_HPP_*/

@@ -1,5 +1,5 @@
-#ifndef NODE_HPP_
-#define NODE_HPP_
+#ifndef VGP_NODE_HPP_
+#define VGP_NODE_HPP_
 
 #include <string>
 #include <ostream>
@@ -39,7 +39,7 @@ struct Node : NodeBase
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	static const unsigned int arity = ft::function_arity<FPTR>::value;
-	
+
 	// Construct from a pointer and name, pass name, result typeinfo
 	// and arity to NodeBase (nodebase has no compile-time info about FPTR)
 	Node(FPTR fptr, std::string name) :
@@ -69,7 +69,7 @@ private:
 		}
 		util::TypeInfoVector& vector;
 	};
-	
+
 	friend class boost::serialization::access;
 	template <class Archive>
 	void serialize(Archive &ar, const unsigned int /* version */) {
@@ -84,4 +84,4 @@ private:
 } // namespace detail
 } // namespace vgp
 
-#endif /*NODE_HPP_*/
+#endif /*VGP_NODE_HPP_*/

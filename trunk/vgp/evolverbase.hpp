@@ -1,5 +1,5 @@
-#ifndef EVOLVERBASE_HPP_
-#define EVOLVERBASE_HPP_
+#ifndef VGP_EVOLVERBASE_HPP_
+#define VGP_EVOLVERBASE_HPP_
 
 #include <boost/assert.hpp>
 #include <vgp/population.hpp>
@@ -16,7 +16,7 @@ struct EvolverBase {
 	virtual void process() = 0;
 private:
 	EvolverBase(const EvolverBase&);
-	
+
 	util::TypeInfo _result_type;
 	std::size_t _size;
 	Population _mainpop;
@@ -25,4 +25,4 @@ private:
 
 }
 
-#endif /*EVOLVERBASE_HPP_*/
+#endif /*VGP_EVOLVERBASE_HPP_*/

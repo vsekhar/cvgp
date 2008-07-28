@@ -1,7 +1,7 @@
 #if !BOOST_PP_IS_ITERATING
 
-#ifndef FUNCTIONBINDER_HPP_
-#define FUNCTIONBINDER_HPP_
+#ifndef VGP_FUNCTIONBINDER_HPP_
+#define VGP_FUNCTIONBINDER_HPP_
 
 #ifndef VGP_MAX_NODE_ARITY
 #define VGP_MAX_NODE_ARITY 3
@@ -49,7 +49,7 @@ private:
 #define BOOST_PP_FILENAME_1			<vgp/nodes/functionbinder.hpp>
 #include BOOST_PP_ITERATE()
 
-#endif // FUNCTIONBINDER_HPP_ include guard
+#endif // VGP_FUNCTIONBINDER_HPP_ include guard
 
 #else // BOOST_PP_IS_ITERATING
 
@@ -72,7 +72,7 @@ struct FunctionBinder_impl<T, n> {
 	static boost::function<result_type()>
 	getfunc(
 		T function,
-//		const typename T::state_type &state, 
+//		const typename T::state_type &state,
 		const NodeBase::ptr_vector &children) {
 		NodeBase::ptr_vector::const_iterator itr = children.begin();
 #ifdef __DEBUG__
@@ -81,7 +81,7 @@ struct FunctionBinder_impl<T, n> {
 		BOOST_PP_REPEAT(n, VGP_FUNC_GET_PARAM, node_)
 		return boost::bind(
 			function
-//			state 
+//			state
 			BOOST_PP_COMMA_IF(n)
 			BOOST_PP_ENUM(n, VGP_FUNC_BINDER_PARAM, node_)
 		);

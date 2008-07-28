@@ -1,5 +1,5 @@
-#ifndef RANDOM_HPP_
-#define RANDOM_HPP_
+#ifndef VGP_RANDOM_HPP_
+#define VGP_RANDOM_HPP_
 
 #include <ctime>	// for std::time
 
@@ -38,4 +38,4 @@ struct RandomBool : RandomBool_base {
 } // namespace util
 } // namespace vgp
 
-#endif /*RANDOM_HPP_*/
+#endif /*VGP_RANDOM_HPP_*/

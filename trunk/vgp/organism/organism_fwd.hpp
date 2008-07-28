@@ -1,5 +1,5 @@
-#ifndef ORGANISM_FWD_HPP_
-#define ORGANISM_FWD_HPP_
+#ifndef VGP_ORGANISM_FWD_HPP_
+#define VGP_ORGANISM_FWD_HPP_
 
 namespace vgp {
 
@@ -7,4 +7,4 @@ struct Organism;
 
 } // namespace vgp
 
-#endif /*ORGANISM_FWD_HPP_*/
+#endif /*VGP_ORGANISM_FWD_HPP_*/

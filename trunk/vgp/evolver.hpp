@@ -1,5 +1,5 @@
-#ifndef EVOLVER_HPP_
-#define EVOLVER_HPP_
+#ifndef VGP_EVOLVER_HPP_
+#define VGP_EVOLVER_HPP_
 
 #include <vgp/population.hpp>
 #include <vgp/evolverbase.hpp>
@@ -11,10 +11,10 @@ namespace vgp {
 ///
 
 struct Evolver : EvolverBase {
-	
+
 };
 
 
 } // namespace vgp
 
-#endif /*EVOLVER_HPP_*/
+#endif /*VGP_EVOLVER_HPP_*/

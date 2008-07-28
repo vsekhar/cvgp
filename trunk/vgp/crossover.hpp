@@ -1,14 +1,15 @@
-#ifndef CROSSOVER_HPP_
-#define CROSSOVER_HPP_
+#ifndef VGP_CROSSOVER_HPP_
+#define VGP_CROSSOVER_HPP_
+
+#include <boost/function.hpp>
+#include <vgp/organism.hpp>
 
 namespace vgp {
 namespace crossover {
 
-class CrossoverResult {
-	
-};
+struct CrossoverResult : boost::function<vgp::organism*(const vgp::organism&)> {};
 
 } // end namespace crossover
 } // end namespace vgp
 
-#endif /*CROSSOVER_HPP_*/
+#endif /*VGP_CROSSOVER_HPP_*/

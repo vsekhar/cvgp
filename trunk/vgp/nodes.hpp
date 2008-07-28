@@ -1,5 +1,5 @@
-#ifndef NODES_HPP_
-#define NODES_HPP_
+#ifndef VGP_NODES_HPP_
+#define VGP_NODES_HPP_
 
 #include <vgp/nodes/node.hpp>
 #include <vgp/nodes/terminal.hpp>
@@ -7,4 +7,4 @@
 #include <vgp/nodes/nodestorage.hpp>
 //#include <vgp/nodes/instantiator.hpp>
 
-#endif /*NODES_HPP_*/
+#endif /*VGP_NODES_HPP_*/

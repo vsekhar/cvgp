@@ -1,5 +1,5 @@
-#ifndef NODELOADER_HPP_
-#define NODELOADER_HPP_
+#ifndef VGP_NODELOADER_HPP_
+#define VGP_NODELOADER_HPP_
 
 #include <string>
 
@@ -25,14 +25,14 @@
 
 /** \file
  * Factory functions to generate nodes, terminals and adapters from user-provided code
- * 
+ *
  * Nodes carry functions that accept arguments and return a result. They carry
  * no node-specific internal state (though they may have global state in the form
  * of static variables defined in the user's function).
- * 
+ *
  * Terminals take no node inputs. They may have node-specific state (managed by vgp)
  * or global state (static variables within the user functions). They may also have
- * functions that initialize and mutate their node-specific state. 
+ * functions that initialize and mutate their node-specific state.
  */
 
 namespace vgp {
@@ -43,7 +43,7 @@ template <class Archive>
 struct NodeLoader {
 	NodeLoader(NodeContainer& n) : nodes(n) {}
 	NodeContainer &nodes;
-	
+
 	/// Make a node (no internal state)
 	template <typename FPTR>
 	void makenode(FPTR fptr, std::string name) {
@@ -88,7 +88,7 @@ struct NodeLoader {
 	/** Make an adapter that provides conversion such that the result of
 	 * function SOURCE can be provided as the INDEX'th argument of function
 	 * TARGET (INDEX counts from zero)
-	 * 
+	 *
 	 * @example
 	 * @code
 	 * int targetfunction(char i, double d) {return i + d}
@@ -102,9 +102,9 @@ struct NodeLoader {
 	 * makeadapter<1>(sourcefunction, targetfunction);
 	 * @endcode
 	 * creates an adapter that accepts int and returns double
-	 * 
+	 *
 	 * @note Any state a function takes counts as the first (i.e. 0th) argument.
-	 * 
+	 *
 	 * @example
 	 * With declarations
 	 * @code
@@ -122,7 +122,7 @@ struct NodeLoader {
 	 * @code
 	 * makeadapter<1>(function_with_state, target);
 	 * @endcode
-	 * 
+	 *
 	 */
 	template <unsigned int INDEX, typename FPTR_SOURCE, typename FPTR_TARGET>
 	void makeadapter(FPTR_SOURCE, FPTR_TARGET) {
@@ -139,12 +139,12 @@ struct NodeLoader {
 	 * makeadapter<int, double>()	// adapter: int to double
 	 * makeadapter<char, int>()		// adapter: char to int
 	 * @endcode
-	 */ 
+	 */
 	template <typename SOURCE, typename TARGET>
 	void makeadapter() {
 		makenode(detail::adapter<SOURCE, TARGET>, "adapter");
 	}
-	
+
 };
 
 #define VGP_LOAD_NODE(loader, function) loader.makenode(function, BOOST_PP_STRINGIZE(function))
@@ -155,4 +155,4 @@ struct NodeLoader {
 
 } // end namespace vgp
 
-#endif /*NODELOADER_HPP_*/
+#endif /*VGP_NODELOADER_HPP_*/

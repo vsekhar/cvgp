@@ -1,5 +1,5 @@
-#ifndef NODESTORAGE_HPP_
-#define NODESTORAGE_HPP_
+#ifndef VGP_NODESTORAGE_HPP_
+#define VGP_NODESTORAGE_HPP_
 
 #include <vgp/nodes/nodecontainer.hpp>
 
@@ -11,4 +11,4 @@ extern NodeContainer CrossoverNodes;
 
 }
 
-#endif /*NODESTORAGE_HPP_*/
+#endif /*VGP_NODESTORAGE_HPP_*/

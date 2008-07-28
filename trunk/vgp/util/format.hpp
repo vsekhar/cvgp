@@ -1,5 +1,5 @@
-#ifndef FORMAT_HPP_
-#define FORMAT_HPP_
+#ifndef VGP_FORMAT_HPP_
+#define VGP_FORMAT_HPP_
 
 #include <string>
 
@@ -11,4 +11,4 @@ std::string maketree(const std::string &);
 } // namespace util
 } // namespace vgp
 
-#endif /*FORMAT_HPP_*/
+#endif /*VGP_FORMAT_HPP_*/

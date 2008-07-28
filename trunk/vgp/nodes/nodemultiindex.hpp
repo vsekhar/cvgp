@@ -1,5 +1,5 @@
-#ifndef NODEMULTIINDEX_HPP_
-#define NODEMULTIINDEX_HPP_
+#ifndef VGP_NODEMULTIINDEX_HPP_
+#define VGP_NODEMULTIINDEX_HPP_
 
 #include <string>
 
@@ -54,4 +54,4 @@ typedef multi_index_container<
 } // namespace vgp
 
 
-#endif /*NODEMULTIINDEX_HPP_*/
+#endif /*VGP_NODEMULTIINDEX_HPP_*/

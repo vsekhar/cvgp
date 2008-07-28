@@ -1,5 +1,5 @@
-#ifndef POPULATION_HPP_
-#define POPULATION_HPP_
+#ifndef VGP_POPULATION_HPP_
+#define VGP_POPULATION_HPP_
 
 #include <list>
 #include <ostream>
@@ -27,32 +27,32 @@ typedef boost::tuple<std::size_t, Organisms::iterator, Organisms::iterator>
 struct Population : Organisms {
 	/// An empty population
 	Population() {}
-	
+
 	/// A population of size \c i with organisms returning type \c t
 	Population(std::size_t i, util::TypeInfo t) {add(i, t);}
-	
+
 	/** Add organisms to the population whose root nodes produce result_type
-	 * 
+	 *
 	 * Organisms are populated with randomly selected nodes
 	 */
 	Subpopulation add(std::size_t, const std::type_info&);
-			
+
 	/** the total number of nodes in all organisms in the population
 	 */
 	std::size_t nodecount() const;
-	
+
 	/** the average number of nodes in the organisms in the population
 	 */
 	double avgnodecount() const {return (double)nodecount() / size();}
-	
+
 	/** the average fitness value of all organisms in the population
 	 */
 	double avgfitness() const;
-	
+
 	/** a string summarizing some key stats of the population
 	 */
 	std::string summary() const;
-	
+
 private:
 	friend std::ostream& operator<<(std::ostream& o, const Population& p);
 	friend class boost::serialization::access;
@@ -64,4 +64,4 @@ private:
 
 } // namespace vgp
 
-#endif /*POPULATION_HPP_*/
+#endif /*VGP_POPULATION_HPP_*/

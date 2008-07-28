@@ -1,5 +1,5 @@
-#ifndef NODEFRAME_HPP_
-#define NODEFRAME_HPP_
+#ifndef VGP_NODEFRAME_HPP_
+#define VGP_NODEFRAME_HPP_
 
 #include <vector>
 
@@ -20,16 +20,16 @@ struct NodeFrame {
 	NodeFrame(NodeBase* p) : nodeptr_(p) {
 		children.reserve(p->getarity());
 	}
-	
+
 	NodeBase* getnode() {return ptr_.get();}
 	inline bool empty() const {return ptr_.empty();}
 	inline void reset() {ptr_.reset();}
-	
+
 private:
 	friend class boost::serialization::access;
 	template <class Archive>
 	void save(Archive &ar, const unsigned int /* version */) {
-		
+
 	}
 	NodePtr nodeptr_
 	std::vector<NodeFramePtr> children;
@@ -37,4 +37,4 @@ private:
 
 } // end namespace vgp
 
-#endif /*NODEFRAME_HPP_*/
+#endif /*VGP_NODEFRAME_HPP_*/

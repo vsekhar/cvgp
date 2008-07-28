@@ -1,5 +1,5 @@
-#ifndef WRAP_HPP_
-#define WRAP_HPP_
+#ifndef VGP_WRAP_HPP_
+#define VGP_WRAP_HPP_
 
 namespace vgp { namespace util {
 
@@ -9,4 +9,4 @@ class wrap {};
 } // namespace util
 } // namespace vgp
 
-#endif /*WRAP_HPP_*/
+#endif /*VGP_WRAP_HPP_*/

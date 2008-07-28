@@ -1,5 +1,5 @@
-#ifndef FITNESSUPDATER_HPP_
-#define FITNESSUPDATER_HPP_
+#ifndef VGP_FITNESSUPDATER_HPP_
+#define VGP_FITNESSUPDATER_HPP_
 
 #include <boost/function.hpp>
 #include <boost/foreach.hpp>
@@ -38,9 +38,9 @@ struct FitnessUpdater {
 		result_container_type::const_iterator res_itr = results.begin();
 		std::list<double> ret;
 		for( ; pop_itr != pop.end(); pop_itr++, res_itr++)
-			ret.push_back(fitnessfunc(pop_itr, res_itr, pop, results));			
+			ret.push_back(fitnessfunc(pop_itr, res_itr, pop, results));
 	}
-	
+
 	static std::list<double> computefitnesses_converge(Population &pop, fitnessfunctor_t fitnessfunc, double convergencethreshold) {
 		fitness_container_type fitnessvalues1;
 		fitness_container_type fitnessvalues2;
@@ -68,16 +68,16 @@ struct FitnessUpdater {
 		if(i%2) return fitnessvalues1;
 		else return fitnessvalues2;
 	}
-	
+
 	static void loadfitnessvalues(const fitness_container_type &fitnessvalues, Population &pop) {
 		BOOST_ASSERT(fitnessvalues.size() == pop.size());
 		fitness_container_type::const_iterator fitnessitr = fitnessvalues.begin();
 		Population::interator popitr = pop.begin();
 		for( ; popitr != pop.end(); popitr++, fitnessitr++)
 			popitr->setfitness(*fitnessitr);
-		pop.sort();		
+		pop.sort();
 	}
-	
+
 	static void setfitness(Population &pop, fitnessfunctor_t fitnessfunc) {
 		loadfitnessvalues(computefitness(pop, fitnessfunc), pop);
 	}
@@ -90,4 +90,4 @@ struct FitnessUpdater {
 
 } // end namespace vgp
 
-#endif /*FITNESSUPDATER_HPP_*/
+#endif /*VGP_FITNESSUPDATER_HPP_*/

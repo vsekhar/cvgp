@@ -1,9 +1,9 @@
-#ifndef NODEHELPERS_HPP_
-#define NODEHELPERS_HPP_
+#ifndef VGP_NODEHELPERS_HPP_
+#define VGP_NODEHELPERS_HPP_
 
 /** \file
  * Macros to aid writing code for nodes
- * 
+ *
  * Basic usage:
  * \code
  * VGP_NODE(<nodename>, (<return_type>)(<param1_type>)..., <state_type>, <mutatable_flag>)
@@ -15,7 +15,7 @@
  * \arg \c state_type the type that stores the node's state
  * \arg \c mutatable_flag indicates whether a node is internally mutatable (if true,
  * a mutate function must be provided using VGP_MUTATE in addition to the node's own code)
- * 
+ *
  * Examples:
  * \code
  * VGP_NODE(zero, (int), VGP_NO_STATE, VGP_NOT_MUTATABLE)
@@ -28,7 +28,7 @@
  * VGP_MUTATE{vgp_state = getnewnumber();}
  * VGP_NODE_END
  * \endcode
- * 
+ *
  * Nodes can also be templated:
  * \code
  * template <class T>
@@ -37,7 +37,7 @@
  * VGP_NODE_END
  * typedef mpl::vector<add<int>, add<double>, add<std::string> > arithmetic;
  * \endcode
- * 
+ *
  * Nodes can access sourcedata using the VGP_SOURCE_DATA macros. Nodes need to know
  * the name and type of the sourcedata they access:
  * \code
@@ -45,19 +45,19 @@
  * VGP_NODE_CODE((int)) {return 4 * VGP_SOURCE_DATA(demodata, int);}
  * VGP_END_NODE
  * \endcode
- * 
+ *
  * The user must ensure the appropriate data is loaded/initialized using:
  * \code
  * vgp::addsourcedata(<name_string>, <value>);
  * \endcode
- * 
+ *
  * Nodes that simply return a specific kind of sourcedata can be created in shortform:
  * \code
  * VGP_SOURCE_DATA_NODE(<name>, <type>)
  * \endcode
  * This macro will create a node with the provided name that accesses sourcedata of the same
  * name and outputs it. Note that using this node causes an extra copy of the sourcedata.
- * 
+ *
  * Coding nodes manually:
  * Nodes need not use the macros provided above. The macros expand to a node declaration
  * similar to the following:
@@ -68,13 +68,13 @@
  * 	typedef int state_type;
  * 	static const unsigned int arity = 2;
  * 	static const bool mutatable = false;
- * 
+ *
  * 	static ::std::string name() {return "example node name";}
  * 	static int function(int, double);
  * 	static void mutate(state_type &);
  * };
  * \endcode
- * 
+ *
  */
 
 #include <boost/preprocessor/tuple.hpp>
@@ -108,10 +108,10 @@ namespace mpl = ::boost::mpl;
 // for creating nodes that themselves return (non-nullary) functions
 // (which are then wrapped inside VGP's function mechanism)
 // TODO: generate these? using the same arity macro as FunctionBinder
-#define VGP_FUNC0(ret) boost::function<ret()> 
-#define VGP_FUNC1(ret, p1) boost::function<ret(p1)> 
-#define VGP_FUNC2(ret, p1, p2) boost::function<ret(p1, p2)> 
-#define VGP_FUNC3(ret, p1, p2, p3) boost::function<ret(p1, p2, p3)> 
+#define VGP_FUNC0(ret) boost::function<ret()>
+#define VGP_FUNC1(ret, p1) boost::function<ret(p1)>
+#define VGP_FUNC2(ret, p1, p2) boost::function<ret(p1, p2)>
+#define VGP_FUNC3(ret, p1, p2, p3) boost::function<ret(p1, p2, p3)>
 
 // used to clean up template types
 // e.g. VGP_DECOMMA(1, ( std::pair<int, int> ) )
@@ -124,7 +124,7 @@ namespace mpl = ::boost::mpl;
 ///////////////////////////////////
 // Node struct declaration
 ///////////////////////////////////
-#define VGP_SEQ_TAIL_ENUM(T) BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_TAIL(T)) 
+#define VGP_SEQ_TAIL_ENUM(T) BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_TAIL(T))
 
 #define VGP_NODE(nodename, types, stype, m)									\
 	struct nodename {														\
@@ -178,4 +178,4 @@ namespace mpl = ::boost::mpl;
 	VGP_NODE_CODE((type)) {return VGP_SOURCE_DATA(name, type);}				\
 	VGP_NODE_END
 
-#endif /*NODEHELPERS_HPP_*/
+#endif /*VGP_NODEHELPERS_HPP_*/

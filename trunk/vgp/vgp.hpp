@@ -1,5 +1,5 @@
-#ifndef VGP_HPP_
-#define VGP_HPP_
+#ifndef VGP_VGP_HPP_
+#define VGP_VGP_HPP_
 
 // Main header
 
@@ -9,10 +9,11 @@
 #include <vgp/organism.hpp>
 #include <vgp/population.hpp>
 #include <vgp/selection.hpp>
+#include <vgp/exception.hpp>
 //#include <vgp/fitnessupdater.hpp>
 
 namespace vgp {
 
-} // end namespace vgp 
+} // end namespace vgp
 
-#endif /*VGP_HPP_*/
+#endif /*VGP_VGP_HPP_*/

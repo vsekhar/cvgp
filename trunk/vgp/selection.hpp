@@ -1,5 +1,5 @@
-#ifndef SELECTION_HPP_
-#define SELECTION_HPP_
+#ifndef VGP_SELECTION_HPP_
+#define VGP_SELECTION_HPP_
 
 #include <vgp/population.hpp>
 #include <vgp/sourcedata.hpp>
@@ -26,4 +26,4 @@ void selectionnodes(T loader) {
 
 
 
-#endif /*SELECTION_HPP_*/
+#endif /*VGP_SELECTION_HPP_*/

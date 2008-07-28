@@ -1,5 +1,5 @@
-#ifndef SOURCEDATA_HPP_
-#define SOURCEDATA_HPP_
+#ifndef VGP_SOURCEDATA_HPP_
+#define VGP_SOURCEDATA_HPP_
 
 #include <map>
 #include <string>
@@ -37,4 +37,4 @@ const T* getsourcedata(const std::string& name) {
 
 } // namespace vgp
 
-#endif /*SOURCEDATA_HPP_*/
+#endif /*VGP_SOURCEDATA_HPP_*/

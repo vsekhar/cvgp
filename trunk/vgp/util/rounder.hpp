@@ -1,5 +1,5 @@
-#ifndef ROUNDER_HPP_
-#define ROUNDER_HPP_
+#ifndef VGP_ROUNDER_HPP_
+#define VGP_ROUNDER_HPP_
 
 #include <boost/numeric/conversion/converter.hpp>
 
@@ -22,4 +22,4 @@ typedef ::boost::numeric::converter<
 } // namespace util
 } // namespace vgp
 
-#endif /*ROUNDER_HPP_*/
+#endif /*VGP_ROUNDER_HPP_*/

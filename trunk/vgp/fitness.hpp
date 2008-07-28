@@ -1,5 +1,5 @@
-#ifndef FITNESS_HPP_
-#define FITNESS_HPP_
+#ifndef VGP_FITNESS_HPP_
+#define VGP_FITNESS_HPP_
 
 #include <boost/function.hpp>
 #include <vgp/population.hpp>
@@ -11,8 +11,8 @@ struct FitnessFunctor {
 			vgp::Population::const_iterator org,
 			result_container_type::const_iterator result,
 			const vgp::Population &pop,
-			const result_container_type &results) >	fitnessfunctor_t;	
+			const result_container_type &results) >	fitnessfunctor_t;
 };
 }
 
-#endif /*FITNESS_HPP_*/
+#endif /*VGP_FITNESS_HPP_*/

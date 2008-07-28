@@ -1,5 +1,5 @@
-#ifndef TERMINALBASE_HPP_
-#define TERMINALBASE_HPP_
+#ifndef VGP_TERMINALBASE_HPP_
+#define VGP_TERMINALBASE_HPP_
 
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/util/typeinfo.hpp>
@@ -15,13 +15,13 @@ template <class OARCHIVE>
 struct TerminalBase_savable : virtual TerminalBase {
 	TerminalBase_savable(std::string name, util::TypeInfo t, unsigned int arity) :
 		TerminalBase(name, t, arity) {}
-	virtual void save_state(OARCHIVE &) = 0;	
+	virtual void save_state(OARCHIVE &) = 0;
 };
 template <class IARCHIVE>
 struct TerminalBase_loadable : virtual TerminalBase {
 	TerminalBase_loadable(std::string name, util::TypeInfo t, unsigned int arity) :
 		TerminalBase(name, t, arity) {}
-	virtual void load_state(IARCHIVE &) = 0;	
+	virtual void load_state(IARCHIVE &) = 0;
 };
 
 template <class ARCHIVES>
@@ -41,4 +41,4 @@ struct TerminalBase_stateful :
 } // end namespace detail
 } // end namespace vgp
 
-#endif /*TERMINALBASE_HPP_*/
+#endif /*VGP_TERMINALBASE_HPP_*/

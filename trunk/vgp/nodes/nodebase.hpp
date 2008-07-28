@@ -1,5 +1,5 @@
-#ifndef NODEBASE_HPP_
-#define NODEBASE_HPP_
+#ifndef VGP_NODEBASE_HPP_
+#define VGP_NODEBASE_HPP_
 
 #include <cstdlib>
 #include <vector>
@@ -23,7 +23,7 @@ namespace vgp {
 namespace detail {
 
 /** Base class for all nodes
- * 
+ *
  * NodeBase is a non-templated base class for all nodes available to organisms.
  * It provides most functionality related to manipulating self-similar trees.
  */
@@ -46,17 +46,17 @@ struct NodeBase : boost::noncopyable {
 	virtual ~NodeBase() {
 		clearchildren();
 	}
-	
+
 	/// A unique identifier string for this node
 	/** Node identifiers are usually of the format "name[result_type](p1_type, ...)"
 	 */
 	std::string getID() const;
-	
-	/// 
+
+	///
 	template <class OUTPUT_TYPE>
 	boost::function<OUTPUT_TYPE()> getfunc() const {
 		try {
-		return boost::any_cast<boost::function<OUTPUT_TYPE()> >(getfunc());			
+		return boost::any_cast<boost::function<OUTPUT_TYPE()> >(getfunc());
 		}
 		catch(boost::bad_any_cast &e) {
 			std::cerr << "NodeBase ERROR: " << *this;
@@ -66,8 +66,8 @@ struct NodeBase : boost::noncopyable {
 	virtual boost::any getfunc() const = 0;
 
 	/** Returns the number of nodes in this [sub-]tree
-	 * 
-	 * Counts recursively down the tree, starting from the 
+	 *
+	 * Counts recursively down the tree, starting from the
 	 * current node.
 	 * \example for a node with two terminal children, node->count() == 3
 	 */
@@ -85,7 +85,7 @@ struct NodeBase : boost::noncopyable {
 	void clearchildren() {children.clear();}
 	/// Copy children (and their subsequent children) from another node
 	void deepcopychildren(const NodeBase&);
-	
+
 	/// The type of data returned by this node
 	std::type_info const & getresulttype() const {return result_type.get();}
 	/// Compiler-generated type name string for the node's result type
@@ -112,12 +112,12 @@ struct NodeBase : boost::noncopyable {
 	 * E.g. add[i](i,i) and add[d](d,d) can co-exist, but zero[i] and zero[i] cannot
 	 */
 	std::string name() const {return _name;}
-	
+
 	/////////////////////////
 	// Virtual functions
 	// To be defined once we know the node type (i.e. in Node<>)
 	/////////////////////////
-	
+
 	/** @brief Mutate the current node (as defined by the user-supplied mutate function)
 	 * Node-defined behaviour (may also be no-op)
 	 */
@@ -151,4 +151,4 @@ typedef boost::scoped_ptr<NodeBase> NodePtr;
 } // namespace detail
 } // namespace vgp
 
-#endif /*NODEBASE_HPP_*/
+#endif /*VGP_NODEBASE_HPP_*/

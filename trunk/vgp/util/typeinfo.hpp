@@ -1,5 +1,5 @@
-#ifndef TYPEINFO_HPP_
-#define TYPEINFO_HPP_
+#ifndef VGP_TYPEINFO_HPP_
+#define VGP_TYPEINFO_HPP_
 
 #include <typeinfo>
 #include <iostream>
@@ -36,4 +36,4 @@ struct less<vgp::util::TypeInfo> {
 };
 } // namespace std
 
-#endif /*TYPEINFO_HPP_*/
+#endif /*VGP_TYPEINFO_HPP_*/
