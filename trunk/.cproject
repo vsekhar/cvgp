@@ -1042,105 +1042,92 @@
 <storageModule moduleId="cdtBuildSystem" version="4.0.0">
 <configuration artifactExtension="a" artifactName="vgp" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025" name="Debug" parent="cdt.managedbuild.config.gnu.cygwin.lib.debug" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
 <folderInfo id="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025." name="/" resourcePath="">
-<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug.1840324660" name="Cygwin GCC" resourceTypeBasedDiscovery="true" superClass="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug">
-<targetPlatform id="cdt.managedbuild.target.gnu.platform.cygwin.lib.debug.2119996542" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.cygwin.lib.debug"/>
-<builder autoBuildTarget="all" buildPath="${workspace_loc:/vgp/Debug}" cleanBuildTarget="clean" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.cygwin.lib.debug.1967559212" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.cygwin.lib.debug"/>
-<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.2038845289" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug">
-<option id="gnu.both.asm.option.flags.31749059" name="Assembler flags" superClass="gnu.both.asm.option.flags"/>
-<option id="gnu.both.asm.option.include.paths.1193231856" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.base.1888147198" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.base">
+<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.Cygwin_PE" id="cdt.managedbuild.target.gnu.platform.cygwin.base.523159685" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.cygwin.base"/>
+<builder buildPath="${workspace_loc:/vgp/Debug}" id="cdt.managedbuild.target.gnu.builder.cygwin.base.851697904" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.cygwin.base"/>
+<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.1117840914" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
+<option id="gnu.both.asm.option.include.paths.1328699957" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
-<listOptionValue builtIn="false" value="&quot;C:\cygwin\home\vsekhar\gcc-4.3.0\include\c++\4.3.0&quot;"/>
-<listOptionValue builtIn="false" value="&quot;C:\cygwin\home\vsekhar\boost-1.35.0\include\boost-1_35&quot;"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/gcc-4.3.0/include/c++/4.3.0"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/boost-1.35.0/include/boost-1_35"/>
 </option>
-<option id="gnu.both.asm.option.warnings.nowarn.2113175733" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
-<option id="gnu.both.asm.option.version.1824739936" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
-<inputType id="cdt.managedbuild.tool.gnu.assembler.input.937219811" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1681769447" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>
-<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.230333295" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug">
-<option id="gnu.both.lib.option.flags.1423359833" name="Archiver flags" superClass="gnu.both.lib.option.flags"/>
-</tool>
-<tool command="g++-4.3.0" id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.2017310676" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug">
-<option id="gnu.cpp.compiler.cygwin.lib.debug.option.optimization.level.2101816851" name="Optimization Level" superClass="gnu.cpp.compiler.cygwin.lib.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-<option id="gnu.cpp.compiler.cygwin.lib.debug.option.debugging.level.1018358475" name="Debug Level" superClass="gnu.cpp.compiler.cygwin.lib.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-<option id="gnu.cpp.compiler.option.preprocessor.nostdinc.695391141" name="Do not search system directories (-nostdinc)" superClass="gnu.cpp.compiler.option.preprocessor.nostdinc"/>
-<option id="gnu.cpp.compiler.option.preprocessor.preprocess.1322064808" name="Preprocess only (-E)" superClass="gnu.cpp.compiler.option.preprocessor.preprocess"/>
-<option id="gnu.cpp.compiler.option.preprocessor.def.153958300" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.157184222" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base"/>
+<tool command="g++-4.3.0" id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1677913005" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
+<option id="gnu.cpp.compiler.option.include.paths.1305820231" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;C:/cygwin/home/vsekhar/gcc-4.3.0/include/c++/4.3.0&quot;"/>
+<listOptionValue builtIn="false" value="&quot;C:/cygwin/home/vsekhar/boost-1.35.0/include/boost-1_35&quot;"/>
+</option>
+<option id="gnu.cpp.compiler.option.preprocessor.def.112456359" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 <listOptionValue builtIn="false" value="BOOST_MULTI_INDEX_ENABLE_SAFE_MODE"/>
 <listOptionValue builtIn="false" value="__DEBUG__"/>
 </option>
-<option id="gnu.cpp.compiler.option.preprocessor.undef.7234496" name="Undefined symbols (-U)" superClass="gnu.cpp.compiler.option.preprocessor.undef"/>
-<option id="gnu.cpp.compiler.option.include.paths.1565086639" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
-<listOptionValue builtIn="false" value="&quot;C:\cygwin\home\vsekhar\gcc-4.3.0\include\c++\4.3.0&quot;"/>
-<listOptionValue builtIn="false" value="&quot;C:\cygwin\home\vsekhar\boost-1.35.0\include\boost-1_35&quot;"/>
-</option>
-<option id="gnu.cpp.compiler.option.optimization.flags.2056252723" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags"/>
-<option id="gnu.cpp.compiler.option.debugging.other.94109136" name="Other debugging flags" superClass="gnu.cpp.compiler.option.debugging.other"/>
-<option id="gnu.cpp.compiler.option.debugging.prof.1548392866" name="Generate prof information (-p)" superClass="gnu.cpp.compiler.option.debugging.prof"/>
-<option id="gnu.cpp.compiler.option.debugging.gprof.1751800093" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof"/>
-<option id="gnu.cpp.compiler.option.warnings.syntax.1285674625" name="Check syntax only (-fsyntax-only)" superClass="gnu.cpp.compiler.option.warnings.syntax"/>
-<option id="gnu.cpp.compiler.option.warnings.pedantic.1895901092" name="Pedantic (-pedantic)" superClass="gnu.cpp.compiler.option.warnings.pedantic"/>
-<option id="gnu.cpp.compiler.option.warnings.pedantic.error.783521640" name="Pedantic warnings as errors (-pedantic-errors)" superClass="gnu.cpp.compiler.option.warnings.pedantic.error"/>
-<option id="gnu.cpp.compiler.option.warnings.nowarn.671784591" name="Inhibit all warnings (-w)" superClass="gnu.cpp.compiler.option.warnings.nowarn"/>
-<option id="gnu.cpp.compiler.option.warnings.allwarn.322500683" name="All warnings (-Wall)" superClass="gnu.cpp.compiler.option.warnings.allwarn"/>
-<option id="gnu.cpp.compiler.option.warnings.toerrors.545180795" name="Warnings as errors (-Werror)" superClass="gnu.cpp.compiler.option.warnings.toerrors"/>
-<option id="gnu.cpp.compiler.option.other.other.1183390351" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Wfatal-errors" valueType="string"/>
-<option id="gnu.cpp.compiler.option.other.verbose.1971449857" name="Verbose (-v)" superClass="gnu.cpp.compiler.option.other.verbose"/>
-<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1090045958" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
+<option id="gnu.cpp.compiler.option.optimization.level.1299671539" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
+<option id="gnu.cpp.compiler.option.debugging.level.1918680663" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
+<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1419584098" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
 </tool>
-<tool command="gcc-4.3.0" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.1861414277" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug">
-<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.cygwin.lib.debug.option.optimization.level.347168265" name="Optimization Level" superClass="gnu.c.compiler.cygwin.lib.debug.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
-<option id="gnu.c.compiler.cygwin.lib.debug.option.debugging.level.1091102412" name="Debug Level" superClass="gnu.c.compiler.cygwin.lib.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-<option id="gnu.c.compiler.option.preprocessor.nostdinc.1987722363" name="Do not search system directories (-nostdinc)" superClass="gnu.c.compiler.option.preprocessor.nostdinc"/>
-<option id="gnu.c.compiler.option.preprocessor.preprocess.1043625363" name="Preprocess only (-E)" superClass="gnu.c.compiler.option.preprocessor.preprocess"/>
-<option id="gnu.c.compiler.option.preprocessor.def.symbols.180926206" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+<tool command="gcc-4.3.0" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1407638925" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
+<option id="gnu.c.compiler.option.include.paths.458330859" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/gcc-4.3.0/include/c++/4.3.0"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/boost-1.35.0/include/boost-1_35"/>
+</option>
+<option id="gnu.c.compiler.option.preprocessor.def.symbols.1671342678" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 <listOptionValue builtIn="false" value="BOOST_MULTI_INDEX_ENABLE_SAFE_MODE"/>
 <listOptionValue builtIn="false" value="__DEBUG__"/>
 </option>
-<option id="gnu.c.compiler.option.preprocessor.undef.symbol.793642274" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol"/>
-<option id="gnu.c.compiler.option.include.paths.952897110" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
-<listOptionValue builtIn="false" value="&quot;C:\cygwin\home\vsekhar\gcc-4.3.0\include\c++\4.3.0&quot;"/>
-<listOptionValue builtIn="false" value="&quot;C:\cygwin\home\vsekhar\boost-1.35.0\include\boost-1_35&quot;"/>
-</option>
-<option id="gnu.c.compiler.option.optimization.flags.973960364" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags"/>
-<option id="gnu.c.compiler.option.debugging.other.1519156798" name="Other debugging flags" superClass="gnu.c.compiler.option.debugging.other"/>
-<option id="gnu.c.compiler.option.debugging.gprof.440518540" name="Generate gprof information (-pg)" superClass="gnu.c.compiler.option.debugging.gprof"/>
-<option id="gnu.c.compiler.option.debugging.prof.162628991" name="Generate prof information (-p)" superClass="gnu.c.compiler.option.debugging.prof"/>
-<option id="gnu.c.compiler.option.warnings.syntax.1598245472" name="Check syntax only (-fsyntax-only)" superClass="gnu.c.compiler.option.warnings.syntax"/>
-<option id="gnu.c.compiler.option.warnings.pedantic.1309780767" name="Pedantic (-pedantic)" superClass="gnu.c.compiler.option.warnings.pedantic"/>
-<option id="gnu.c.compiler.option.warnings.pedantic.error.738988020" name="Pedantic warnings as errors (-pedantic-errors)" superClass="gnu.c.compiler.option.warnings.pedantic.error"/>
-<option id="gnu.c.compiler.option.warnings.nowarn.1393268404" name="Inhibit all warnings (-w)" superClass="gnu.c.compiler.option.warnings.nowarn"/>
-<option id="gnu.c.compiler.option.warnings.allwarn.1712731196" name="All warnings (-Wall)" superClass="gnu.c.compiler.option.warnings.allwarn"/>
-<option id="gnu.c.compiler.option.warnings.toerrors.250884992" name="Warnings as errors (-Werror)" superClass="gnu.c.compiler.option.warnings.toerrors"/>
-<option id="gnu.c.compiler.option.misc.other.1868858966" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Wfatal-errors" valueType="string"/>
-<option id="gnu.c.compiler.option.misc.verbose.595670146" name="Verbose (-v)" superClass="gnu.c.compiler.option.misc.verbose"/>
-<option id="gnu.c.compiler.option.misc.ansi.326235848" name="Support ANSI programs (-ansi)" superClass="gnu.c.compiler.option.misc.ansi"/>
-<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.2002928891" superClass="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin"/>
+<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.422953087" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
+<option id="gnu.c.compiler.option.debugging.level.1318264392" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
+<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.118837419" superClass="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin"/>
 </tool>
-<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1505909474" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base"/>
-<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.1911385661" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base"/>
+<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.608678007" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base"/>
+<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.1203590853" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base"/>
 </toolChain>
 </folderInfo>
 <folderInfo id="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.1099487315" name="/" resourcePath="html">
-<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug.490796021" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug" unusedChildren="">
-<targetPlatform id="cdt.managedbuild.target.gnu.platform.cygwin.lib.debug" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.cygwin.lib.debug"/>
-<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.1296157312" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.lib.debug.2038845289">
-<inputType id="cdt.managedbuild.tool.gnu.assembler.input.647259991" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.base.758393290" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.base">
+<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.Cygwin_PE" id="cdt.managedbuild.target.gnu.platform.cygwin.base" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.cygwin.base"/>
+<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.985501331" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
+<option id="gnu.both.asm.option.include.paths.1958080131" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/gcc-4.3.0/include/c++/4.3.0"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/boost-1.35.0/include/boost-1_35"/>
+</option>
+<inputType id="cdt.managedbuild.tool.gnu.assembler.input.213933631" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>
-<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.554101394" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.lib.debug.230333295"/>
-<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.344970372" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.lib.debug.2017310676">
-<option id="gnu.cpp.compiler.cygwin.lib.debug.option.optimization.level.536007497" name="Optimization Level" superClass="gnu.cpp.compiler.cygwin.lib.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-<option id="gnu.cpp.compiler.cygwin.lib.debug.option.debugging.level.1614156393" name="Debug Level" superClass="gnu.cpp.compiler.cygwin.lib.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.802556566" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
+<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1693997428" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base"/>
+<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1855970935" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
+<option id="gnu.cpp.compiler.option.include.paths.391205493" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;C:/cygwin/home/vsekhar/gcc-4.3.0/include/c++/4.3.0&quot;"/>
+<listOptionValue builtIn="false" value="&quot;C:/cygwin/home/vsekhar/boost-1.35.0/include/boost-1_35&quot;"/>
+</option>
+<option id="gnu.cpp.compiler.option.preprocessor.def.429853804" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+<listOptionValue builtIn="false" value="BOOST_MULTI_INDEX_ENABLE_SAFE_MODE"/>
+<listOptionValue builtIn="false" value="__DEBUG__"/>
+</option>
+<option id="gnu.cpp.compiler.option.optimization.level.1329548158" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
+<option id="gnu.cpp.compiler.option.debugging.level.42964096" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
+<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.296481677" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
 </tool>
-<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.349997802" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.lib.debug.1861414277">
-<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.cygwin.lib.debug.option.optimization.level.1221915694" name="Optimization Level" superClass="gnu.c.compiler.cygwin.lib.debug.option.optimization.level" valueType="enumerated"/>
-<option id="gnu.c.compiler.cygwin.lib.debug.option.debugging.level.1225352929" name="Debug Level" superClass="gnu.c.compiler.cygwin.lib.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.520695775" superClass="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin"/>
+<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1634451883" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
+<option id="gnu.c.compiler.option.include.paths.403473415" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/vgp}&quot;"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/gcc-4.3.0/include/c++/4.3.0"/>
+<listOptionValue builtIn="false" value="C:/cygwin/home/vsekhar/boost-1.35.0/include/boost-1_35"/>
+</option>
+<option id="gnu.c.compiler.option.preprocessor.def.symbols.1723568131" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+<listOptionValue builtIn="false" value="BOOST_MULTI_INDEX_ENABLE_SAFE_MODE"/>
+<listOptionValue builtIn="false" value="__DEBUG__"/>
+</option>
+<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.921553296" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
+<option id="gnu.c.compiler.option.debugging.level.641541760" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
+<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.319333752" superClass="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin"/>
 </tool>
-<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.455957331" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1505909474"/>
-<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.2025768532" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.1911385661"/>
+<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1954031768" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base"/>
+<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.322995995" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base"/>
 </toolChain>
 </folderInfo>
 </configuration>

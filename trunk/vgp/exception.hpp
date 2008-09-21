@@ -13,7 +13,8 @@
  * of other organisms or the VGP system.
  *
  * Any errors that do not meet the above criteria should not use the vgp exception
- * hierarchy.
+ * hierarchy, but should instead use std::exception's or an application-specific
+ * exception hierarchy.
  */
 
 #include <stdexcept>
