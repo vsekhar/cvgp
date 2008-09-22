@@ -1,28 +1,11 @@
 #include <stdexcept>
 
 #include <boost/assert.hpp>
-#include <vgp/selection.hpp>
-#include <vgp/crossover.hpp>
 
 #include "organism.hpp"
 #include "nodes/nodecontainer.hpp"
 
 namespace vgp {
-
-Organism::Organism(detail::NodeBase* r, detail::NodeBase* sr, detail::NodeBase* cr) : fitness(0) {
-	detail::NodePtr newr(r);
-	detail::NodePtr newsr(sr);
-	detail::NodePtr newcr(cr);
-	root.swap(newr);
-	selectroot.swap(newsr);
-	crossoverroot.swap(newcr);
-}
-
-void Organism::init() {
-	if(root) root->init();
-	if(selectroot) selectroot->init();
-	if(crossoverroot) crossoverroot->init();
-}
 
 const std::type_info& Organism::getresulttype() const {
 	if(root)
@@ -36,13 +19,7 @@ std::size_t Organism::generate(const std::type_info& t) {
 		detail::NodePtr newroot(Nodes.getrandomnode(t, 0));
 		root.swap(newroot);
 	}
-	detail::NodePtr newselectroot(SelectNodes.getrandomnode(typeid(selection::SelectResult), 0));
-	selectroot.swap(newselectroot);
-	detail::NodePtr newcrossoverroot(CrossoverNodes.getrandomnode(typeid(crossover::CrossoverResult), 0));
-	crossoverroot.swap(newcrossoverroot);	
-	return 3 + generate_recursive(root.get(), 0, Nodes)
-		+ generate_recursive(selectroot.get(), 0, SelectNodes)
-		+ generate_recursive(crossoverroot.get(), 0, CrossoverNodes);
+	return 3 + generate_recursive(root.get(), 0, Nodes);
 }
 
 std::size_t Organism::generate_recursive(detail::NodeBase* curnode, std::size_t depth, const NodeContainer& nodes) {
@@ -103,30 +80,12 @@ Organism& Organism::operator=(const Organism& o) {
 		root.reset();
 		fitness = 0;
 	}
-	if(o.selectroot) {
-		detail::NodePtr newnode(o.selectroot->clone());
-		selectroot.swap(newnode);
-	}
-	else
-		selectroot.reset();
-	if(o.crossoverroot) {
-		detail::NodePtr newnode(o.crossoverroot->clone());
-		crossoverroot.swap(newnode);
-	}
-	else
-		crossoverroot.reset();
 	return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Organism &org) {
-	os << "execution{";
+	os << "organism{";
 	if(org.root) os << *org.root;
-	else os << "empty";
-	os << "} selection{";
-	if(org.selectroot) os << *org.selectroot;
-	else os << "empty";
-	os << "} crossover{";
-	if(org.crossoverroot) os << *org.crossoverroot;
 	else os << "empty";
 	os << "}";
 	return os;

@@ -6,8 +6,6 @@
 namespace vgp {
 
 extern NodeContainer Nodes;
-extern NodeContainer SelectNodes;
-extern NodeContainer CrossoverNodes;
 
 }
 

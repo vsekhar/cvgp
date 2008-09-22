@@ -22,7 +22,7 @@ std::string NodeBase::getID() const {
 	util::TypeInfoVector types = getparamtypes();
 	for(unsigned int i = 0; i < types.size(); i++) {
 		ret += types[i].get().name();
-		if((i+1) != types.size()) ret += ",";		
+		if((i+1) != types.size()) ret += ",";
 	}
 	ret += ")";
 	return ret;

@@ -3,7 +3,5 @@
 namespace vgp {
 
 NodeContainer Nodes;
-NodeContainer SelectNodes;
-NodeContainer CrossoverNodes;
 
 }

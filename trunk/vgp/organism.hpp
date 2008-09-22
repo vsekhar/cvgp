@@ -29,10 +29,13 @@ struct Organism {
 	 *
 	 * Creates a new organism and takes ownership of the given node trees
 	 */
-	Organism(detail::NodeBase*, detail::NodeBase*, detail::NodeBase*);
+	Organism(detail::NodeBase* r) : fitness(0) {
+		detail::NodePtr newr(r);
+		root.swap(newr);
+	}
 
 	/// Initialize all nodes in the tree
-	void init();
+	void init() {if(root) root->init();}
 
 	/// Get the result type of the organism (if a root exists)
 	/// \throw Throws std::runtime_error if the organism hasn't been initialized with a node tree
@@ -72,8 +75,6 @@ struct Organism {
 	 */
 	void reset() {
 		root.reset();
-		selectroot.reset();
-		crossoverroot.reset();
 	}
 
 	/** True if the organism has no root node */
@@ -95,16 +96,12 @@ struct Organism {
 	 */
 	void mutateall() {
 		if(root) mutateall(*root);
-		if(selectroot) mutateall(*selectroot);
-		if(crossoverroot) mutateall(*crossoverroot);
 	}
 
 	/// Returns the number of nodes in the trees (0 if there is no tree)
 	std::size_t nodecount() const {
 		std::size_t ret = 0;
 		if(root) ret += root->count();
-		if(selectroot) ret += selectroot->count();
-		if(crossoverroot) ret += crossoverroot->count();
 		return ret;
 	}
 
@@ -123,6 +120,12 @@ struct Organism {
 	 */
 	double getfitness() const {return fitness;}
 
+	/** Gather a map of types and nodes
+	 *
+	 */
+	template <class Container>
+	void gathertypes(Container &c) const {gathertypes_recursive<Container>(c, root.get());}
+
 	/** Compare organisms based on their fitness
 	 * @pre Fitness values must have been set for the organisms using setfitness.
 	 * @sa setfitness
@@ -137,9 +140,15 @@ protected:
 	void mutateall(detail::NodeBase&);
 	void avgdepth(const detail::NodeBase&, std::size_t, std::list<std::size_t> &) const;
 
+	template <class Container>
+	void gathertypes_recursive(Container &c, const detail::NodeBase* curnode) const {
+		c.insert(std::make_pair(curnode->getresulttypeinfo(), curnode));
+		detail::NodeBase::ptr_vector::const_iterator i = curnode->children.begin();
+		for( ; i != curnode->children.end(); i++)
+			gathertypes_recursive(c, &(*i));
+	}
+
 	detail::NodePtr root;
-	detail::NodePtr selectroot;
-	detail::NodePtr crossoverroot;
 	double fitness;
 
 	friend std::ostream& operator<<(std::ostream&, const Organism&);
