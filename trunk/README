@@ -1,0 +1,10 @@
+Until this project becomes stable enough to be run off a Makefile, the Eclipse MBS structure
+will have to suffice.
+
+What this means:
+The vgp library requires a symbolic link at /usr/local/include/vgp pointing to the vgp project
+directory. This allows vgp header files to access each other. Programs using vgp should also
+refer to the library through the above symbolic link.
+
+Once this library matures to a Makefile system, the library will be 'installed' at the above
+mentioned location.

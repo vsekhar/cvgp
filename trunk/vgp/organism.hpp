@@ -13,6 +13,7 @@
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/nodes/terminalbase.hpp>
 #include <vgp/nodes/nodecontainer.hpp>
+#include <vgp/nodes/nodetypemap.hpp>
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/format.hpp>
 #include <vgp/util/treeserializer.hpp>
@@ -120,11 +121,8 @@ struct Organism {
 	 */
 	double getfitness() const {return fitness;}
 
-	/** Gather a map of types and nodes
-	 *
-	 */
-	template <class Container>
-	void gathertypes(Container &c) const {gathertypes_recursive<Container>(c, root.get());}
+	/// Perform cross-over with another organism. Modifies both organisms.
+	bool crossover(Organism &);
 
 	/** Compare organisms based on their fitness
 	 * @pre Fitness values must have been set for the organisms using setfitness.
@@ -140,12 +138,35 @@ protected:
 	void mutateall(detail::NodeBase&);
 	void avgdepth(const detail::NodeBase&, std::size_t, std::list<std::size_t> &) const;
 
+	/** Inserts pairs containing a TypeInfo for a node's return value and a pointer
+	 * to the node's parent. For the root node, the pointer is NULL.
+	 */
 	template <class Container>
-	void gathertypes_recursive(Container &c, const detail::NodeBase* curnode) const {
-		c.insert(std::make_pair(curnode->getresulttypeinfo(), curnode));
-		detail::NodeBase::ptr_vector::const_iterator i = curnode->children.begin();
-		for( ; i != curnode->children.end(); i++)
-			gathertypes_recursive(c, &(*i));
+	std::size_t gathertypes(Container &c) {
+		if(root) {
+			c.insert(
+					std::make_pair(root->getresulttypeinfo(),
+					std::make_pair(NULL, 0)
+			));
+			return 1 + gathertypes_recursive(c, root.get());
+		}
+		else
+			return 0;
+	}
+
+	template <class Container>
+	std::size_t gathertypes_recursive(Container &c, detail::NodeBase* curnode) {
+		detail::NodeBase::ChildrenContainer::const_iterator i = curnode->children.begin();
+		std::size_t i = 0;
+		for( ; i != curnode->children.size(); i++) {
+			detail::NodeBase& child = curnode->children.at(i);
+			c.insert(
+					std::make_pair(child.getresulttypeinfo(),
+					std::make_pair(curnode, i)
+			));
+			gathertypes_recursive(c, &child);
+		}
+		return i;
 	}
 
 	detail::NodePtr root;

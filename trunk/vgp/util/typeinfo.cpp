@@ -1,15 +1,19 @@
 #include "typeinfo.hpp"
 
-namespace std {
+namespace vgp {
+namespace util {
 
-ostream& operator<<(ostream& os, const vgp::util::TypeInfo & ti) {
-	const type_info &type = ti;
-	return os << type.name();
+bool operator<(const TypeInfo& t1, const std::type_info& t2) {
+	return t1.get().before(t2);
 }
 
-bool less<vgp::util::TypeInfo>::operator()
-(const vgp::util::TypeInfo& t1, const vgp::util::TypeInfo& t2) const {
-		return ((const std::type_info&)t1).before(t2);
+bool operator==(const TypeInfo& t1, const std::type_info& t2) {
+	return t1.get() == t2;
 }
 
-} // namespace std
+std::ostream& operator<<(std::ostream& os, const vgp::util::TypeInfo & t) {
+	return os << t.get().name();
+}
+
+} // namespace util
+} // namespace vgp

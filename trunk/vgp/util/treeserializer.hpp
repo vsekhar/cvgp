@@ -22,7 +22,7 @@ struct TreeSerializer {
 			}
 			castednode->save_state(ar);
 		}
-		detail::NodeBase::ptr_vector::iterator itr = curnode->children.begin();
+		detail::NodeBase::ChildrenContainer::iterator itr = curnode->children.begin();
 		for( ; itr != curnode->children.end(); itr++)
 			save_recursive(ar, &(*itr));
 	}

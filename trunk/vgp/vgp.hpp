@@ -8,7 +8,7 @@
 #include <vgp/sourcedata.hpp>
 #include <vgp/organism.hpp>
 #include <vgp/population.hpp>
-#include <vgp/exception.hpp>
+//#include <vgp/exception.hpp>
 
 namespace vgp {
 

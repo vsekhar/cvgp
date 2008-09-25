@@ -11,9 +11,40 @@
 namespace vgp {
 namespace util {
 
-/** A boost reference wrapper for the std::type_info object returned bythe typeid() operator
+/** A boost reference wrapper for the std::type_info object returned by the typeid() operator
  */
-typedef boost::reference_wrapper<std::type_info const> TypeInfo;
+typedef boost::reference_wrapper<std::type_info const> TypeInfo_base;
+struct TypeInfo : TypeInfo_base {
+	/// Simple forwarding copy constructor
+	template <class T> TypeInfo(const T& t) :
+		TypeInfo_base(t) {}
+};
+
+/* NB: We can't use a simple typedef for TypeInfo because it doesn't latch into
+ * ADL, meaning our comparison operators won't be found.
+ */
+// typedef boost::reference_wrapper<std::type_info const> TypeInfo;
+
+/** Weak-strict ordering of build-in std::type_info structure (using the
+ * structure's own before() member function). Not sure why this isn't
+ * part of the library...
+ */
+bool operator<(const TypeInfo&, const std::type_info&);
+
+/** Comparison of built-in std::type_info structures
+ *
+ * This operator compares type_info structures by comparing the names
+ * associated with each structure (from the .name() member functions).
+ *
+ * @caveat The compiler's RTTI implementation must generate non-empty unique
+ * names for each type. This is not required by the C++ standard, but seems
+ * to be implemented by recent versions of GCC (v. 3+). If a compiler does not
+ * do this, node lookups by name will fail.
+ */
+bool operator==(const TypeInfo&, const std::type_info&);
+
+/// Stream output of TypeInfo objects
+std::ostream& operator<<(std::ostream&, const vgp::util::TypeInfo&);
 
 /// Hash function for TypeInfo (hashes the compiler-provided name of the type)
 std::size_t hash_value(const std::type_info &);
@@ -23,17 +54,5 @@ typedef std::vector<TypeInfo> TypeInfoVector;
 
 } // namespace util
 } // namespace vgp
-
-namespace std {
-
-/// Stream output of TypeInfo objects
-std::ostream& operator<<(std::ostream&, const vgp::util::TypeInfo&);
-
-/// Specialization to allow TypeInfo objects to be placed in sorted containers
-template <>
-struct less<vgp::util::TypeInfo> {
-	bool operator()(const vgp::util::TypeInfo&, const vgp::util::TypeInfo&) const;
-};
-} // namespace std
 
 #endif /*VGP_TYPEINFO_HPP_*/

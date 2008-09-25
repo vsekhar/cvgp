@@ -30,9 +30,9 @@ std::string NodeBase::getID() const {
 
 void NodeBase::deepcopychildren(const NodeBase& nb) {
 	clearchildren();
-	const ptr_vector &srcchildren = nb.children;
-	ptr_vector &newchildren = children;
-	ptr_vector::const_iterator s = srcchildren.begin();
+	const ChildrenContainer &srcchildren = nb.children;
+	ChildrenContainer &newchildren = children;
+	ChildrenContainer::const_iterator s = srcchildren.begin();
 	for( ; s != srcchildren.end(); s++)
 		newchildren.push_back(s->clone());
 }
@@ -45,9 +45,9 @@ std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
 		o << "," << *i;
 	}
 	o << "]";
-	const NodeBase::ptr_vector &children = n.children;
+	const NodeBase::ChildrenContainer &children = n.children;
 	if(!children.empty()) {
-		NodeBase::ptr_vector::const_iterator i = children.begin();
+		NodeBase::ChildrenContainer::const_iterator i = children.begin();
 		o << "(" << *i++;
 		for(; i != children.end(); i++) {
 			o << "," << *i;

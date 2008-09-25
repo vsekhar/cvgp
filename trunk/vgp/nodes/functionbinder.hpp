@@ -73,8 +73,8 @@ struct FunctionBinder_impl<T, n> {
 	getfunc(
 		T function,
 //		const typename T::state_type &state,
-		const NodeBase::ptr_vector &children) {
-		NodeBase::ptr_vector::const_iterator itr = children.begin();
+		const NodeBase::ChildrenContainer &children) {
+		NodeBase::ChildrenContainer::const_iterator itr = children.begin();
 #ifdef __DEBUG__
 		BOOST_ASSERT(children.size() == n);
 #endif
