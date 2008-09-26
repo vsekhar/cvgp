@@ -83,8 +83,6 @@ void Organism::mutateall(detail::NodeBase& curnode) {
 }
 
 bool Organism::crossover(Organism &other) {
-	bool output = false;
-
 	// Gather maps of return types
 	NodeTypeMap ntm1, ntm2;
 	gathertypes(ntm1);
