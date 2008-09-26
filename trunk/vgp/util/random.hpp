@@ -29,7 +29,10 @@ extern default_generator_t default_generator;
 typedef boost::uniform_01<time_seeded_mersenne_t> RandomBool_base;
 struct RandomBool : RandomBool_base {
 	RandomBool() : RandomBool_base(default_generator) {}
-	result_type operator()(double probability_of_true) {
+	bool operator()() {
+		return RandomBool_base::operator()() < 0.5;
+	}
+	bool operator()(double probability_of_true) {
 		return RandomBool_base::operator()() < probability_of_true;
 	}
 };

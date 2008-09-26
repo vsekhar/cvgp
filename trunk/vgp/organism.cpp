@@ -1,26 +1,35 @@
 #include <stdexcept>
+#include <list>
+#include <iostream>
 
 #include <boost/assert.hpp>
+#include <boost/foreach.hpp>
 
 #include <vgp/util/random.hpp>
 
 #include "organism.hpp"
 #include "nodes/nodecontainer.hpp"
 
+using std::cout;
+using std::endl;
+
+using vgp::detail::NodeBase;
+using vgp::util::TypeInfo;
+
 namespace vgp {
 
 const std::type_info& Organism::getresulttype() const {
-	if(root)
+	if(root.get())
 		return root->getresulttype();
 	else
 		throw std::runtime_error("Organism::getresulttype(): No root node");
 }
 
 std::size_t Organism::generate(const std::type_info& t) {
-	if(!root || root->getresulttype() != t) {
-		detail::NodePtr newroot(Nodes.getrandomnode(t, 0));
-		root.swap(newroot);
+	if(!root.get() || root->getresulttype() != t) {
+		root.reset(Nodes.getrandomnode(t, 0));
 	}
+	validfitness_ = false;
 	return 3 + generate_recursive(root.get(), 0, Nodes);
 }
 
@@ -70,9 +79,12 @@ void Organism::mutateall(detail::NodeBase& curnode) {
 	detail::NodeBase::ChildrenContainer::iterator i = curchildren.begin();
 	for( ; i != curchildren.end(); i++)
 		mutateall(*i);
+	validfitness_ = false;
 }
 
 bool Organism::crossover(Organism &other) {
+	bool output = false;
+
 	// Gather maps of return types
 	NodeTypeMap ntm1, ntm2;
 	gathertypes(ntm1);
@@ -95,7 +107,7 @@ bool Organism::crossover(Organism &other) {
 	BOOST_ASSERT(!ntm1.empty()); // they must at least share a root type
 
 	// Find a node from ntm1
-	boost::uniform_int<unsigned int> random2(0, ntm1.size());
+	boost::uniform_int<unsigned int> random2(0, ntm1.size()-1);
 	unsigned int index = random2(util::default_generator);
 	NodeTypeMap::iterator node1 = ntm1.begin();
 	std::advance(node1, index);
@@ -116,32 +128,53 @@ bool Organism::crossover(Organism &other) {
 	unsigned int n1_idx = node1->second.second;
 	detail::NodeBase* n2_ptr = node2->second.first;
 	unsigned int n2_idx = node2->second.second;
-	if(n1_ptr == root.get()) {
-		if(n2_ptr == other.root.get())
-		std::swap(root.get(), n2_ptr->children[n2_idx]);
+	if(n1_ptr == NULL) {
+		if(n2_ptr == NULL) {
+			NodeBase *holder = other.root.release();
+			other.root.reset(root.release());
+			root.reset(holder);
+		}
+		else {
+			NodeBase *holder = &n2_ptr->children[n2_idx];
+			n2_ptr->children.base()[n2_idx] = root.release();
+			root.reset(holder);
+		}
 	}
-	else if(n2_ptr);
+	else if(n2_ptr == NULL) {
+		NodeBase *holder = &n1_ptr->children[n1_idx];
+		n1_ptr->children.base()[n1_idx] = other.root.release();
+		other.root.reset(holder);
+	}
+	else {
+		NodeBase *holder = &n2_ptr->children[n2_idx];
+		n2_ptr->children.base()[n2_idx] = n1_ptr->children.base()[n1_idx];
+		n1_ptr->children.base()[n1_idx] = holder;
+	}
 
-	// TODO: Convert this to iterators (change the contents of NodeTypeMap)
-	//		and then use std::swap(itr1.base(), itr2.base())
+
+	validfitness_ = false;
+	other.validfitness_ = false;
+
+	return true;
 }
 
 Organism& Organism::operator=(const Organism& o) {
-	if(o.root) {
-		detail::NodePtr newnode(o.root->clone());
-		root.swap(newnode);
+	if(o.root.get()) {
+		root.reset(o.root->clone());
 		fitness = o.fitness;
+		validfitness_ = o.validfitness_;
 	}
 	else {
 		root.reset();
 		fitness = 0;
+		validfitness_ = false;
 	}
 	return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Organism &org) {
 	os << "organism{";
-	if(org.root) os << *org.root;
+	if(org.root.get()) os << *org.root;
 	else os << "empty";
 	os << "}";
 	return os;

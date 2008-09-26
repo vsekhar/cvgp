@@ -12,14 +12,12 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
 
+#include <vgp/defaults.hpp>
+
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/nodes/nodemultiindex.hpp>
 
 #include <vgp/util/typeinfo.hpp>
-
-#ifndef VGP_DEFAULT_DEPTH_PENALTY
-#define VGP_DEFAULT_DEPTH_PENALTY (0.99)
-#endif
 
 namespace vgp {
 

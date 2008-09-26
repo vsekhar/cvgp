@@ -37,6 +37,7 @@ std::size_t Population::nodecount() const {
 }
 
 double Population::avgfitness() const {
+	if(!size()) return 0;
 	double fitness = 0;
 	BOOST_FOREACH(const Organism& o, *this)
 		fitness += o.getfitness();

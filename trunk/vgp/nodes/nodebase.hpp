@@ -6,13 +6,12 @@
 #include <string>
 #include <ostream>
 #include <typeinfo>
+#include <memory>
 
 #include <boost/function.hpp>
 #include <boost/any.hpp>
 #include <boost/utility.hpp>
-//#include <boost/ptr_container/serialize_ptr_vector.hpp>
-#include <boost/ptr_container/serialize_ptr_list.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <boost/ptr_container/serialize_ptr_vector.hpp>
 
 #include <vgp/organism/organism_fwd.hpp>
 
@@ -30,7 +29,7 @@ namespace detail {
  */
 
 struct NodeBase : boost::noncopyable {
-	typedef boost::ptr_list<NodeBase> ChildrenContainer;
+	typedef boost::ptr_vector<NodeBase> ChildrenContainer;
 
 	/// Construct and set result_type
 	NodeBase(std::string n, const util::TypeInfo& t, std::size_t a)
@@ -137,8 +136,9 @@ struct NodeBase : boost::noncopyable {
 	 */
 	virtual NodeBase* clone() const = 0;
 
-protected:
 	ChildrenContainer children;
+
+protected:
 	friend struct ::vgp::Organism;
 	friend struct ::vgp::detail::TreeSerializer;
 	//template <class T1, class T2> friend struct ::vgp::detail::Node<T1,T2>;
@@ -153,7 +153,7 @@ private:
 
 std::ostream& operator<<(std::ostream&, const NodeBase&);
 NodeBase* new_clone(const NodeBase &);
-typedef boost::scoped_ptr<NodeBase> NodePtr;
+typedef std::auto_ptr<NodeBase> NodePtr;
 
 } // namespace detail
 } // namespace vgp

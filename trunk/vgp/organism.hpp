@@ -21,7 +21,7 @@
 namespace vgp {
 
 struct Organism {
-	Organism() : fitness(0) {}
+	Organism() : fitness(0), validfitness_(false) {}
 
 	/// Copy constructor uses assignment operator for actual copying
 	Organism(const Organism &o) {*this=o;}
@@ -30,13 +30,12 @@ struct Organism {
 	 *
 	 * Creates a new organism and takes ownership of the given node trees
 	 */
-	Organism(detail::NodeBase* r) : fitness(0) {
-		detail::NodePtr newr(r);
-		root.swap(newr);
+	Organism(detail::NodeBase* r) : fitness(0), validfitness_(false) {
+		root.reset(r);
 	}
 
 	/// Initialize all nodes in the tree
-	void init() {if(root) root->init();}
+	void init() {if(root.get()) root->init(); validfitness_ = false;}
 
 	/// Get the result type of the organism (if a root exists)
 	/// \throw Throws std::runtime_error if the organism hasn't been initialized with a node tree
@@ -76,10 +75,11 @@ struct Organism {
 	 */
 	void reset() {
 		root.reset();
+		validfitness_ = false;
 	}
 
 	/** True if the organism has no root node */
-	inline bool empty() const {return !root;}
+	inline bool empty() const {return !root.get();}
 
 	/** Randomly generate the organism's tree
 	 * \param t a type_info describing the type (as provided by typeid())
@@ -96,13 +96,14 @@ struct Organism {
 	 * purposes only.
 	 */
 	void mutateall() {
-		if(root) mutateall(*root);
+		if(root.get()) mutateall(*root);
+		validfitness_ = false;
 	}
 
 	/// Returns the number of nodes in the trees (0 if there is no tree)
 	std::size_t nodecount() const {
 		std::size_t ret = 0;
-		if(root) ret += root->count();
+		if(root.get()) ret += root->count();
 		return ret;
 	}
 
@@ -112,14 +113,25 @@ struct Organism {
 	 */
 	double avgdepth() const;
 
+	/** Test whether the organism's fitness value is valid
+	 * @sa getfitness
+	 * @sa setfitness
+	 */
+	bool validfitness() const {return validfitness_;}
+
 	/** Set the organism's fitness level
 	 * @sa getfitness
 	 */
-	void setfitness(double d) {fitness = d;}
+	void setfitness(double d) {fitness = d; validfitness_ = true;}
 	/** Get the organism's fitness level, set using setfitness()
 	 * @sa setfitness
 	 */
-	double getfitness() const {return fitness;}
+	double getfitness() const {
+		if(validfitness_)
+			return fitness;
+		else
+			throw std::runtime_error("requested invalid fitness value");
+	}
 
 	/// Perform cross-over with another organism. Modifies both organisms.
 	bool crossover(Organism &);
@@ -128,7 +140,12 @@ struct Organism {
 	 * @pre Fitness values must have been set for the organisms using setfitness.
 	 * @sa setfitness
 	 */
-	bool operator<(const Organism& o) const {return fitness<o.fitness;}
+	bool operator<(const Organism& o) const {
+		if(validfitness_ && o.validfitness_)
+			return fitness<o.fitness;
+		else
+			throw std::runtime_error("attempted comparison with invalid fitness value");
+	}
 
 	/// Assignment operator copies the tree (if present) and fitness value
 	Organism& operator=(const Organism&);
@@ -143,10 +160,11 @@ protected:
 	 */
 	template <class Container>
 	std::size_t gathertypes(Container &c) {
-		if(root) {
+		if(root.get()) {
+			detail::NodeBase* ptr = NULL;
 			c.insert(
 					std::make_pair(root->getresulttypeinfo(),
-					std::make_pair(NULL, 0)
+					std::make_pair(ptr, 0)
 			));
 			return 1 + gathertypes_recursive(c, root.get());
 		}
@@ -156,7 +174,6 @@ protected:
 
 	template <class Container>
 	std::size_t gathertypes_recursive(Container &c, detail::NodeBase* curnode) {
-		detail::NodeBase::ChildrenContainer::const_iterator i = curnode->children.begin();
 		std::size_t i = 0;
 		for( ; i != curnode->children.size(); i++) {
 			detail::NodeBase& child = curnode->children.at(i);
@@ -171,6 +188,7 @@ protected:
 
 	detail::NodePtr root;
 	double fitness;
+	bool validfitness_;
 
 	friend std::ostream& operator<<(std::ostream&, const Organism&);
 
@@ -191,12 +209,12 @@ private:
 		ar >> hasroot;
 		if(hasroot) {
 			// Load the root node manually as starting point
-			detail::NodePtr newnode(detail::TreeSerializer::load_node(ar));
-			root.swap(newnode);
+			root.reset(detail::TreeSerializer::load_node(ar));
 			detail::TreeSerializer::load_recursive(ar, root.get());
 		}
-		else if(root)
+		else
 			root.reset();
+		validfitness_ = false;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
