@@ -6,27 +6,16 @@
 #include <boost/numeric/conversion/converter.hpp>
 #include <boost/foreach.hpp>
 
-#include <vgp/util/rounder.hpp>
 #include <vgp/organism.hpp>
 
 namespace vgp {
 
-Subpopulation Population::add(std::size_t s, const std::type_info& t) {
-	iterator cur, last;
-	cur = end();	// point just past end
-	cur--; // point to last existing element
+void Population::add(std::size_t s, const std::type_info& t) {
 	for(std::size_t i = 0; i < s; i++) {
 		Organism* neworg = new Organism();
 		neworg->generate(t);
 		push_back(neworg);
 	}
-	cur++; // point to first newly created element
-	last = end();	// point to past end (after newly created elements)
-	Subpopulation ret;
-	ret.get<1>() = cur;
-	ret.get<2>() = last;
-	ret.get<0>() = s;
-	return ret;
 }
 
 std::size_t Population::nodecount() const {

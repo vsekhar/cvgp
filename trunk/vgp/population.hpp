@@ -21,8 +21,6 @@
 namespace vgp {
 
 typedef boost::ptr_list<Organism> Organisms;
-typedef boost::tuple<std::size_t, Organisms::iterator, Organisms::iterator>
-	Subpopulation;
 
 struct Population : Organisms {
 	/// An empty population
@@ -35,7 +33,7 @@ struct Population : Organisms {
 	 *
 	 * Organisms are populated with randomly selected nodes
 	 */
-	Subpopulation add(std::size_t, const std::type_info&);
+	void add(std::size_t, const std::type_info&);
 
 	/** the total number of nodes in all organisms in the population
 	 */

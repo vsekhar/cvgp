@@ -94,13 +94,6 @@ struct NodeBase : boost::noncopyable {
 	util::TypeInfo getresulttypeinfo() const {return result_type;}
 	/// The types of data required as parameters of this node [0,VGP_MAX_NODE_ARITY]
 	util::TypeInfoVector getparamtypes() const {return param_types;}
-	/// Build a container of all return types and pointers
-	template <class Container> void gathertypes(Container &c) const {
-		c.insert(std::make_pair(getresulttypeinfo(), this));
-		ChildrenContainer::const_iterator i = children.begin();
-		for( ; i != children.end(); i++)
-			i->gathertypes(c);
-	}
 	/// Number of children required by this node
 	std::size_t arity() const {return _arity;}
 

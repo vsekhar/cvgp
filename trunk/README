@@ -1,10 +1,9 @@
-Until this project becomes stable enough to be run off a Makefile, the Eclipse MBS structure
-will have to suffice.
+Project paths:
+Include: /usr/local/include/vgp -> {Project_Dir}/
+Include: /usr/local/include/boost-1_36
 
-What this means:
-The vgp library requires a symbolic link at /usr/local/include/vgp pointing to the vgp project
-directory. This allows vgp header files to access each other. Programs using vgp should also
-refer to the library through the above symbolic link.
-
-Once this library matures to a Makefile system, the library will be 'installed' at the above
-mentioned location.
+Project paths necessary for programs using vgp:
+Include: /usr/local/include/vgp -> {Project_Dir}/
+Include: /usr/local/include/boost-1_36
+Lib: /usr/local/lib/vgp -> {Project_Dir}/[Debug | Release]
+Lib: /usr/local/lib
