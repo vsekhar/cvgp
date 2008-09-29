@@ -25,7 +25,12 @@
 <folderInfo id="cdt.managedbuild.config.gnu.cygwin.lib.release.1536533236.2041041620" name="/" resourcePath="">
 <toolChain id="cdt.managedbuild.toolchain.gnu.base.585415858" name="Linux GCC" resourceTypeBasedDiscovery="true" superClass="cdt.managedbuild.toolchain.gnu.base">
 <targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.13487729" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-<builder buildPath="${workspace_loc:/vgp/Release}" id="cdt.managedbuild.target.gnu.builder.base.1099274815" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="4" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+<builder buildPath="${workspace_loc:/vgp/Release}" id="cdt.managedbuild.target.gnu.builder.base.1099274815" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="4" superClass="cdt.managedbuild.target.gnu.builder.base">
+<outputEntries>
+<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
+<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
+</outputEntries>
+</builder>
 <tool id="cdt.managedbuild.tool.gnu.archiver.base.655662753" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.976060252" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 <option id="gnu.cpp.compiler.option.include.paths.1744248936" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
@@ -48,13 +53,17 @@
 <tool id="cdt.managedbuild.tool.gnu.c.linker.base.2046025589" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
 <tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.260750663" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base"/>
 <tool id="cdt.managedbuild.tool.gnu.assembler.base.1224094407" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
-<option id="gnu.both.asm.option.include.paths.2061628523" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths"/>
+<option id="gnu.both.asm.option.include.paths.2061628523" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="/usr/local/include/boost-1_36"/>
+<listOptionValue builtIn="false" value="/usr/local/include/vgp"/>
+</option>
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1913387889" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>
 </toolChain>
 </folderInfo>
 <sourceEntries>
-<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="vgp/detail"/>
+<entry excluding="vgp/detail|detail" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 </sourceEntries>
 </configuration>
 </storageModule>
@@ -2001,6 +2010,10 @@
 </tool>
 </toolChain>
 </folderInfo>
+<sourceEntries>
+<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="vgp/detail"/>
+<entry excluding="vgp/detail|detail" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+</sourceEntries>
 </configuration>
 </storageModule>
 

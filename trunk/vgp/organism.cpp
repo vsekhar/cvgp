@@ -5,10 +5,10 @@
 #include <boost/assert.hpp>
 #include <boost/foreach.hpp>
 
+#include <vgp/detail/nodecontainer.hpp>
 #include <vgp/util/random.hpp>
 
-#include "organism.hpp"
-#include "nodes/nodecontainer.hpp"
+#include <vgp/organism.hpp>
 
 using std::cout;
 using std::endl;

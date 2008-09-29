@@ -19,8 +19,8 @@
 
 #include <vgp/nodes/node.hpp>
 #include <vgp/nodes/terminal.hpp>
-#include <vgp/nodes/nodestorage.hpp>
-#include <vgp/nodes/adapter.hpp>
+#include <vgp/detail/nodestorage.hpp>
+#include <vgp/detail/adapter.hpp>
 #include <vgp/population.hpp>
 
 /** \file

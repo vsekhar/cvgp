@@ -1,10 +1,10 @@
 #ifndef VGP_NODES_HPP_
 #define VGP_NODES_HPP_
 
-#include <vgp/nodes/node.hpp>
-#include <vgp/nodes/terminal.hpp>
-#include <vgp/nodes/nodeloader.hpp>
-#include <vgp/nodes/nodestorage.hpp>
-//#include <vgp/nodes/instantiator.hpp>
+#include <vgp/defnode.hpp>
+
+#include <vgp/nodes/arithmetic.hpp>
+#include <vgp/nodes/constants.hpp>
+
 
 #endif /*VGP_NODES_HPP_*/

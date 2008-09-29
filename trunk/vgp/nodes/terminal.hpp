@@ -25,8 +25,8 @@
 #include <vgp/util/typeinfo.hpp>
 
 #include <vgp/nodes/terminalbase.hpp>
-#include <vgp/nodes/nodecontainer.hpp>
-#include <vgp/nodes/functionbinder.hpp>
+#include <vgp/detail/nodecontainer.hpp>
+#include <vgp/detail/functionbinder.hpp>
 
 
 namespace vgp {

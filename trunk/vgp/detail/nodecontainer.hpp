@@ -15,7 +15,7 @@
 #include <vgp/defaults.hpp>
 
 #include <vgp/nodes/nodebase.hpp>
-#include <vgp/nodes/nodemultiindex.hpp>
+#include <vgp/detail/nodemultiindex.hpp>
 
 #include <vgp/util/typeinfo.hpp>
 

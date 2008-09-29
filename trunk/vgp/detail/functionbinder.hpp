@@ -46,7 +46,7 @@ private:
 
 // specializations
 #define BOOST_PP_ITERATION_LIMITS (0, VGP_MAX_NODE_ARITY)
-#define BOOST_PP_FILENAME_1			<vgp/nodes/functionbinder.hpp>
+#define BOOST_PP_FILENAME_1			<vgp/detail/functionbinder.hpp>
 #include BOOST_PP_ITERATE()
 
 #endif // VGP_FUNCTIONBINDER_HPP_ include guard
