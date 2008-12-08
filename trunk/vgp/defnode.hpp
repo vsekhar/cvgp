@@ -1,8 +1,12 @@
 /*
- * node.hpp
+ * defnode.hpp
  *
  *  Created on: Sep 29, 2008
  *      Author: vsekhar
+ */
+
+/** @file defnode.hpp
+ * Include wrapper for headers needed by client programs to define nodes
  */
 
 #ifndef VGP_DEFNODE_HPP_
