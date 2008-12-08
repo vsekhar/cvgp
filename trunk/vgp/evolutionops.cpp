@@ -6,6 +6,7 @@
  */
 
 #include <utility>
+#include <exception>
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <vgp/evolutionops.hpp>
@@ -96,6 +97,7 @@ size_t crossover(
 
 /// Perform mutation on the population (not implemented)
 size_t mutate(Population& pop, const size_t mutations) {
+	if(mutations) throw std::runtime_error("Mutation not implemented");
 	return 0;
 }
 
