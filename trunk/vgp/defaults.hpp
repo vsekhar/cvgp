@@ -5,8 +5,8 @@
  *      Author: vsekhar
  */
 
-#ifndef DEFAULTS_HPP_
-#define DEFAULTS_HPP_
+#ifndef VGP_DEFAULTS_HPP_
+#define VGP_DEFAULTS_HPP_
 
 #ifndef VGP_DEFAULT_DEPTH_PENALTY
 #define VGP_DEFAULT_DEPTH_PENALTY (0.99)
@@ -20,4 +20,4 @@
 #define VGP_DEFAULT_PM (0)
 #endif
 
-#endif /* DEFAULTS_HPP_ */
+#endif /* VGP_DEFAULTS_HPP_ */
