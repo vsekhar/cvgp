@@ -1,4 +1,5 @@
 #include <numeric>
+#include <fstream>
 
 #include "population.hpp"
 
@@ -7,6 +8,7 @@
 #include <boost/foreach.hpp>
 
 #include <vgp/organism.hpp>
+#include <vgp/detail/text_archives.hpp>
 
 namespace vgp {
 
@@ -44,6 +46,18 @@ std::ostream& operator<<(std::ostream& o, const Population& p) {
 	for( ; i != p.end(); i++)
 		o << *i << std::endl;
 	return o;
+}
+
+void loadpopulation(Population &pop, std::string filename) {
+	std::ifstream inputfile(filename.c_str());
+	vgp::text_archive_types::iarchive_type ia(inputfile);
+	ia >> pop;
+}
+
+void savepopulation(const Population &pop, std::string filename) {
+	std::ofstream outputfile(filename.c_str());
+	vgp::text_archive_types::oarchive_type oa(outputfile);
+	oa << pop;
 }
 
 } // namespace vgp

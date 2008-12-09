@@ -9,7 +9,6 @@
 #include <vgp/organism.hpp>
 #include <vgp/population.hpp>
 #include <vgp/evolutionops.hpp>
-//#include <vgp/exception.hpp>
 
 namespace vgp {
 

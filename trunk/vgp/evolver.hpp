@@ -5,30 +5,47 @@
  *      Author: vsekhar
  */
 
-#ifndef EVOLVER_HPP_
-#define EVOLVER_HPP_
+#ifndef VGP_EVOLVER_HPP_
+#define VGP_EVOLVER_HPP_
 
+#include <sstream>
 #include <iostream>
+#include <queue>
+
+#include <vgp/population.hpp>
+#include <vgp/evolutionops.hpp>
+#include <vgp/program_options.hpp>
+#include <vgp/exception.hpp>
+#include <vgp/util/typeinfo.hpp>
 
 namespace vgp {
+namespace po = ::boost::program_options;
 
-template <class OUTPUT_TYPE>
 class Evolver {
 public:
-	Evolver(int argc, char** argv, std::istream in, std::ostream out, std::ostream err):
-		instream(in), outstream(out), errstream(err)
-	{
-
+	Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo);
+	std::size_t updatefitness(FitnessFunctor fitness) {
+		return vgp::updatefitness(pop, fitness);
 	}
 
+	void advance();
+	bool done() {return generation >= generations;}
+
+	Population pop;
+
 private:
-	std::istream& instream;
-	std::ostream& outstream;
-	std::ostream& errstream;
+	unsigned int checkpointinterval;
+	std::string checkpointfilename;
+	unsigned int generation;
+	unsigned int generations;
+	double pc, pr, pm;
+	std::size_t crossovers, reproductions, mutations;
+	FitnessFunctor fitnessfunctor;
+	util::TypeInfo result_type;
 
 }; // class Evolver
 
 } // namespace vgp
 
 
-#endif /* EVOLVER_HPP_ */
+#endif /* VGP_EVOLVER_HPP_ */

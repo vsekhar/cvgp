@@ -30,6 +30,7 @@ struct runtime_exception : std::runtime_error {};
 // Exceptions thrown by the library
 struct library_exception : runtime_exception {};
 struct library_bad_type : library_exception {};
+struct library_warning : library_exception {};
 
 // Exceptions thrown by user code (i.e. thrown in node functions)
 struct user_exception : runtime_exception {};

@@ -21,7 +21,7 @@
 #include <vgp/nodes/terminal.hpp>
 #include <vgp/detail/nodestorage.hpp>
 #include <vgp/detail/adapter.hpp>
-#include <vgp/detail/archive_types.hpp>
+//#include <vgp/detail/archive_types.hpp>
 #include <vgp/population.hpp>
 
 /** \file

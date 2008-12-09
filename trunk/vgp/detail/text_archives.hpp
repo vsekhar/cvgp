@@ -1,5 +1,5 @@
-#ifndef VGP_ARCHIVETYPES_HPP_
-#define VGP_ARCHIVETYPES_HPP_
+#ifndef VGP_TEXT_ARCHIVES_HPP_
+#define VGP_TEXT_ARCHIVES_HPP_
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -13,4 +13,4 @@ struct text_archive_types {
 
 } // namespace vgp
 
-#endif /*VGP_ARCHIVETYPES_HPP_*/
+#endif /*VGP_TEXT_ARCHIVES_HPP_*/

@@ -11,19 +11,20 @@
 namespace vgp {
 namespace util {
 
+/* NB: We can't use a boost::reference_wrapper directly for TypeInfo because
+ * it doesn't latch into ADL, meaning our comparison operators won't be found.
+ */
+// Doesn't work:
+// 	typedef boost::reference_wrapper<std::type_info const> TypeInfo;
+typedef boost::reference_wrapper<std::type_info const> TypeInfo_base;
+
 /** A boost reference wrapper for the std::type_info object returned by the typeid() operator
  */
-typedef boost::reference_wrapper<std::type_info const> TypeInfo_base;
 struct TypeInfo : TypeInfo_base {
 	/// Simple forwarding copy constructor
 	template <class T> TypeInfo(const T& t) :
 		TypeInfo_base(t) {}
 };
-
-/* NB: We can't use a simple typedef for TypeInfo because it doesn't latch into
- * ADL, meaning our comparison operators won't be found.
- */
-// typedef boost::reference_wrapper<std::type_info const> TypeInfo;
 
 /** Weak-strict ordering of build-in std::type_info structure (using the
  * structure's own before() member function). Not sure why this isn't
