@@ -8,6 +8,8 @@
 #include <iostream>
 #include <vgp/program_options.hpp>
 #include <vgp/defaults.hpp>
+#include <vgp/exception.hpp>
+#include <vgp/detail/nodestorage.hpp>
 
 namespace vgp {
 namespace program_options {
@@ -56,8 +58,20 @@ variables_map parsecmdline(unsigned int argc, char **argv) {
 	bpo::store(bpo::command_line_parser(argc, argv).
 			options(desc).positional(posdesc).run(), ret);
 	notify(ret);
-	if(ret.count("help"))
+
+	// Deal with actions that need to be handled by user code
+	if(ret.count("help")) {
 		std::cout << desc << std::endl;
+		throw vgp::exit();
+	}
+	if(ret.count("version"))
+		throw vgp::print_version();
+
+	if(ret.count("list-nodes")) {
+		std::cout << vgp::Nodes;
+		throw vgp::exit();
+	}
+
 	return ret;
 }
 
