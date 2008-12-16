@@ -11,12 +11,13 @@
 #include <boost/program_options.hpp>
 
 namespace vgp {
-namespace program_options {
+
+using boost::program_options::variables_map;
 
 boost::program_options::options_description getdescription();
-boost::program_options::variables_map parsecmdline(unsigned int, char **);
+variables_map parsecmdline(unsigned int, char **);
 
-} // namespace program_options
+
 } // namespace vgp
 
 #endif /* VGP_PROGRAM_OPTIONS_HPP_ */

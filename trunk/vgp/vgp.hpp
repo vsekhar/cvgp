@@ -9,6 +9,10 @@
 #include <vgp/organism.hpp>
 #include <vgp/population.hpp>
 #include <vgp/evolutionops.hpp>
+#include <vgp/evolver.hpp>
+
+#include <vgp/detail/text_archives.hpp>
+#include <vgp/detail/binary_archives.hpp>
 
 namespace vgp {
 

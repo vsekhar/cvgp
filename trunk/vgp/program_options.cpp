@@ -12,7 +12,6 @@
 #include <vgp/detail/nodestorage.hpp>
 
 namespace vgp {
-namespace program_options {
 
 namespace bpo = ::boost::program_options;
 
@@ -75,5 +74,4 @@ variables_map parsecmdline(unsigned int argc, char **argv) {
 	return ret;
 }
 
-} // namespace program_options
 } // namespace vgp
