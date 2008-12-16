@@ -47,10 +47,6 @@ struct Population : Organisms {
 	 */
 	double avgfitness() const;
 
-	/** a string summarizing some key stats of the population
-	 */
-	std::string summary() const;
-
 private:
 	friend std::ostream& operator<<(std::ostream& o, const Population& p);
 	friend class boost::serialization::access;

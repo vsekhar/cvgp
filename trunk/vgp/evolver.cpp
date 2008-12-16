@@ -96,7 +96,6 @@ void Evolver::advance(size_t n) {
 
 void Evolver::checkpoint() const {
 	savepopulation(checkpointfilename);
-	std::cerr << "done saving" << std::endl;
 	lastcheckpoint = generation;
 }
 
@@ -108,7 +107,7 @@ std::string Evolver::stats() const {
 
 	ret << "(MIN fitness = " << pop.front().getfitness()
 		<< ", MAX fitness = " << pop.back().getfitness()
-		<< ", nodecount = " << pop.nodecount() << ")";
+		<< ", AVG fitness = " << pop.avgfitness() << ")";
 	return ret.str();
 }
 
