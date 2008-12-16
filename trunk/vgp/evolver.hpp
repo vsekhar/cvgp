@@ -47,7 +47,6 @@ public:
 	/** Do we need to checkpoint?
 	 */
 	bool needcheckpoint() const {
-		std::cout << generation << " - " << lastcheckpoint << " >= " << checkpointinterval << std::endl;
 		return checkpointinterval && ((generation-lastcheckpoint)>=checkpointinterval);
 	}
 
