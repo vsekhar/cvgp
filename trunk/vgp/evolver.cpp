@@ -5,13 +5,21 @@
  *      Author: vsekhar
  */
 
+#include <sstream>
+#include <fstream>
+#include <vgp/detail/text_archives.hpp>
+
 #include "evolver.hpp"
 #include "sourcedata.hpp"
 
 namespace vgp {
 
+using std::size_t;
+
 Evolver::Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t) :
-	generation(0), fitnessfunctor(f), result_type(t)
+	checkpointinterval(0), lastcheckpoint(0), generation(0),
+	pc(0), pr(0), pm(0), crossovers(0), reproductions(0), mutations(0),
+	fitnessfunctor(f), result_type(t), save(false)
 	{
 	vgp::addsourcedata("vgp_population_cref", new boost::reference_wrapper<Population>(pop));
 	vgp::Nodes.setdepthpenalty(pomap["depth-penalty"].as<double>());
@@ -31,9 +39,14 @@ Evolver::Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t) :
 			throw std::invalid_argument("No filename specified for checkpoint");
 	}
 
+	if(pomap.count("save-population")) {
+		savefilename = pomap["save-population"].as<std::string>();
+		save = true;
+	}
+
 	// Create or load initial population
 	if(pomap.count("load-population"))
-		loadpopulation(pop, pomap["load-population"].as<std::string>());
+		loadpopulation(pomap["load-population"].as<std::string>());
 	else
 		pop.add(pomap["population"].as<unsigned int>(), result_type);
 	generations = pomap["generations"].as<unsigned int>();
@@ -71,20 +84,56 @@ Evolver::Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t) :
 			<< std::endl;
 }
 
-void Evolver::advance() {
-	Population newpop;
-	vgp::evolve(pop, newpop, reproductions, crossovers, mutations);
-	vgp::updatefitness(newpop, fitnessfunctor);
-	generation++;
+Evolver::~Evolver() {
+	if(save) savepopulation(savefilename);
+}
 
-	// checkpoint
-	if(checkpointinterval && !(generation % checkpointinterval)) {
-		savepopulation(newpop, checkpointfilename);
-		std::cout << "Checkpoint: Generation " << generation << ": " << newpop.avgfitness() << ", " <<
-			newpop.avgnodecount() << std::endl;
+void Evolver::advance(size_t n) {
+	for(size_t i = 0; i < n; i++) {
+		Population newpop;
+		vgp::evolve(pop, newpop, reproductions, crossovers, mutations);
+		vgp::updatefitness(newpop, fitnessfunctor);
+		generation++;
+		pop.swap(newpop);
 	}
+}
 
-	pop.swap(newpop);
+std::string Evolver::stats() const {
+	std::stringstream ret;
+	ret << "Generation = " << generation << " of " << generations
+		<< ", " << pop.size() << " organisms with " << pop.avgnodecount()
+		<< " nodes each = " << pop.nodecount() << " total nodes" << std::endl;
+
+	ret << "(MIN fitness = " << pop.front().getfitness()
+		<< ", MAX fitness = " << pop.back().getfitness()
+		<< ", nodecount = " << pop.nodecount() << ")";
+	return ret.str();
+}
+
+std::string Evolver::best() const {
+	const Organism &best = *pop.rbegin();
+	std::stringstream ret;
+	ret << best.getfitness() << " = " << best << std::endl;
+	return ret.str();
+}
+
+std::string Evolver::worst() const {
+	const Organism &worst = *pop.begin();
+	std::stringstream ret;
+	ret << worst.getfitness() << " = " << worst << std::endl;
+	return ret.str();
+}
+
+void Evolver::loadpopulation(std::string filename) {
+	std::ifstream inputfile(filename.c_str());
+	vgp::text_archive_types::iarchive_type ia(inputfile);
+	ia >> pop;
+}
+
+void Evolver::savepopulation(std::string filename) const {
+	std::ofstream outputfile(filename.c_str());
+	vgp::text_archive_types::oarchive_type oa(outputfile);
+	oa << pop;
 }
 
 } // namespace vgp

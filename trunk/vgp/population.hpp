@@ -60,9 +60,6 @@ private:
 	}
 };
 
-void loadpopulation(Population&, std::string);
-void savepopulation(const Population&, std::string);
-
 } // namespace vgp
 
 #endif /*VGP_POPULATION_HPP_*/

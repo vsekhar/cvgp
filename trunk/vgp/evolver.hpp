@@ -23,25 +23,69 @@ namespace po = ::boost::program_options;
 
 class Evolver {
 public:
-	Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo);
+	/** Create an evolver
+	 * @param pomap parameter map from program_options containing parsed cmdline
+	 * @param f fitness functor
+	 * @param t TypeInfo of evolution's result_type
+	 */
+	Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t);
 	std::size_t updatefitness(FitnessFunctor fitness) {
 		return vgp::updatefitness(pop, fitness);
 	}
+	~Evolver();
 
-	void advance();
-	bool done() {return generation >= generations;}
+	/// Advance evolution by one generation
+	void advance() {advance(1);}
 
+	/// Advance evolution by 'n' generations
+	void advance(std::size_t);
+
+	/** Query are we done evolving? (have we evolved the number
+	 * of generations we said we would when we created the evolver?)
+	 */
+	bool done() const {return generation >= generations;}
+
+	/** Do we need to checkpoint?
+	 */
+	bool needcheckpoint() const {
+		std::cout << generation << " - " << lastcheckpoint << " >= " << checkpointinterval << std::endl;
+		return checkpointinterval && ((generation-lastcheckpoint)>=checkpointinterval);
+	}
+
+	bool needtosave() const {return save;}
+
+	/** Perform checkpoint
+	 */
+	void checkpoint() const {
+		savepopulation(checkpointfilename);
+		lastcheckpoint = generation;
+	}
+
+	/** Output some stats
+	 * @pre population must be sorted for the best/worst stats to be correct
+	 */
+	std::string stats() const;
+	std::string best() const;
+	std::string worst() const;
+
+	void loadpopulation(std::string);
+	void savepopulation(std::string) const;
+
+	/// The population
 	Population pop;
 
 private:
 	unsigned int checkpointinterval;
+	mutable unsigned int lastcheckpoint;
 	std::string checkpointfilename;
+	std::string savefilename;
 	unsigned int generation;
 	unsigned int generations;
 	double pc, pr, pm;
 	std::size_t crossovers, reproductions, mutations;
 	FitnessFunctor fitnessfunctor;
 	util::TypeInfo result_type;
+	bool save;
 
 }; // class Evolver
 
