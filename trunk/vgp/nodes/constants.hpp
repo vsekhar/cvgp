@@ -58,7 +58,7 @@ void constantnodes(Loader &loader) {
 	loader.maketerminal(helloworld, "vgp_helloworld");
 
 	loader.maketerminal_m(smallint, smallint_mutate, "vgp_smallint");
-	loader.maketerminal_m(double_01, double_01_mutate, "vgp_smallint");
+	loader.maketerminal_m(double_01, double_01_mutate, "vgp_double_01");
 }
 
 } // namespace nodes

@@ -32,7 +32,6 @@ public:
 	std::size_t updatefitness(FitnessFunctor fitness) {
 		return vgp::updatefitness(pop, fitness);
 	}
-	~Evolver();
 
 	/// Advance evolution by one generation
 	void advance() {advance(1);}
@@ -56,10 +55,7 @@ public:
 
 	/** Perform checkpoint
 	 */
-	void checkpoint() const {
-		savepopulation(checkpointfilename);
-		lastcheckpoint = generation;
-	}
+	void checkpoint() const;
 
 	/** Output some stats
 	 * @pre population must be sorted for the best/worst stats to be correct

@@ -29,7 +29,7 @@ Evolver::Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t) :
 		checkpointinterval = pomap["checkpoint"].as<unsigned int>();
 	else
 		checkpointinterval = 0;
-	std::string checkpointfilename;
+
 	if(checkpointinterval) {
 		if(pomap.count("checkpoint-file"))
 			checkpointfilename = pomap["checkpoint-file"].as<std::string>();
@@ -84,10 +84,6 @@ Evolver::Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t) :
 			<< std::endl;
 }
 
-Evolver::~Evolver() {
-	if(save) savepopulation(savefilename);
-}
-
 void Evolver::advance(size_t n) {
 	for(size_t i = 0; i < n; i++) {
 		Population newpop;
@@ -96,6 +92,12 @@ void Evolver::advance(size_t n) {
 		generation++;
 		pop.swap(newpop);
 	}
+}
+
+void Evolver::checkpoint() const {
+	savepopulation(checkpointfilename);
+	std::cerr << "done saving" << std::endl;
+	lastcheckpoint = generation;
 }
 
 std::string Evolver::stats() const {
@@ -131,7 +133,8 @@ void Evolver::loadpopulation(std::string filename) {
 }
 
 void Evolver::savepopulation(std::string filename) const {
-	std::ofstream outputfile(filename.c_str());
+	std::ofstream outputfile(filename.c_str(), std::ios_base::trunc);
+	BOOST_ASSERT(outputfile.good());
 	vgp::text_archive_types::oarchive_type oa(outputfile);
 	oa << pop;
 }
