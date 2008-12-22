@@ -29,8 +29,8 @@ public:
 	 * @param t TypeInfo of evolution's result_type
 	 */
 	Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t);
-	std::size_t updatefitness(FitnessFunctor fitness) {
-		return vgp::updatefitness(pop, fitness);
+	std::size_t updatefitness() {
+		return vgp::updatefitness(pop, fitnessfunctor);
 	}
 
 	/// Advance evolution by one generation
