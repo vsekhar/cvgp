@@ -7,10 +7,13 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include <boost/tokenizer.hpp>
 
 #include <vgp/detail/vgprot.hpp>
+#include <vgp/detail/text_archives.hpp>
+#include <vgp/util/random.hpp>
 #include <vgp/program_options.hpp>
 #include <vgp/evolver.hpp>
 #include <vgp/run.hpp>
@@ -43,17 +46,60 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 		vgp::Evolver evolver(pomap, fitnessfunc, result_type);
 		while(1) {
 			std::string buffer;
-			std::cin >> buffer;
-			boost::tokenizer<> tok(buffer);
+			std::getline(cin, buffer);
+			boost::escaped_list_separator<char> sep("\\", " ,", "\"");
+			typedef boost::tokenizer<boost::escaped_list_separator<char> > escaped_tokenizer;
+			escaped_tokenizer tok(buffer, sep);
+			typedef escaped_tokenizer::iterator tokiter;
+			cout << "Tokens: ";
+			for(tokiter itr = tok.begin(); itr != tok.end(); ++itr)
+				cout << *itr << ", ";
+			cout << endl;
+
 			std::string command(*tok.begin());
 
-			if(command == "quit") return 0;
-			else if(command == "updatefitness") evolver.updatefitness();
+			if(command == "quit" || command == "exit") return 0;
+
+			// Operations
+			else if(command == "updatefitness") evolver.updatefitness(), cout << "Done." << endl;
+			else if(command == "sort") evolver.pop.sort(), cout << "Done." << endl;
+			else if(command == "advance") evolver.advance(), cout << "Done." << endl;
+			else if(command == "insert") {
+				tokiter param = ++tok.begin();
+				if(param == tok.end())
+					cerr << "Bad organism to insert" << endl;
+				else {
+					std::stringstream sstr(*param);
+					text_archive_types::iarchive_type ar(sstr);
+					Organism* neworg = new Organism();
+					ar >> *neworg;
+					evolver.pop.push_back(neworg);
+					cout << "Done." << endl;
+				}
+			}
+
+			// Queries
 			else if(command == "stats") cout << evolver.stats() << endl;
-			else if(command == "sort") evolver.pop.sort();
-			else if(command == "advance") evolver.advance();
 			else if(command == "best") cout << evolver.best();
 			else if(command == "worst") cout << evolver.worst();
+			else if(command == "random" || command == "pullrandom") {
+				tokiter param = ++tok.begin();
+				unsigned int n = 0;
+				if(param==tok.end()) n=1;
+				else {
+					std::stringstream sstr(*param);
+					sstr >> n;
+				}
+				for(unsigned int i = 0; i < n; i++) {
+					boost::uniform_int<> rand(0,evolver.pop.size()-1);
+					Population::iterator itr = evolver.pop.begin();
+					std::advance(itr, rand(util::default_generator));
+					cout << '\"' << *itr << '\"' << endl;
+					if(command == "pullrandom") evolver.pop.erase(itr);
+				}
+			}
+
+			// Unknown command
 			else cerr << "Unknown command" << endl;
 		}
 	} // end Evolution (Evolver and population destroyed)
