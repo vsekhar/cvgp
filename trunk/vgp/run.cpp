@@ -51,10 +51,6 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 			typedef boost::tokenizer<boost::escaped_list_separator<char> > escaped_tokenizer;
 			escaped_tokenizer tok(buffer, sep);
 			typedef escaped_tokenizer::iterator tokiter;
-			cout << "Tokens: ";
-			for(tokiter itr = tok.begin(); itr != tok.end(); ++itr)
-				cout << *itr << ", ";
-			cout << endl;
 
 			std::string command(*tok.begin());
 
