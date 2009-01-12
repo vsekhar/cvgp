@@ -90,7 +90,12 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 					boost::uniform_int<> rand(0,evolver.pop.size()-1);
 					Population::iterator itr = evolver.pop.begin();
 					std::advance(itr, rand(util::default_generator));
-					cout << '\"' << *itr << '\"' << endl;
+					cout << '\"';
+					{
+						text_archive_types::oarchive_type ar(cout);
+						ar << *itr;
+					}
+					cout << '\"';
 					if(command == "pullrandom") evolver.pop.erase(itr);
 				}
 			}
