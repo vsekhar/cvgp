@@ -30,8 +30,7 @@ options_description getdescription() {
 		("version,v", "output version information")
 		("list-nodes", "print types")
 		("result-type", "print result type of organisms")
-		("population,p", value<unsigned int>()->default_value(10), "size of population to simulate")
-		("generations,g", value<unsigned int>()->default_value(10), "number of generations to iterate")
+		("population,p", value<unsigned int>()->default_value(100), "size of population to simulate")
 		("depth-penalty,d", value<double>()->default_value(VGP_DEFAULT_DEPTH_PENALTY),
 				"depth penalty (lower -> shallower trees)")
 		("pc", value<double>()->default_value(VGP_DEFAULT_PC),

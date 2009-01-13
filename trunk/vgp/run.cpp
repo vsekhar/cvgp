@@ -75,7 +75,20 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 			// Operations
 			else if(command == "updatefitness") evolver.updatefitness(), cout << "Done." << endl;
 			else if(command == "sort") evolver.pop.sort(), cout << "Done." << endl;
-			else if(command == "advance") evolver.advance(), cout << "Done." << endl;
+			else if(command == "advance") {
+				tokiter param = ++tok.begin();
+				if(param == tok.end())
+					evolver.advance();
+				else {
+					std::stringstream sstr(*param);
+					int count = 0;
+					sstr >> count;
+					if(count > 0)
+						evolver.advance(count);
+					else
+						cout << "Bad parameter" << endl;
+				}
+			}
 			else if(command == "insert") {
 				tokiter param = ++tok.begin();
 				if(param == tok.end())
@@ -116,7 +129,7 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 						text_archive_types::oarchive_type ar(cout);
 						ar << *itr;
 					}
-					cout << '\"';
+					cout << '\"' << endl;
 					if(command == "pullrandom") evolver.pop.erase(itr);
 				}
 			}

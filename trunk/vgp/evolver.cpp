@@ -49,7 +49,6 @@ Evolver::Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t) :
 		loadpopulation(pomap["load-population"].as<std::string>());
 	else
 		pop.add(pomap["population"].as<unsigned int>(), result_type);
-	generations = pomap["generations"].as<unsigned int>();
 
 	// Set number of crossovers
 	pc = pomap["pc"].as<double>();
@@ -101,13 +100,26 @@ void Evolver::checkpoint() const {
 
 std::string Evolver::stats() const {
 	std::stringstream ret;
-	ret << "Generation = " << generation << " of " << generations
+	ret << "Generation = " << generation
 		<< ", " << pop.size() << " organisms with " << pop.avgnodecount()
 		<< " nodes each = " << pop.nodecount() << " total nodes" << std::endl;
 
-	ret << "(MIN fitness = " << pop.front().getfitness()
-		<< ", MAX fitness = " << pop.back().getfitness()
-		<< ", AVG fitness = " << pop.avgfitness() << ")";
+
+	ret << "(MIN fitness = ";
+	try {
+		ret << pop.front().getfitness();
+	}
+	catch(const Organism::InvalidFitness &) {
+		ret << "N/A";
+	}
+	ret << ", MAX fitness = ";
+	try {
+		ret << pop.front().getfitness();
+	}
+	catch(const Organism::InvalidFitness &) {
+		ret << "N/A";
+	}
+	ret << ", AVG fitness = " << pop.avgfitness() << ")";
 	return ret.str();
 }
 

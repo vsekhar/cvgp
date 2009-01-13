@@ -21,6 +21,10 @@
 namespace vgp {
 
 struct Organism {
+	struct InvalidFitness : public std::runtime_error {
+		InvalidFitness() : std::runtime_error("InvalidFitness") {}
+	};
+
 	Organism() : fitness(0), validfitness_(false) {}
 
 	/// Copy constructor uses assignment operator for actual copying
@@ -130,7 +134,7 @@ struct Organism {
 		if(validfitness_)
 			return fitness;
 		else
-			throw std::runtime_error("requested invalid fitness value");
+			throw InvalidFitness();
 	}
 
 	/// Perform cross-over with another organism. Modifies both organisms.
@@ -144,7 +148,7 @@ struct Organism {
 		if(validfitness_ && o.validfitness_)
 			return fitness<o.fitness;
 		else
-			throw std::runtime_error("attempted comparison with invalid fitness value");
+			throw InvalidFitness();
 	}
 
 	/// Assignment operator copies the tree (if present) and fitness value

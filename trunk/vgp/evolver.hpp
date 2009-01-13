@@ -29,6 +29,7 @@ public:
 	 * @param t TypeInfo of evolution's result_type
 	 */
 	Evolver(po::variables_map pomap, FitnessFunctor f, util::TypeInfo t);
+
 	std::size_t updatefitness() {
 		return vgp::updatefitness(pop, fitnessfunctor);
 	}
@@ -38,11 +39,6 @@ public:
 
 	/// Advance evolution by 'n' generations
 	void advance(std::size_t);
-
-	/** Query are we done evolving? (have we evolved the number
-	 * of generations we said we would when we created the evolver?)
-	 */
-	bool done() const {return generation >= generations;}
 
 	/** Do we need to checkpoint?
 	 */
@@ -75,7 +71,6 @@ private:
 	std::string checkpointfilename;
 	std::string savefilename;
 	unsigned int generation;
-	unsigned int generations;
 	double pc, pr, pm;
 	std::size_t crossovers, reproductions, mutations;
 	FitnessFunctor fitnessfunctor;

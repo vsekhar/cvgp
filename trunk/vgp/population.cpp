@@ -28,11 +28,19 @@ std::size_t Population::nodecount() const {
 }
 
 double Population::avgfitness() const {
-	if(!size()) return 0;
 	double fitness = 0;
-	BOOST_FOREACH(const Organism& o, *this)
-		fitness += o.getfitness();
-	return fitness / size();
+	std::size_t count = 0;
+	BOOST_FOREACH(const Organism& o, *this) {
+		try{
+			fitness += o.getfitness();
+			count++;
+		}
+
+		// Skip organisms without valid fitnesses (avg among the others)
+		catch(const Organism::InvalidFitness &e) {}
+	}
+	if(count == 0) return 0;
+	else return fitness / count;
 }
 
 std::ostream& operator<<(std::ostream& o, const Population& p) {
