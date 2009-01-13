@@ -12,6 +12,7 @@
 #include <boost/any.hpp>
 #include <boost/utility.hpp>
 #include <boost/ptr_container/serialize_ptr_vector.hpp>
+#include <boost/serialization/access.hpp>
 
 #include <vgp/organism/organism_fwd.hpp>
 
@@ -134,6 +135,7 @@ struct NodeBase : boost::noncopyable {
 protected:
 	friend struct ::vgp::Organism;
 	friend struct ::vgp::detail::TreeSerializer;
+	friend class ::boost::serialization::access;
 	//template <class T1, class T2> friend struct ::vgp::detail::Node<T1,T2>;
 	friend std::ostream& operator<<(std::ostream&, const NodeBase&);
 	util::TypeInfoVector param_types;

@@ -13,9 +13,9 @@ namespace util {
 
 /* NB: We can't use a boost::reference_wrapper directly for TypeInfo because
  * it doesn't latch into ADL, meaning our comparison operators won't be found.
+ * Doesn't work:
+ * 	typedef boost::reference_wrapper<std::type_info const> TypeInfo;
  */
-// Doesn't work:
-// 	typedef boost::reference_wrapper<std::type_info const> TypeInfo;
 typedef boost::reference_wrapper<std::type_info const> TypeInfo_base;
 
 /** A boost reference wrapper for the std::type_info object returned by the typeid() operator
