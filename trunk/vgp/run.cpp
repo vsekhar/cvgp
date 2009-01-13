@@ -52,9 +52,9 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 				std::string currentline;
 				std::getline(cin, currentline);
 				buffer += currentline;
-				if(std::count(buffer.begin(), buffer.end(), '\"') % 2)
-					continue;
-				else
+
+				// even number of "'s? then stop reading the line
+				if(! (std::count(buffer.begin(), buffer.end(), '\"') % 2) )
 					break;
 			}
 
