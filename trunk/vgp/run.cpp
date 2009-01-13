@@ -44,9 +44,25 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 	{
 		// Create evolver
 		vgp::Evolver evolver(pomap, fitnessfunc, result_type);
-		while(1) {
+		while(cin.good()) {
+
+			// every command is on its own line unless there is a "
 			std::string buffer;
-			std::getline(cin, buffer);
+			while(true) {
+				std::string currentline;
+				std::getline(cin, currentline);
+				buffer += currentline;
+				if(std::count(buffer.begin(), buffer.end(), '\"') == 1)
+					continue;
+				else
+					break;
+			}
+
+			// handle the special case of EOF appearing on its own line
+			// (this would be missed by our cin.good() loop guard above)
+			if(cin.eofbit && buffer.empty()) return 0;
+
+			// tokenize
 			boost::escaped_list_separator<char> sep("\\", " ,", "\"");
 			typedef boost::tokenizer<boost::escaped_list_separator<char> > escaped_tokenizer;
 			escaped_tokenizer tok(buffer, sep);
@@ -63,14 +79,19 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 			else if(command == "insert") {
 				tokiter param = ++tok.begin();
 				if(param == tok.end())
-					cerr << "Bad organism to insert" << endl;
+					cerr << "No organism" << endl;
 				else {
 					std::stringstream sstr(*param);
 					text_archive_types::iarchive_type ar(sstr);
 					Organism* neworg = new Organism();
-					ar >> *neworg;
-					evolver.pop.push_back(neworg);
-					cout << "Done." << endl;
+					try {
+						ar >> *neworg;
+						evolver.pop.push_back(neworg);
+						cout << "Done." << endl;
+					}
+					catch(const boost::archive::archive_exception &) {
+						cout << "Bad organism" << endl;
+					}
 				}
 			}
 
@@ -102,7 +123,9 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 
 			// Unknown command
 			else cerr << "Unknown command" << endl;
-		}
+		} // end of command loop
+		// if we get here, we have reached EOF
+		return 0;
 	} // end Evolution (Evolver and population destroyed)
 
 }
