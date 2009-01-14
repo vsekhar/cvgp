@@ -34,17 +34,11 @@ bool operator<(const TypeInfo&, const std::type_info&);
 
 /** Comparison of built-in std::type_info structures
  *
- * This operator compares type_info structures by comparing the names
- * associated with each structure (from the .name() member functions).
- *
- * @caveat The compiler's RTTI implementation must generate non-empty unique
- * names for each type. This is not required by the C++ standard, but seems
- * to be implemented by recent versions of GCC (v. 3+). If a compiler does not
- * do this, node lookups by name will fail.
+ * This operator compares type_info structures using the underlying == operator.
  */
 bool operator==(const TypeInfo&, const std::type_info&);
 
-/// Stream output of TypeInfo objects
+/// Stream output of TypeInfo objects (outputs the compiler-provided name)
 std::ostream& operator<<(std::ostream&, const vgp::util::TypeInfo&);
 
 /// Hash function for TypeInfo (hashes the compiler-provided name of the type)
