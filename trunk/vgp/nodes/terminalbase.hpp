@@ -15,7 +15,7 @@ template <class OARCHIVE>
 struct TerminalBase_savable : virtual TerminalBase {
 	TerminalBase_savable(std::string name, util::TypeInfo t, unsigned int arity) :
 		TerminalBase(name, t, arity) {}
-	virtual void save_state(OARCHIVE &) = 0;
+	virtual void save_state(OARCHIVE &) const = 0;
 };
 template <class IARCHIVE>
 struct TerminalBase_loadable : virtual TerminalBase {

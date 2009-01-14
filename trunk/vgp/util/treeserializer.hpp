@@ -1,6 +1,8 @@
 #ifndef VGP_TREESERIALIZER_HPP_
 #define VGP_TREESERIALIZER_HPP_
 
+#include <boost/foreach.hpp>
+
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/nodes/terminalbase.hpp>
 #include <vgp/detail/nodestorage.hpp>
@@ -10,21 +12,20 @@ namespace detail {
 
 struct TreeSerializer {
 	template <class Archive>
-	static void save_recursive(Archive& ar, detail::NodeBase* curnode) {
+	static void save_recursive(Archive& ar, const detail::NodeBase* curnode) {
 		const std::string id = curnode->getID();
 		ar << id;
 		if(curnode->hasstate()) {
-			detail::TerminalBase_savable<Archive> *castednode =
-			dynamic_cast<typename detail::TerminalBase_savable<Archive>*>(curnode);
+			const detail::TerminalBase_savable<Archive> *castednode =
+			dynamic_cast<const typename detail::TerminalBase_savable<Archive>*>(curnode);
 			if(!castednode) {
 				std::cerr << "Failed casting node while saving: " << curnode->getID() << std::endl;
 				exit(1);
 			}
 			castednode->save_state(ar);
 		}
-		detail::NodeBase::ChildrenContainer::iterator itr = curnode->children.begin();
-		for( ; itr != curnode->children.end(); itr++)
-			save_recursive(ar, &(*itr));
+		BOOST_FOREACH(const detail::NodeBase &child, curnode->children)
+			save_recursive(ar, &child);
 	}
 
 	// load_node is factored out of load_recursive because the loading of a single

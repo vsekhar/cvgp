@@ -1,7 +1,9 @@
 #include "format.hpp"
+#include <string>
 #include <sstream>
 
 #include <boost/tokenizer.hpp>
+#include <boost/foreach.hpp>
 
 namespace vgp {
 namespace util {
@@ -18,23 +20,21 @@ std::string maketree(const std::string &str) {
 	typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
 	tokenizer tokens(str, sep);
 	unsigned int indentcount = 0;
-	for(tokenizer::iterator itr = tokens.begin();
-		itr != tokens.end(); itr++) {
-		if(itr->compare(")") == 0) {
+	BOOST_FOREACH(const std::string &token, tokens) {
+		if(token.compare(")") == 0) {
 			indentcount--;
 			indent(ret, indentcount);
 			ret << ")" << std::endl;
 		}
-		else if(itr->compare("(") == 0) {
+		else if(token.compare("(") == 0) {
 			indent(ret, indentcount);
 			ret << "(" << std::endl;
 			indentcount++;
 		}
 		else {
 			indent(ret, indentcount);
-			ret << *itr << std::endl;
+			ret << token << std::endl;
 		}
-			
 	}
 	return ret.str();
 }

@@ -1,3 +1,4 @@
+#include <string>
 #include <sstream>
 
 #include "nodebase.hpp"
@@ -12,48 +13,47 @@ using namespace boost::lambda;
 
 std::string NodeBase::getID() const {
 	std::string ret;
-	std::string nodename = name();
-	ret += nodename;
+	ret += name();
 	ret += "[";
-	const std::type_info& t = getresulttype();
-	std::string tname = t.name();
-	ret += tname;
+	ret += getresulttype().name();
 	ret += "](";
-	util::TypeInfoVector types = getparamtypes();
-	for(unsigned int i = 0; i < types.size(); i++) {
-		ret += types[i].get().name();
-		if((i+1) != types.size()) ret += ",";
+	BOOST_FOREACH(const util::TypeInfo &curtype, getparamtypes()) {
+		ret += curtype.get().name();
+		ret += ",";
 	}
+	if(*ret.rbegin() == ',')
+		ret.erase(ret.size()-1, 1);	// remove trailing comma
 	ret += ")";
 	return ret;
 }
 
 void NodeBase::deepcopychildren(const NodeBase& nb) {
 	clearchildren();
-	const ChildrenContainer &srcchildren = nb.children;
-	ChildrenContainer &newchildren = children;
-	ChildrenContainer::const_iterator s = srcchildren.begin();
-	for( ; s != srcchildren.end(); s++)
-		newchildren.push_back(s->clone());
+	BOOST_FOREACH(const NodeBase &srcchild, nb.children)
+		children.push_back(srcchild.clone());
+}
+
+bool NodeBase::complete() const {
+	bool ret = (children.size()==_arity);
+	if(!ret) return false;
+	BOOST_FOREACH(const NodeBase &child, children)
+		ret = ret && child.complete();
+	return ret;
 }
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
 	o << n.name() << "[" << n.result_type.get().name();
 	if(!n.param_types.empty()) {
-		for(util::TypeInfoVector::const_iterator i = n.param_types.begin();
-			i != n.param_types.end(); i++)
-		o << "," << *i;
+		BOOST_FOREACH(const util::TypeInfo &curtype, n.param_types)
+			o << "," << curtype;
 	}
 	o << "]";
-	const NodeBase::ChildrenContainer &children = n.children;
-	if(!children.empty()) {
-		NodeBase::ChildrenContainer::const_iterator i = children.begin();
-		o << "(" << *i++;
-		for(; i != children.end(); i++) {
-			o << "," << *i;
-		}
-		o << ")";
-	}
+
+	if(n.children.empty()) return o;
+	o << "(";
+	BOOST_FOREACH(const NodeBase& child, n.children)
+		o << "," << child;
+	o << ")";
 	return o;
 }
 

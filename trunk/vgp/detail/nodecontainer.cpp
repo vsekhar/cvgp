@@ -5,6 +5,7 @@
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/assert.hpp>
+#include <boost/foreach.hpp>
 
 #include <vgp/util/random.hpp>
 #include <vgp/util/rounder.hpp>
@@ -12,7 +13,7 @@
 namespace vgp {
 
 // TODO: fix the lookups here to check nodes and terminals when appropriate
-// TODO: make all functions throw exceptions instead of return null 
+// TODO: make all functions throw exceptions instead of return null
 
 void NodeContainer::push_back(const detail::NodeBase* n) {
 	if(n->isterminal())
@@ -39,7 +40,7 @@ detail::NodeBase* NodeContainer::getrandomnode(const std::type_info& t, std::siz
 	std::size_t terminalcount = terminalsbyresulttype.count(util::TypeInfo(t));
 	if(!nodecount && !terminalcount)
 		throw std::invalid_argument(std::string("Bad type given for random lookup: ")+t.name());
-	
+
 	bool terminal;
 	std::size_t index;
 	boost::tie(terminal, index) = weightedpick(nodecount, terminalcount, depth);
@@ -90,13 +91,13 @@ const std::type_info& NodeContainer::gettypeinfo(const std::string& name) const 
  * 		p(terminal)=1+\frac{terminalcount\times ratio}{nodecount\times (1-ratio)}
  * \f]
  * A binary random variable is used to select between the two pools, then an integer random
- * variable, ranged [0,1-pool_size], is used to select the index. 
+ * variable, ranged [0,1-pool_size], is used to select the index.
  * \param nodecount number of nodes to choose from
  * \param terminalcount number of terminals to choose from
  * \param depth depth for which the node is requested (requests for root nodes have depth of 0)
  * \return a tuple of two elements:
  * \return the bool is true if the second pool is selected (terminals), false for the first (nodes)
- * \return index within the selected pool of the selected node 
+ * \return index within the selected pool of the selected node
  */
 boost::tuple<bool, std::size_t>
 NodeContainer::weightedpick(std::size_t nodecount, std::size_t terminalcount, std::size_t depth) const {
@@ -107,19 +108,19 @@ NodeContainer::weightedpick(std::size_t nodecount, std::size_t terminalcount, st
 	// Get natural probabilities (based on proportions of nodes and terminals)
 	double p_node = (0.0+nodecount) / (nodecount + terminalcount);
 	double p_terminal = (0.0+terminalcount) / (nodecount + terminalcount);
-	
+
 	// Weight probabilities based on ratio:
 	//	ratio == 0: always nodes
 	// 	ratio == 0.5: nodes and terminals in proportion to each of their number
 	// 	ratio == 1: always terminals
 	p_node *= (1-ratio);
 	p_terminal *= ratio;
-	
+
 	// Normalize
 	double p_total = p_node + p_terminal;
 	p_node /= p_total;
 	p_terminal /= p_total;
-	
+
 	util::RandomBool random;
 	if(random(p_node) && nodecount) {
 		//node
@@ -136,15 +137,10 @@ NodeContainer::weightedpick(std::size_t nodecount, std::size_t terminalcount, st
 }
 
 std::ostream& operator<<(std::ostream &o, const NodeContainer& container) {
-	NodeContainer::NodesBySequence_t::const_iterator itr
-		= container.nodes.begin();
-	for( ; itr != container.nodes.end(); itr++) {
-		o << (*itr)->getID() << std::endl;
-	}
-	itr = container.terminals.begin();
-	for( ; itr != container.terminals.end(); itr++) {
-		o << (*itr)->getID() << std::endl;
-	}
+	BOOST_FOREACH(const detail::NodeBase* node, container.nodes)
+		o << node->getID() << std::endl;
+	BOOST_FOREACH(const detail::NodeBase* terminal, container.terminals)
+		o << terminal->getID() << std::endl;
 	return o;
 }
 

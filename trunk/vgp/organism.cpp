@@ -55,10 +55,9 @@ double Organism::avgdepth() const {
 	if(!root.get()) return 0;
 	std::list<std::size_t> depths;
 	avgdepth(*root.get(), 1, depths);
-	std::list<std::size_t>::const_iterator i = depths.begin();
 	double accum = 0;
-	for( ; i != depths.end(); i++)
-		accum += *i;
+	BOOST_FOREACH(const std::size_t &depth, depths)
+		accum += depth;
 	return accum/depths.size();
 }
 
@@ -66,19 +65,15 @@ void Organism::avgdepth(const detail::NodeBase& curnode, std::size_t curdepth, s
 	if(curnode.arity() == 0)
 		depths.push_back(curdepth);
 	else {
-		const detail::NodeBase::ChildrenContainer &vec = curnode.children;
-		detail::NodeBase::ChildrenContainer::const_iterator i = vec.begin();
-		for( ; i != vec.end(); i++)
-			avgdepth(*i, curdepth+1, depths);
+		BOOST_FOREACH(const detail::NodeBase &child, curnode.children)
+			avgdepth(child, curdepth+1, depths);
 	}
 }
 
 void Organism::mutateall(detail::NodeBase& curnode) {
 	curnode.mutate();
-	detail::NodeBase::ChildrenContainer &curchildren = curnode.children;
-	detail::NodeBase::ChildrenContainer::iterator i = curchildren.begin();
-	for( ; i != curchildren.end(); i++)
-		mutateall(*i);
+	BOOST_FOREACH(detail::NodeBase &child, curnode.children)
+		mutateall(child);
 	validfitness_ = false;
 }
 

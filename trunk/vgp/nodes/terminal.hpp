@@ -83,7 +83,7 @@ struct Terminal_mi : TerminalBase_stateful<ARCHIVES>
 	bool inline isinitiable() const {return true;}
 	void inline mutate() {mutatefunction(state);}
 	void inline init() {initfunction(state);}
-	void inline save_state(typename ARCHIVES::oarchive_type &ar) {ar << state;}
+	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {ar << state;}
 	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
 	FPTR function;
@@ -132,9 +132,8 @@ struct Terminal_m : TerminalBase_stateful<ARCHIVES>
 	bool inline isinitiable() const {return false;}
 	void inline mutate() {mutatefunction(state);}
 	void inline init() {}
-	void inline save_state(typename ARCHIVES::oarchive_type &ar) {
-		const state_type& const_state = state;
-		ar << const_state;
+	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {
+		ar << state;
 	}
 	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
@@ -185,7 +184,7 @@ struct Terminal_i : TerminalBase_stateful<ARCHIVES>
 		std::cerr << "ERROR: tried to mutate a non-mutatable terminal (no-op)" << std::endl;
 	}
 	void inline init() {initfunction(state);}
-	void inline save_state(typename ARCHIVES::oarchive_type &ar) {ar << state;}
+	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {ar << state;}
 	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
 	FPTR function;

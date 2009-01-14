@@ -66,27 +66,21 @@ size_t crossover(
 		const double fitnessdelta2 = rand_gen(util::default_generator);
 
 		// choose the two orgs to crossover
-		size_t index1 = 0;
-		size_t index2 = 0;
-		bool org1found = false;
-		bool org2found = false;
+		const Organism* srcorg1 = 0;
+		const Organism* srcorg2 = 0;
 		double accumulator = minfitness;
-		for(size_t j = 0; j < fitnessvector.size(); j++) {
-			accumulator += fitnessvector[j].first;
-			if(!org1found && accumulator >= fitnessdelta1) {
-				index1 = j;
-				org1found = true;
-			}
-			if(!org2found && accumulator >= fitnessdelta2) {
-				index2 = j;
-				org2found = true;
-			}
-			if(org1found && org2found) break;
+		BOOST_FOREACH(const fitnessentry_t &entry, fitnessvector) {
+			accumulator += entry.first;
+			if(!srcorg1 && accumulator >= fitnessdelta1)
+				srcorg1 = entry.second;
+			if(!srcorg2 && accumulator >= fitnessdelta2)
+				srcorg2 = entry.second;
+			if(srcorg1 && srcorg2) break;
 		}
 
 		// copy orgs, perform x-over and insert
-		Organism *org1 = new Organism(*fitnessvector[index1].second);
-		Organism *org2 = new Organism(*fitnessvector[index2].second);
+		Organism *org1 = new Organism(*srcorg1);
+		Organism *org2 = new Organism(*srcorg2);
 		org1->crossover(*org2);
 		newpop.push_back(org1);
 		newpop.push_back(org2);
@@ -142,9 +136,9 @@ void evolve(
 	detail::fitnessvector_t fitnessvector;
 	double fitnesssum = 0;
 	fitnessvector.reserve(pop.size());
-	for(Population::const_iterator i = pop.begin(); i!=pop.end(); i++) {
-		fitnesssum += i->getfitness();
-		fitnessvector.push_back(std::make_pair(i->getfitness(), &(*i)));
+	BOOST_FOREACH(const Organism &o, pop) {
+		fitnesssum += o.getfitness();
+		fitnessvector.push_back(std::make_pair(o.getfitness(), &o));
 	}
 
 	// Perform evolution ops

@@ -9,6 +9,7 @@
 #include <memory>
 
 #include <boost/function.hpp>
+#include <boost/foreach.hpp>
 #include <boost/any.hpp>
 #include <boost/utility.hpp>
 #include <boost/ptr_container/serialize_ptr_vector.hpp>
@@ -74,9 +75,8 @@ struct NodeBase : boost::noncopyable {
 	 */
 	inline std::size_t count() const {
 		std::size_t ret = 1;
-		ChildrenContainer::const_iterator i = children.begin();
-		for( ; i != children.end(); i++)
-			ret += i->count();
+		BOOST_FOREACH(const NodeBase &child, children)
+			ret += child.count();
 		return ret;
 	}
 
@@ -97,6 +97,8 @@ struct NodeBase : boost::noncopyable {
 	util::TypeInfoVector getparamtypes() const {return param_types;}
 	/// Number of children required by this node
 	std::size_t arity() const {return _arity;}
+	/// Does this node have all needed children? and do all its children?
+	bool complete() const;
 
 	/// True if this node requires no children
 	bool isterminal() const {return arity() == 0;}
@@ -104,8 +106,8 @@ struct NodeBase : boost::noncopyable {
 	virtual bool isinitiable() const = 0;
 	inline bool hasstate() const {return isterminal() && (ismutatable() || isinitiable());}
 	virtual void init() {
-		ChildrenContainer::iterator i = children.begin();
-		for( ; i != children.end(); i++) i->init();
+		BOOST_FOREACH(NodeBase &child, children)
+			child.init();
 	}
 
 	/// Name of node

@@ -4,6 +4,7 @@
 #include "population.hpp"
 
 #include <boost/assert.hpp>
+#include <boost/foreach.hpp>
 #include <boost/numeric/conversion/converter.hpp>
 #include <boost/foreach.hpp>
 
@@ -22,8 +23,8 @@ void Population::add(std::size_t s, const std::type_info& t) {
 
 std::size_t Population::nodecount() const {
 	std::size_t ret = 0;
-	for(const_iterator i = begin(); i != end(); i++)
-		ret += i->nodecount();
+	BOOST_FOREACH(const Organism &o, *this)
+		ret += o.nodecount();
 	return ret;
 }
 
@@ -44,9 +45,8 @@ double Population::avgfitness() const {
 }
 
 std::ostream& operator<<(std::ostream& o, const Population& p) {
-	Population::const_iterator i = p.begin();
-	for( ; i != p.end(); i++)
-		o << *i << std::endl;
+	BOOST_FOREACH(const Organism &org, p)
+		o << org << std::endl;
 	return o;
 }
 

@@ -11,7 +11,6 @@
 
 #include <boost/tokenizer.hpp>
 
-#include <vgp/detail/vgprot.hpp>
 #include <vgp/detail/text_archives.hpp>
 #include <vgp/util/random.hpp>
 #include <vgp/program_options.hpp>
