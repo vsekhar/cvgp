@@ -18,7 +18,8 @@ namespace util {
  */
 typedef boost::reference_wrapper<std::type_info const> TypeInfo_base;
 
-/** A boost reference wrapper for the std::type_info object returned by the typeid() operator
+/** A reference wrapper for the std::type_info object returned by the typeid()
+ * operator.
  */
 struct TypeInfo : TypeInfo_base {
 	/// Simple forwarding copy constructor
