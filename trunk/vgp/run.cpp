@@ -77,14 +77,18 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 			else if(command == "sort") evolver.pop.sort(), cout << "Done." << endl;
 			else if(command == "advance") {
 				tokiter param = ++tok.begin();
-				if(param == tok.end())
+				if(param == tok.end()) {
 					evolver.advance();
+					cout << "Done." << endl;
+				}
 				else {
 					std::stringstream sstr(*param);
 					int count = 0;
 					sstr >> count;
-					if(count > 0)
+					if(count > 0) {
 						evolver.advance(count);
+						cout << "Done." << endl;
+					}
 					else
 						cout << "Bad parameter" << endl;
 				}
