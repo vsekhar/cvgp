@@ -21,6 +21,7 @@
 
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/detail/nodecontainer.hpp>
+#include <vgp/detail/nodestorage.hpp>
 #include <vgp/detail/functionbinder.hpp>
 
 namespace vgp {
@@ -32,7 +33,7 @@ namespace ft = ::boost::function_types;
 template <typename FPTR>
 struct Node : NodeBase
 {
-	// Check we have a non-nullary function pointer, expose its
+	// Check we have a non-null & non-nullary function pointer, expose its
 	// result and parameter types, and arity
 	BOOST_STATIC_ASSERT(ft::is_function_pointer<FPTR>::value);
 	BOOST_STATIC_ASSERT(ft::function_arity<FPTR>::value);
@@ -40,8 +41,6 @@ struct Node : NodeBase
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	static const unsigned int arity = ft::function_arity<FPTR>::value;
 
-	// Construct from a pointer and name, pass name, result typeinfo
-	// and arity to NodeBase (nodebase has no compile-time info about FPTR)
 	Node(FPTR fptr, std::string name) :
 		NodeBase(name, util::TypeInfo(typeid(result_type)), arity),
 		function(fptr)
@@ -50,6 +49,7 @@ struct Node : NodeBase
 	}
 	Node(const Node& n) : NodeBase(n), function(n.function) {}
 
+	// Overloads of virtual functions from NodeBase
 	boost::any getfunc() const {return Binder::getfunc(function, children);}
 	bool ismutatable() const {return false;}
 	bool isinitiable() const {return false;}
@@ -69,13 +69,6 @@ private:
 		}
 		util::TypeInfoVector& vector;
 	};
-
-	friend class boost::serialization::access;
-	template <class Archive>
-	void serialize(Archive &ar, const unsigned int /* version */) {
-		ar & boost::serialization::base_object<NodeBase>(*this);
-		ar & function;
-	}
 
 	typedef detail::FunctionBinder<FPTR> Binder;
 	FPTR function;

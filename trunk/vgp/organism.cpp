@@ -34,7 +34,7 @@ std::size_t Organism::generate(const std::type_info& t) {
 }
 
 std::size_t Organism::generate_recursive(detail::NodeBase* curnode, std::size_t depth, const NodeContainer& nodes) {
-	curnode->clearchildren();
+	curnode->children.clear();
 	detail::NodeBase::ChildrenContainer &curchildren = curnode->children;
 	util::TypeInfoVector paramtypes = curnode->getparamtypes();
 	std::size_t ret = 0;

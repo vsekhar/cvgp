@@ -27,18 +27,11 @@ std::string NodeBase::getID() const {
 	return ret;
 }
 
-void NodeBase::deepcopychildren(const NodeBase& nb) {
-	clearchildren();
-	BOOST_FOREACH(const NodeBase &srcchild, nb.children)
-		children.push_back(srcchild.clone());
-}
-
 bool NodeBase::complete() const {
-	bool ret = (children.size()==_arity);
-	if(!ret) return false;
+	if(children.size() != _arity) return false;
 	BOOST_FOREACH(const NodeBase &child, children)
-		ret = ret && child.complete();
-	return ret;
+		if(!child.complete()) return false;;
+	return true;
 }
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
@@ -57,7 +50,7 @@ std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
 	return o;
 }
 
-//NodeBase* new_clone(const NodeBase &n) {return n.clone();}
+void delete_clone(const NodeBase *n) {delete n;}
 
 } // namespace detail
 } // namespace vgp
