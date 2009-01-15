@@ -41,10 +41,6 @@ struct Organism {
 	/// Initialize all nodes in the tree
 	void init() {if(root.get()) root->init(); validfitness_ = false;}
 
-	/// Get the result type of the organism (if a root exists)
-	/// \throw Throws std::runtime_error if the organism hasn't been initialized with a node tree
-	const std::type_info& getresulttype() const;
-
 	/** \brief Execute the organism and return it's result
 	 *
 	 * Builds the function object for the organism and executes it, returning the result.
@@ -167,7 +163,7 @@ protected:
 		if(root.get()) {
 			detail::NodeBase* ptr = NULL;
 			c.insert(
-					std::make_pair(root->getresulttypeinfo(),
+					std::make_pair(root->result_type,
 					std::make_pair(ptr, 0)
 			));
 			return 1 + gathertypes_recursive(c, root.get());
@@ -182,7 +178,7 @@ protected:
 		for( ; i != curnode->children.size(); i++) {
 			detail::NodeBase& child = curnode->children.at(i);
 			c.insert(
-					std::make_pair(child.getresulttypeinfo(),
+					std::make_pair(child.result_type,
 					std::make_pair(curnode, i)
 			));
 			gathertypes_recursive(c, &child);

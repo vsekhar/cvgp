@@ -18,25 +18,18 @@ using vgp::util::TypeInfo;
 
 namespace vgp {
 
-const std::type_info& Organism::getresulttype() const {
-	if(root.get())
-		return root->getresulttype();
-	else
-		throw std::runtime_error("Organism::getresulttype(): No root node");
-}
-
 std::size_t Organism::generate(const std::type_info& t) {
-	if(!root.get() || root->getresulttype() != t) {
-		root.reset(Nodes.getrandomnode(t, 0));
-	}
+	root.reset(Nodes.getrandomnode(t, 0));
 	validfitness_ = false;
-	return 3 + generate_recursive(root.get(), 0, Nodes);
+	std::size_t ret = 1 + generate_recursive(root.get(), 0, Nodes);
+	BOOST_ASSERT(root->complete());
+	return ret;
 }
 
 std::size_t Organism::generate_recursive(detail::NodeBase* curnode, std::size_t depth, const NodeContainer& nodes) {
 	curnode->children.clear();
 	detail::NodeBase::ChildrenContainer &curchildren = curnode->children;
-	util::TypeInfoVector paramtypes = curnode->getparamtypes();
+	const util::TypeInfoVector &paramtypes = curnode->param_types;
 	std::size_t ret = 0;
 	for(std::size_t i = 0 ; i < paramtypes.size(); i++) {
 		detail::NodeBase* newnode = nodes.getrandomnode(paramtypes[i], depth);
@@ -62,7 +55,7 @@ double Organism::avgdepth() const {
 }
 
 void Organism::avgdepth(const detail::NodeBase& curnode, std::size_t curdepth, std::list<std::size_t> &depths) const {
-	if(curnode.arity() == 0)
+	if(curnode.arity == 0)
 		depths.push_back(curdepth);
 	else {
 		BOOST_FOREACH(const detail::NodeBase &child, curnode.children)

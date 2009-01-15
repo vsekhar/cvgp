@@ -48,6 +48,18 @@ std::size_t hash_value(const std::type_info &);
 typedef std::list<TypeInfo> TypeInfoList;
 typedef std::vector<TypeInfo> TypeInfoVector;
 
+/** Functor to be used with mpl::for_each to transfer types from mpl containers
+ * into runtime containers.
+ */
+struct TypeInfoInserter {
+	TypeInfoInserter(util::TypeInfoVector &v) : vector(v) {}
+	template <class TOINSERT>
+	void operator()(TOINSERT) {
+		vector.push_back(util::TypeInfo(typeid(TOINSERT)));
+	}
+	util::TypeInfoVector& vector;
+};
+
 } // namespace util
 } // namespace vgp
 

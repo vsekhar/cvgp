@@ -52,7 +52,7 @@ struct TreeSerializer {
 	}
 	template <class Archive>
 	static void load_recursive(Archive &ar, detail::NodeBase* curnode) {
-		for(unsigned int i = 0; i < curnode->arity(); i++) {
+		for(unsigned int i = 0; i < curnode->arity; i++) {
 			detail::NodeBase* newnode = load_node(ar);
 			curnode->children.push_back(newnode);
 			load_recursive(ar, newnode);

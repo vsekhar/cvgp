@@ -36,7 +36,8 @@ struct Node : NodeBase
 		NodeBase(name, util::TypeInfo(typeid(result_type)), arity),
 		function(fptr)
 	{
-		mpl::for_each<parameter_types> (util::TypeInfoInserter(NodeBase::param_types));
+		util::TypeInfoVector &types = const_cast<util::TypeInfoVector&>(NodeBase::param_types);
+		mpl::for_each<parameter_types> (util::TypeInfoInserter(types));
 	}
 	Node(const Node& n) : NodeBase(n), function(n.function) {}
 

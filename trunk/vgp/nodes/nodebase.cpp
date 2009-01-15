@@ -21,11 +21,11 @@ std::size_t NodeBase::count() const {
 
 std::string NodeBase::getID() const {
 	std::string ret;
-	ret += name();
+	ret += name;
 	ret += "[";
-	ret += getresulttype().name();
+	ret += result_type.get().name();
 	ret += "](";
-	BOOST_FOREACH(const util::TypeInfo &curtype, getparamtypes()) {
+	BOOST_FOREACH(const util::TypeInfo &curtype, param_types) {
 		ret += curtype.get().name();
 		ret += ",";
 	}
@@ -36,7 +36,7 @@ std::string NodeBase::getID() const {
 }
 
 bool NodeBase::complete() const {
-	if(children.size() != _arity) return false;
+	if(children.size() != arity) return false;
 	BOOST_FOREACH(const NodeBase &child, children)
 		if(!child.complete()) return false;;
 	return true;
@@ -54,7 +54,7 @@ void NodeBase::mutate() {
 }
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
-	o << n.name() << "[" << n.result_type.get().name();
+	o << n.name << "[" << n.result_type.get().name();
 	if(!n.param_types.empty()) {
 		BOOST_FOREACH(const util::TypeInfo &curtype, n.param_types)
 			o << "," << curtype;

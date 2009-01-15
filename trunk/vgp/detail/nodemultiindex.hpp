@@ -36,7 +36,8 @@ typedef multi_index_container<
 		>
 		, ordered_non_unique<
 			tag<byResultType>,
-			const_mem_fun<NodeBase, util::TypeInfo, &NodeBase::getresulttypeinfo>
+			member<NodeBase, const util::TypeInfo, &NodeBase::result_type>
+//			const_mem_fun<NodeBase, util::TypeInfo, &NodeBase::getresulttypeinfo>
 		>
 	>
 > NodeMultiIndex;
