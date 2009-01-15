@@ -44,10 +44,7 @@ struct NodeBase : boost::noncopyable {
 		_name(nb._name) {
 		deepcopychildren(nb);
 	}
-	/// Destructor deletes children
-	virtual ~NodeBase() {
-		clearchildren();
-	}
+	virtual ~NodeBase() {}
 
 	/// A unique identifier string for this node
 	/** Node identifiers are usually of the format "name[result_type](p1_type, ...)"
