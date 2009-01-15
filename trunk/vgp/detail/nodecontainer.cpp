@@ -54,32 +54,6 @@ detail::NodeBase* NodeContainer::getrandomnode(const std::type_info& t, std::siz
 	for(unsigned int i = 0; i < index; i++, cur++);
 	return (*cur)->clone();
 }
-detail::NodeBase* NodeContainer::getrandomnode(const std::string& name, std::size_t depth) const {
-	std::size_t nodecount = nodesbyname.count(name);
-	if(!nodecount)
-		return 0;
-	NodesByName_t::const_iterator cur, end;
-	boost::tie(cur, end) = nodesbyname.equal_range(name);
-	boost::uniform_int<int> random(0, nodecount-1);
-	//util::RandomRangedInt random(0, nodecount-1);
-	unsigned int chosennode = random(vgp::util::default_generator);
-	for(std::size_t i = 0; i < chosennode; i++) cur++;
-	return (*cur)->clone();
-}
-
-const std::type_info& NodeContainer::gettypeinfo(const std::string& name) const {
-	NodesByResultTypeName_t::const_iterator i;
-	i = nodesbyresulttypename.find(name);
-	if(i == nodesbyresulttypename.end()) {
-		i = terminalsbyresulttypename.find(name);
-		if(i == terminalsbyresulttypename.end()) {
-			std::stringstream ss;
-			ss << "Error: cannot find node or terminal with result type named '" << name << "'";
-			throw std::invalid_argument(ss.str());
-		}
-	}
-	return (*i)->getresulttype();
-}
 
 /** \f[
  * 		ratio=1-(0.5\times depthpenalty^depth)

@@ -19,8 +19,6 @@ namespace vgp {
 struct bySequence {};
 struct byID {};
 struct byResultType {};
-struct byResultTypeName {};
-struct byName{};
 //@}
 
 namespace detail {
@@ -39,14 +37,6 @@ typedef multi_index_container<
 		, ordered_non_unique<
 			tag<byResultType>,
 			const_mem_fun<NodeBase, util::TypeInfo, &NodeBase::getresulttypeinfo>
-		>
-		, ordered_non_unique<
-			tag<byResultTypeName>,
-			const_mem_fun<NodeBase, std::string, &NodeBase::getresulttypename>
-		>
-		, ordered_non_unique<
-			tag<byName>,
-			const_mem_fun<NodeBase, std::string, &NodeBase::name>
 		>
 	>
 > NodeMultiIndex;

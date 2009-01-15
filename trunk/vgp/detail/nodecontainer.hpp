@@ -54,10 +54,6 @@ struct NodeContainer : boost::noncopyable {
 		terminalsbyID(terminals.get<byID>()),
 		nodesbyresulttype(nodes.get<byResultType>()),
 		terminalsbyresulttype(terminals.get<byResultType>()),
-		nodesbyresulttypename(nodes.get<byResultTypeName>()),
-		terminalsbyresulttypename(terminals.get<byResultTypeName>()),
-		nodesbyname(nodes.get<byName>()),
-		terminalsbyname(terminals.get<byName>()),
 		depthpenalty(VGP_DEFAULT_DEPTH_PENALTY)
 		{}
 
@@ -85,16 +81,6 @@ struct NodeContainer : boost::noncopyable {
 
 	/// Select a random node returning the given type
 	detail::NodeBase* getrandomnode(const std::type_info&, std::size_t depth) const;
-
-	/// Select a random node with the given name
-	detail::NodeBase* getrandomnode(const std::string&, std::size_t depth) const;
-
-	/** Returns the type information associated with a specific compiler-generated name
-	 *
-	 * \throw std::invalid_argument if no node in the container has a result_type whose
-	 * name matches the string provided
-	 */
-	const std::type_info &gettypeinfo(const std::string &name) const;
 
 	/** \brief Set the depth penalty
 	 *
@@ -127,10 +113,6 @@ private:
 	typedef detail::NodeMultiIndex::index<byID>::type NodesByID_t;
 	/// Index by type_info of result type (non-unique)
 	typedef detail::NodeMultiIndex::index<byResultType>::type NodesByResultType_t;
-	/// Index by compiler-generated type name of the node's result type (non-unique)
-	typedef detail::NodeMultiIndex::index<byResultTypeName>::type NodesByResultTypeName_t;
-	/// Index by name (non-unique, nodes may have same name but use different types)
-	typedef detail::NodeMultiIndex::index<byName>::type NodesByName_t;
 	//@}
 
 	/** \name Node and terminal Storage
@@ -155,10 +137,6 @@ private:
 	NodesByID_t& terminalsbyID;
 	NodesByResultType_t& nodesbyresulttype;
 	NodesByResultType_t& terminalsbyresulttype;
-	NodesByResultTypeName_t& nodesbyresulttypename;
-	NodesByResultTypeName_t& terminalsbyresulttypename;
-	NodesByName_t& nodesbyname;
-	NodesByName_t& terminalsbyname;
 	//@}
 
 	/** Current depth penalty for adjusting node/terminal selection
