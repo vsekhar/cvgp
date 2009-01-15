@@ -9,7 +9,6 @@
 #include <memory>
 
 #include <boost/function.hpp>
-#include <boost/foreach.hpp>
 #include <boost/any.hpp>
 #include <boost/utility.hpp>
 #include <boost/ptr_container/serialize_ptr_vector.hpp>
@@ -35,10 +34,7 @@ std::ostream& operator<<(std::ostream&, const NodeBase&);
  */
 
 struct NodeBase : boost::noncopyable {
-	typedef boost::ptr_vector<NodeBase> ChildrenContainer;
-	struct Undefined {};
 
-	NodeBase() : result_type(typeid(Undefined)), _arity(0), _name() {}
 	NodeBase(std::string n, const util::TypeInfo& t, std::size_t a)
 	: result_type(t), _arity(a), _name(n) {}
 
@@ -63,14 +59,9 @@ struct NodeBase : boost::noncopyable {
 	}
 	virtual boost::any getfunc() const = 0;
 
-	inline std::size_t count() const {
-		std::size_t ret = 1;
-		BOOST_FOREACH(const NodeBase &child, children)
-			ret += child.count();
-		return ret;
-	}
 
 	// Queries
+	std::size_t count() const;
 	std::string getID() const;
 	std::type_info const & getresulttype() const {return result_type.get();}
 	std::string getresulttypename() const {return result_type.get().name();}
@@ -83,17 +74,17 @@ struct NodeBase : boost::noncopyable {
 	std::string name() const {return _name;}
 
 	// Operations
-	virtual void init() {
-		BOOST_FOREACH(NodeBase &child, children)
-			child.init();
-	}
+	void init();
+	void mutate();
 
 	// Virtual functions (defined in Node<> or Terminal<>)
 	virtual bool ismutatable() const = 0;
 	virtual bool isinitiable() const = 0;
-	virtual void mutate() = 0;
+	virtual void do_mutate() = 0;
+	virtual void do_init() = 0;
 	virtual NodeBase* clone() const = 0;
 
+	typedef boost::ptr_vector<NodeBase> ChildrenContainer;
 	ChildrenContainer children;
 
 	util::TypeInfoVector param_types;

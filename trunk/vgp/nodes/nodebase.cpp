@@ -4,12 +4,20 @@
 #include "nodebase.hpp"
 
 #include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 #include <boost/lambda/lambda.hpp>
 
 namespace vgp {
 namespace detail {
 
 using namespace boost::lambda;
+
+std::size_t NodeBase::count() const {
+	std::size_t ret = 1;
+	BOOST_FOREACH(const NodeBase &child, children)
+		ret += child.count();
+	return ret;
+}
 
 std::string NodeBase::getID() const {
 	std::string ret;
@@ -32,6 +40,17 @@ bool NodeBase::complete() const {
 	BOOST_FOREACH(const NodeBase &child, children)
 		if(!child.complete()) return false;;
 	return true;
+}
+
+void NodeBase::init() {
+	do_init();
+	BOOST_FOREACH(NodeBase &child, children)
+		child.init();
+}
+void NodeBase::mutate() {
+	do_mutate();
+	BOOST_FOREACH(NodeBase &child, children)
+		child.mutate();
 }
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {

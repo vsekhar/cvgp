@@ -25,9 +25,6 @@
 #include <vgp/util/typeinfo.hpp>
 
 #include <vgp/nodes/terminalbase.hpp>
-#include <vgp/detail/nodecontainer.hpp>
-#include <vgp/detail/functionbinder.hpp>
-
 
 namespace vgp {
 namespace detail {
@@ -81,8 +78,8 @@ struct Terminal_mi : TerminalBase_stateful<ARCHIVES>
 	boost::any inline getfunc() const {return boundfunction;}
 	bool inline ismutatable() const {return true;}
 	bool inline isinitiable() const {return true;}
-	void inline mutate() {mutatefunction(state);}
-	void inline init() {initfunction(state);}
+	void inline do_mutate() {mutatefunction(state);}
+	void inline do_init() {initfunction(state);}
 	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {ar << state;}
 	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
@@ -130,8 +127,8 @@ struct Terminal_m : TerminalBase_stateful<ARCHIVES>
 	boost::any inline getfunc() const {return boundfunction;}
 	bool inline ismutatable() const {return true;}
 	bool inline isinitiable() const {return false;}
-	void inline mutate() {mutatefunction(state);}
-	void inline init() {}
+	void inline do_mutate() {mutatefunction(state);}
+	void inline do_init() {}
 	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {
 		ar << state;
 	}
@@ -180,10 +177,10 @@ struct Terminal_i : TerminalBase_stateful<ARCHIVES>
 	boost::any inline getfunc() const {return boundfunction;}
 	bool inline ismutatable() const {return false;}
 	bool inline isinitiable() const {return true;}
-	void inline mutate() {
+	void inline do_mutate() {
 		std::cerr << "ERROR: tried to mutate a non-mutatable terminal (no-op)" << std::endl;
 	}
-	void inline init() {initfunction(state);}
+	void inline do_init() {initfunction(state);}
 	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {ar << state;}
 	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
 
@@ -218,10 +215,10 @@ struct Terminal_simple : TerminalBase
 	boost::any getfunc() const {return boost::function<result_type()>(boost::bind(function));}
 	bool inline ismutatable() const {return false;}
 	bool inline isinitiable() const {return false;}
-	void inline mutate() {
+	void inline do_mutate() {
 		std::cerr << "ERROR: tried to mutate a non-mutatable terminal (no-op)" << std::endl;
 	}
-	void inline init() {}
+	void inline do_init() {}
 
 	FPTR function;
 	boost::any boundfunction;
