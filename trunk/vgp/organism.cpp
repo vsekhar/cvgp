@@ -6,6 +6,7 @@
 #include <boost/foreach.hpp>
 
 #include <vgp/detail/nodecontainer.hpp>
+#include <vgp/detail/nodetypemap.hpp>
 #include <vgp/util/random.hpp>
 
 #include <vgp/organism.hpp>

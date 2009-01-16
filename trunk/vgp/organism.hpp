@@ -13,7 +13,6 @@
 #include <vgp/nodes/nodebase.hpp>
 #include <vgp/nodes/terminalbase.hpp>
 #include <vgp/detail/nodecontainer.hpp>
-#include <vgp/detail/nodetypemap.hpp>
 #include <vgp/util/typeinfo.hpp>
 #include <vgp/util/format.hpp>
 #include <vgp/util/treeserializer.hpp>
