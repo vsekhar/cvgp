@@ -45,12 +45,10 @@ struct Node : NodeBase
 	boost::any getfunc() const {return Binder::getfunc(function, children);}
 	bool ismutatable() const {return false;}
 	bool isinitiable() const {return false;}
-	void do_mutate() {
+	void mutate() {
 		throw std::invalid_argument("ERROR: tried to mutate a non-terminal");
 	}
-	void do_init() {
-		throw std::invalid_argument("ERROR: tried to init a non-terminal");
-	}
+	void do_init() {}
 	NodeBase* clone() const {return new Node<FPTR>(*this);}
 
 	typedef detail::FunctionBinder<FPTR> Binder;

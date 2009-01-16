@@ -68,13 +68,12 @@ struct NodeBase : boost::noncopyable {
 	inline bool hasstate() const {return isterminal() && (ismutatable() || isinitiable());}
 
 	// Operations
-	void init();
-	void mutate();
+	void init();	// calls do_init() recursively down the tree
 
 	// Virtual functions (defined in Node<> or Terminal<>)
 	virtual bool ismutatable() const = 0;
 	virtual bool isinitiable() const = 0;
-	virtual void do_mutate() = 0;
+	virtual void mutate() = 0;
 	virtual void do_init() = 0;
 	virtual NodeBase* clone() const = 0;
 

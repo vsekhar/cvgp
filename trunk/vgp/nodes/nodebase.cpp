@@ -43,12 +43,9 @@ bool NodeBase::complete() const {
 }
 
 void NodeBase::init() {
-	if(initable()) do_init();
+	do_init();
 	BOOST_FOREACH(NodeBase &child, children)
 		child.init();
-}
-void NodeBase::mutate() {
-	do_mutate();
 }
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {

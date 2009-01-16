@@ -78,7 +78,7 @@ struct Terminal_mi : TerminalBase_stateful<ARCHIVES>
 	boost::any inline getfunc() const {return boundfunction;}
 	bool inline ismutatable() const {return true;}
 	bool inline isinitiable() const {return true;}
-	void inline do_mutate() {mutatefunction(state);}
+	void inline mutate() {mutatefunction(state);}
 	void inline do_init() {initfunction(state);}
 	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {ar << state;}
 	void inline load_state(typename ARCHIVES::iarchive_type &ar) {ar >> state;}
@@ -127,7 +127,7 @@ struct Terminal_m : TerminalBase_stateful<ARCHIVES>
 	boost::any inline getfunc() const {return boundfunction;}
 	bool inline ismutatable() const {return true;}
 	bool inline isinitiable() const {return false;}
-	void inline do_mutate() {mutatefunction(state);}
+	void inline mutate() {mutatefunction(state);}
 	void inline do_init() {}
 	void inline save_state(typename ARCHIVES::oarchive_type &ar) const {
 		ar << state;
@@ -177,7 +177,7 @@ struct Terminal_i : TerminalBase_stateful<ARCHIVES>
 	boost::any inline getfunc() const {return boundfunction;}
 	bool inline ismutatable() const {return false;}
 	bool inline isinitiable() const {return true;}
-	void inline do_mutate() {
+	void inline mutate() {
 		std::cerr << "ERROR: tried to mutate a non-mutatable terminal (no-op)" << std::endl;
 	}
 	void inline do_init() {initfunction(state);}
@@ -215,7 +215,7 @@ struct Terminal_simple : TerminalBase
 	boost::any getfunc() const {return boost::function<result_type()>(boost::bind(function));}
 	bool inline ismutatable() const {return false;}
 	bool inline isinitiable() const {return false;}
-	void inline do_mutate() {
+	void inline mutate() {
 		std::cerr << "ERROR: tried to mutate a non-mutatable terminal (no-op)" << std::endl;
 	}
 	void inline do_init() {}
