@@ -12,7 +12,6 @@
 #include <boost/any.hpp>
 #include <boost/utility.hpp>
 #include <boost/ptr_container/serialize_ptr_vector.hpp>
-#include <boost/serialization/access.hpp>
 
 #include <vgp/organism/organism_fwd.hpp>
 
@@ -80,7 +79,7 @@ struct NodeBase : boost::noncopyable {
 	typedef boost::ptr_vector<NodeBase> ChildrenContainer;
 	ChildrenContainer children;
 
-	const util::TypeInfoVector param_types;
+	const util::TypeInfoVector param_types; // populated by derived classes
 	const util::TypeInfo result_type;
 	const std::size_t arity;
 	const std::string name;
