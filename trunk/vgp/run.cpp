@@ -55,6 +55,8 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 				// even number of "'s? then stop reading the line
 				if(! (std::count(buffer.begin(), buffer.end(), '\"') % 2) )
 					break;
+				else
+					buffer += "\n"; // add back newline which was swallowed
 			}
 
 			// handle the special case of EOF appearing on its own line
@@ -99,11 +101,17 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 				else {
 					std::stringstream sstr(*param);
 					text_archive_types::iarchive_type ar(sstr);
-					Organism* neworg = new Organism();
+					Organism* neworg = 0;
 					try {
-						ar >> *neworg;
-						evolver.pop.push_back(neworg);
-						cout << "Done." << endl;
+						ar >> neworg;
+						if(!neworg)
+							cout << "Bad organism" << endl;
+						else if(!neworg->complete())
+							cout << "Incomplete org." << endl;
+						else {
+							evolver.pop.push_back(neworg);
+							cout << "Done." << endl;
+						}
 					}
 					catch(const boost::archive::archive_exception &) {
 						cout << "Bad organism" << endl;
@@ -130,7 +138,8 @@ unsigned int run(int argc, char** argv, FitnessFunctor fitnessfunc, util::TypeIn
 					cout << '\"';
 					{
 						text_archive_types::oarchive_type ar(cout);
-						ar << *itr;
+						const Organism *ptr = &(*itr);
+						ar << ptr;
 					}
 					cout << '\"' << endl;
 					if(command == "pullrandom") evolver.pop.erase(itr);
