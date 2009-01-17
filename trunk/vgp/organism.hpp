@@ -3,7 +3,6 @@
 
 #include <ostream>
 #include <string>
-#include <stdexcept>
 
 #include <boost/any.hpp>
 #include <boost/function.hpp>
@@ -112,6 +111,8 @@ struct Organism {
 	 */
 	double avgdepth() const;
 
+	bool complete() const;
+
 	/** Test whether the organism's fitness value is valid
 	 * @sa getfitness
 	 * @sa setfitness
@@ -198,7 +199,7 @@ private:
 	void save(Archive &ar, const unsigned int /* version */) const {
 		const bool hasroot = !empty();
 		ar << hasroot;
-		if(!empty())
+		if(hasroot)
 			detail::TreeSerializer::save_recursive(ar, root.get());
 	}
 

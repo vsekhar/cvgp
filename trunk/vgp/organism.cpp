@@ -64,6 +64,12 @@ void Organism::avgdepth(const detail::NodeBase& curnode, std::size_t curdepth, s
 	}
 }
 
+bool Organism::complete() const {
+	if(!root.get() || !root->complete())
+		return false;
+	else return true;
+}
+
 void Organism::mutateall(detail::NodeBase& curnode) {
 	curnode.mutate();
 	BOOST_FOREACH(detail::NodeBase &child, curnode.children)
