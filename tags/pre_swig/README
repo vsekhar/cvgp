@@ -1,0 +1,12 @@
+Project paths:
+Include: /usr/local/include/vgp -> {Project_Dir}/
+Include: /usr/local/include/boost-1_36
+
+Project paths necessary for programs using vgp:
+Include: /usr/local/include/vgp -> {Project_Dir}/
+Include: /usr/local/include/boost-1_36
+Lib: /usr/local/lib/vgp -> {Project_Dir}/[Debug | Release]
+Lib: /usr/local/lib
+
+Symbolic links for dynamic library:
+/usr/local/lib/libvgp.a -> {Project_Dir}/Release - Dynamic/libvgp.a
