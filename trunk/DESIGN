@@ -41,8 +41,11 @@ Functions:
  -serialize() (with sane representations of state data)
  -stats (depth(), nodes(), etc.)
  -getfitness()
+
+-Nodes container:
+ -list of nodes, list of types, stats
  
-NOTE: Python does NOT need access to any of the Node<> apparatus
+NOTE: Python does NOT need access to any of the Node<> apparatus itself
 
 
 VGP overall design
