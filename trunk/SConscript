@@ -1,2 +1,0 @@
-env = Environment()
-lib = Library('vgp', )
