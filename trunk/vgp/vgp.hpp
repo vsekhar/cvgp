@@ -9,7 +9,6 @@
 #include <vgp/organism.hpp>
 #include <vgp/population.hpp>
 #include <vgp/evolutionops.hpp>
-#include <vgp/evolver.hpp>
 // #include <vgp/program_options.hpp>
 // #include <vgp/run.hpp>
 

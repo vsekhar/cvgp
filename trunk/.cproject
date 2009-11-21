@@ -34,7 +34,6 @@
 <tool id="cdt.managedbuild.tool.gnu.archiver.base.655662753" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.976060252" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 <option id="gnu.cpp.compiler.option.include.paths.1744248936" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/usr/local/include/boost-1_38"/>
 <listOptionValue builtIn="false" value="/usr/local/include/vgp"/>
 </option>
 <option id="gnu.cpp.compiler.option.optimization.level.2105199216" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
@@ -43,7 +42,6 @@
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.c.compiler.base.765559665" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
 <option id="gnu.c.compiler.option.include.paths.94528898" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/usr/local/include/boost-1_38"/>
 <listOptionValue builtIn="false" value="/usr/local/include/vgp"/>
 </option>
 <option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.450554253" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
@@ -1410,8 +1408,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1677913005;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1419584098">
-<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.release.1536533236">
+<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
@@ -1493,8 +1491,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.release.1536533236">
-<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1677913005;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1419584098">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
@@ -1742,8 +1740,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.1099487315;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1855970935;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.296481677">
-<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1407638925;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.118837419">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
@@ -1825,8 +1823,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1407638925;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.118837419">
-<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.1099487315;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1855970935;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.296481677">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
@@ -1934,7 +1932,6 @@
 <tool id="cdt.managedbuild.tool.gnu.archiver.base.404700731" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.371616392" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 <option id="gnu.cpp.compiler.option.include.paths.1108268259" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/usr/local/include/boost-1_38"/>
 <listOptionValue builtIn="false" value="/usr/local/include/vgp"/>
 </option>
 <option id="gnu.cpp.compiler.option.preprocessor.def.852592328" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
@@ -1948,7 +1945,6 @@
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.c.compiler.base.1522986096" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
 <option id="gnu.c.compiler.option.include.paths.661087647" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/usr/local/include/boost-1_38"/>
 <listOptionValue builtIn="false" value="/usr/local/include/vgp"/>
 </option>
 <option id="gnu.c.compiler.option.preprocessor.def.symbols.1913777851" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
@@ -3360,8 +3356,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1677913005;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1419584098">
-<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.release.1536533236">
+<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
@@ -3443,8 +3439,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.release.1536533236">
-<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1677913005;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1419584098">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
@@ -3692,8 +3688,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.1099487315;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1855970935;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.296481677">
-<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1407638925;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.118837419">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
@@ -3775,8 +3771,8 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.;cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1407638925;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.118837419">
-<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC"/>
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025;cdt.managedbuild.config.gnu.cygwin.lib.debug.1566321025.1099487315;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1855970935;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.296481677">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
 <openAction enabled="true" filePath=""/>
