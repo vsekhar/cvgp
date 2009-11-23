@@ -3,7 +3,6 @@
 
 // Main header
 
-#include <vgp/nodes.hpp>
 #include <vgp/util.hpp>
 #include <vgp/sourcedata.hpp>
 #include <vgp/organism.hpp>
