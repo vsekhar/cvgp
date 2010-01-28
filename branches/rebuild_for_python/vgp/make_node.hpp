@@ -8,7 +8,7 @@
 #ifndef MAKE_NODE_HPP_
 #define MAKE_NODE_HPP_
 
-#include <vgp/node.hpp>
+#include <vgp/detail/node.hpp>
 
 namespace vgp {
 

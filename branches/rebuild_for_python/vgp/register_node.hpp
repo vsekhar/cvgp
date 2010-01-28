@@ -8,7 +8,7 @@
 #ifndef REGISTER_NODE_HPP_
 #define REGISTER_NODE_HPP_
 
-#include <vgp/node.hpp>
+#include <vgp/detail/node.hpp>
 #include <vgp/make_node.hpp>
 
 namespace vgp {

@@ -19,7 +19,7 @@
 #include <boost/mpl/front.hpp>
 #include <boost/any.hpp>
 
-#include <vgp/nodebase.hpp>
+#include <vgp/detail/nodebase.hpp>
 
 namespace vgp {
 
