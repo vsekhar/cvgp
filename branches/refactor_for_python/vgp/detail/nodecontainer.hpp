@@ -44,9 +44,7 @@ namespace vgp {
  *
  */
 struct NodeContainer : boost::noncopyable {
-	/** Default constructor (necessary because the library puts a NodeContainer in a util::singleton0)
-	 * @issue Is this still necessary? we don't use singleton0 anymore...
-	 */
+
 	NodeContainer() :
 		nodesbysequence(nodes.get<bySequence>()),
 		terminalsbysequence(terminals.get<bySequence>()),

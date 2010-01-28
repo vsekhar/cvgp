@@ -58,7 +58,6 @@ struct NodeBase : boost::noncopyable {
 	}
 	virtual boost::any getfunc() const = 0;
 
-
 	// Queries
 	std::size_t count() const;
 	std::string getID() const;
