@@ -20,6 +20,7 @@
 #include <boost/any.hpp>
 
 #include <vgp/detail/nodebase.hpp>
+#include <vgp/detail/nodeentry.hpp>
 
 namespace vgp {
 
@@ -27,8 +28,6 @@ namespace mpl = ::boost::mpl;
 namespace ft = ::boost::function_types;
 
 namespace detail {
-
-typedef void(* const void_fptr_t)();
 
 template <typename T>
 struct getfirstparam_wo_reference :
@@ -57,7 +56,7 @@ struct Node_w_ptr : NodeBase {
 	virtual void init() {}
 	virtual void mutate() {}
 	virtual children_t& getchildren() {BOOST_ASSERT(0);}
-	void_fptr_t fptr;
+	void_fptr_t const fptr;
 };
 
 // Adds children handling

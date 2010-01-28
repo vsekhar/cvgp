@@ -16,6 +16,7 @@ namespace detail {
 
 struct NodeBase;
 typedef boost::ptr_vector<NodeBase> children_t;
+typedef void(*void_fptr_t)();
 
 // interface (pure virtual and templates)
 struct NodeBase {
@@ -29,6 +30,8 @@ struct NodeBase {
 inline NodeBase* new_clone(const NodeBase& n) {
 	return n.clone();
 }
+
+void pyexport_nodebase();
 
 } // namespace detail
 

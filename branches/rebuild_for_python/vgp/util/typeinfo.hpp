@@ -17,32 +17,13 @@ namespace util {
  * 	typedef boost::reference_wrapper<std::type_info const> TypeInfo;
  */
 typedef boost::reference_wrapper<std::type_info const> TypeInfo_base;
-
-/** A reference wrapper for the std::type_info object returned by the typeid()
- * operator.
- */
 struct TypeInfo : TypeInfo_base {
-	/// Simple forwarding copy constructor
 	template <class T> TypeInfo(const T& t) :
 		TypeInfo_base(t) {}
 };
-
-/** Weak-strict ordering of build-in std::type_info structure (using the
- * structure's own before() member function). Not sure why this isn't
- * part of the library...
- */
 bool operator<(const TypeInfo&, const std::type_info&);
-
-/** Comparison of built-in std::type_info structures
- *
- * This operator compares type_info structures using the underlying == operator.
- */
 bool operator==(const TypeInfo&, const std::type_info&);
-
-/// Stream output of TypeInfo objects (outputs the compiler-provided name)
 std::ostream& operator<<(std::ostream&, const vgp::util::TypeInfo&);
-
-/// Hash function for TypeInfo (hashes the compiler-provided name of the type)
 std::size_t hash_value(const std::type_info &);
 
 typedef std::list<TypeInfo> TypeInfoList;
@@ -59,6 +40,8 @@ struct TypeInfoInserter {
 	}
 	util::TypeInfoVector& vector;
 };
+
+void pyexport_typeinfo();
 
 } // namespace util
 } // namespace vgp

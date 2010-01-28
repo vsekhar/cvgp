@@ -1,3 +1,5 @@
+#include <boost/python.hpp>
+
 #include "typeinfo.hpp"
 
 namespace vgp {

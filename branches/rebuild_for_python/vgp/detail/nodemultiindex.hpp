@@ -8,39 +8,36 @@
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/key_extractors.hpp>
 
-#include <vgp/nodes/nodebase.hpp>
+#include <vgp/detail/nodeentry.hpp>
 
 namespace vgp {
 
-/** \name Index tags
- * Empty types used as tags to retrieve specific indexes
- */
-//@{
-struct bySequence {};
-struct byID {};
-struct byResultType {};
-//@}
-
 namespace detail {
+
+struct byName {};
+struct byResultType {};
+
 using namespace ::boost::multi_index;
 
-/** Multi Index Container for node storage and multi-index lookup
- */
 typedef multi_index_container<
-	const NodeBase*,
+	NodeEntry,
 	indexed_by<
-		sequenced<tag<bySequence> >
+		sequenced<>
 		, ordered_unique<
-			tag<byID>,
-			const_mem_fun<NodeBase, std::string, &NodeBase::getID>
+			tag<byName>,
+			member<NodeEntry, const std::string, &NodeEntry::name>
 		>
 		, ordered_non_unique<
 			tag<byResultType>,
-			member<NodeBase, const util::TypeInfo, &NodeBase::result_type>
-//			const_mem_fun<NodeBase, util::TypeInfo, &NodeBase::getresulttypeinfo>
+			composite_key<
+				NodeEntry,
+				member<NodeEntry, const util::TypeInfo, &NodeEntry::result_type>,
+				member<NodeEntry, const unsigned int, &NodeEntry::arity>
+			>
 		>
 	>
 > NodeMultiIndex;
+
 } // namespace detail
 } // namespace vgp
 
