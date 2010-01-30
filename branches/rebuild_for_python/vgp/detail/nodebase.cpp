@@ -18,12 +18,10 @@ struct NodeBaseWrap : NodeBase, wrapper<NodeBase>
 	void init() {this->get_override("init")();};
 	void mutate() {this->get_override("mutate")();}
 	children_t& getchildren() {return this->get_override("getchildren")();}
-	boost::any run_node() const {return this->get_override("run_node")();}
 	NodeBase* clone() const {return this->get_override("clone")();}
 };
 
 void pyexport_nodebase() {
-	class_<boost::any>("boost_any");
 	class_<children_t>("children_t");
 	class_<NodeBaseWrap, boost::noncopyable>("NodeBase")
 			.def("init", pure_virtual(&NodeBase::init));
@@ -32,8 +30,6 @@ void pyexport_nodebase() {
 	class_<NodeBaseWrap, boost::noncopyable>("NodeBase")
 			.def("getchildren", pure_virtual(&NodeBase::getchildren),
 					return_value_policy<copy_non_const_reference>());
-	class_<NodeBaseWrap, boost::noncopyable>("NodeBase")
-			.def("run_node", pure_virtual(&NodeBase::run_node));
 	class_<NodeBaseWrap, boost::noncopyable>("NodeBase")
 			.def("clone", pure_virtual(&NodeBase::clone),
 					return_value_policy<manage_new_object>());

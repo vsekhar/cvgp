@@ -8,7 +8,6 @@
 #ifndef NODEBASE_HPP_
 #define NODEBASE_HPP_
 
-#include <boost/any.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 
 namespace vgp {
@@ -23,7 +22,6 @@ struct NodeBase {
 	virtual void init() = 0;
 	virtual void mutate() = 0;
 	virtual children_t& getchildren() = 0;
-	virtual boost::any run_node() const = 0;
 	virtual NodeBase* clone() const = 0;
 };
 
@@ -34,12 +32,6 @@ inline NodeBase* new_clone(const NodeBase& n) {
 void pyexport_nodebase();
 
 } // namespace detail
-
-template <typename result_type>
-result_type runner(const detail::NodeBase& n) {
-	return boost::any_cast<result_type>(n.run_node());
-}
-
 } // namespace vgp
 
 

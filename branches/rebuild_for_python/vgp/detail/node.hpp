@@ -17,7 +17,6 @@
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/front.hpp>
-#include <boost/any.hpp>
 
 #include <vgp/detail/nodebase.hpp>
 #include <vgp/detail/nodeentry.hpp>
@@ -59,10 +58,17 @@ struct Node_w_ptr : NodeBase {
 	void_fptr_t const fptr;
 };
 
+template <typename result_type>
+struct Node_returning : Node_w_ptr {
+	Node_returning(void_fptr_t p) : Node_w_ptr(p) {}
+	virtual result_type run_node() const = 0;
+};
+
 // Adds children handling
-struct Node_w_children : Node_w_ptr {
-	template <typename FPTR>
-	Node_w_children(const FPTR p) : Node_w_ptr(p) {}
+template <typename FPTR>
+struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
+	Node_w_children(const FPTR p)
+		: Node_returning<typename ft::result_type<FPTR>::type>(p) {}
 	virtual children_t& getchildren() {return children;}
 	children_t children;
 };
@@ -70,29 +76,37 @@ struct Node_w_children : Node_w_ptr {
 template <class, unsigned int> struct Node_concrete_n;
 
 template <class FPTR>
-struct Node_concrete_n<FPTR, 1> : Node_w_children {
-	Node_concrete_n(const FPTR p) : Node_w_children(p) {}
-	Node_concrete_n(const void_fptr_t& p) : Node_w_children(p) {}
+struct Node_concrete_n<FPTR, 1>	: Node_w_children<FPTR> {
+	typedef Node_w_children<FPTR> base;
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
-	virtual boost::any run_node() const {
-		FPTR f = reinterpret_cast<FPTR>(fptr);
+	Node_concrete_n(const FPTR p) : Node_w_children<FPTR>(p) {}
+	Node_concrete_n(const void_fptr_t& p) : Node_w_children<FPTR>(p) {}
+	virtual result_type run_node() const {
+		FPTR f = reinterpret_cast<FPTR>(base::fptr);
 		typedef typename mpl::at<parameter_types,mpl::int_< 0 > >::type arg0;
-		return f(runner<arg0>(children[0]));
+		Node_returning<arg0>* child0
+			= reinterpret_cast<Node_returning<arg0> >(&base::children[0]);
+		return f(child0->run_node());
 	}
 };
 
 template <class FPTR>
-struct Node_concrete_n<FPTR, 2> : Node_w_children {
-	Node_concrete_n(const FPTR p) : Node_w_children(p) {}
-	Node_concrete_n(const void_fptr_t& p) : Node_w_children(p) {}
+struct Node_concrete_n<FPTR, 2> : Node_w_children<FPTR> {
+	typedef Node_w_children<FPTR> base;
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
-	virtual boost::any run_node() const {
-		FPTR f = reinterpret_cast<FPTR>(fptr);
+	Node_concrete_n(const FPTR p) : Node_w_children<FPTR>(p) {}
+	Node_concrete_n(const void_fptr_t& p) : Node_w_children<FPTR>(p) {}
+	virtual result_type run_node() const {
+		FPTR f = reinterpret_cast<FPTR>(base::fptr);
 		typedef typename mpl::at<parameter_types,mpl::int_< 0 > >::type arg0;
 		typedef typename mpl::at<parameter_types,mpl::int_< 1 > >::type arg1;
-		return f(runner<arg0>(children[0]), runner<arg1>(children[1]));
+		Node_returning<arg0>* child0
+			= reinterpret_cast<Node_returning<arg0> >(&base::children[0]);
+		Node_returning<arg1>* child1
+			= reinterpret_cast<Node_returning<arg1> >(&base::children[1]);
+		return f(child0->run_node(), child1->run_node());
 	}
 };
 
@@ -104,30 +118,33 @@ struct Node : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value> {
 };
 
 template <class FPTR>
-struct Terminal : Node_w_ptr {
-	Terminal(const FPTR p) : Node_w_ptr(p) {}
-	Terminal(const Terminal& t) : Node_w_ptr(t.fptr) {}
+struct Terminal : Node_returning<typename ft::result_type<FPTR>::type> {
+	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
 	typedef typename ft::result_type<FPTR>::type result_type;
-	virtual boost::any run_node() const {
-		return reinterpret_cast<FPTR>(fptr)();
+	Terminal(const FPTR p) : base(p) {}
+	Terminal(const Terminal& t) : base(t.fptr) {}
+	virtual result_type run_node() const {
+		return reinterpret_cast<FPTR>(base::fptr)();
 	}
 	virtual NodeBase* clone() const {return new Terminal<FPTR>(*this);}
 };
 
 template <class FPTR>
-struct Terminal_w_state : Node_w_ptr {
+struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
+	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
+	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename fptr_to_state_type<FPTR>::type state_type;
 	typedef void (*im_ptr)(state_type&);
 	Terminal_w_state(const FPTR p, const state_type& s, im_ptr i, im_ptr m)
-		: Node_w_ptr(p), state(s), iptr(i), mptr(m) {}
+		: base(p), state(s), iptr(i), mptr(m) {}
 	Terminal_w_state(const FPTR p, im_ptr i, im_ptr m)
-		: Node_w_ptr(p), iptr(i), mptr(m) {}
+		: base(p), iptr(i), mptr(m) {}
 	Terminal_w_state(const Terminal_w_state& t)
-		: Node_w_ptr(t.fptr), state(t.state), iptr(t.iptr), mptr(t.mptr) {}
+		: base(t.fptr), state(t.state), iptr(t.iptr), mptr(t.mptr) {}
 	virtual void init() {if(iptr) iptr(state);}
 	virtual void mutate() {if(mptr) mptr(state);}
-	virtual boost::any run_node() const {
-		return reinterpret_cast<FPTR>(fptr)(state);
+	virtual result_type run_node() const {
+		return reinterpret_cast<FPTR>(base::fptr)(state);
 	}
 	virtual NodeBase* clone() const {return new Terminal_w_state<FPTR>(*this);}
 	state_type state;
