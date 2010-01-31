@@ -18,6 +18,19 @@ std::string greet() {
 	return "hello from libvgp";
 }
 
+void memtest(long i, long j) {
+	static vgp::detail::NodeList nodes;
+	using vgp::detail::nodesbyname;
+	vgp::detail::NodeEntry n = *nodesbyname.find("f1");
+	for(long count = 0; count < i; count++)
+	//while(nodes.size() < 1000000)
+		nodes.push_back(n.prototype->clone());
+	for(long count = 0; count < j; count++) {
+		nodes.pop_front();
+		nodes.push_back(n.prototype->clone());
+	}
+}
+
 BOOST_PYTHON_MODULE(vgp)
 {
 	using namespace boost::python;
@@ -28,6 +41,7 @@ BOOST_PYTHON_MODULE(vgp)
 	// random stuff
 	def("myinit", myinit, "this is the myinit docstring");
 	def("greet", greet, "greeting");
+	def("memtest", memtest, "memory test");
 
 	// Register nodes
 	{

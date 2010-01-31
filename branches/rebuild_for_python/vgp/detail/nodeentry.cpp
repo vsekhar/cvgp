@@ -27,7 +27,7 @@ std::ostream& operator<<(std::ostream& o, const NodeEntry& n) {
 void pyexport_nodeentry() {
 	using namespace boost::python;
 	class_<NodeEntry>("NodeEntry", no_init)
-			.def_readonly("nodeptr", &NodeEntry::nodeptr)
+			.def_readonly("prototype", &NodeEntry::prototype)
 			.def_readonly("result_type", &NodeEntry::result_type)
 			.def_readonly("parameter_types", &NodeEntry::parameter_types)
 			.def_readonly("name", &NodeEntry::name)

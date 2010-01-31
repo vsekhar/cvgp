@@ -18,7 +18,6 @@
 #include <boost/mpl/front.hpp>
 
 #include <vgp/detail/nodebase.hpp>
-#include <vgp/detail/nodeentry.hpp>
 
 namespace vgp {
 
@@ -47,12 +46,15 @@ struct fptr_to_state_type
 		  typename getfirstparam_wo_reference<T>::type
 	> {};
 
+struct NoChildren : std::exception {};
+
 // Adds pointer, construct code, and failure to get children
 struct Node_w_ptr : NodeBase {
 	Node_w_ptr(void_fptr_t p) : fptr(p) {}
 	virtual void init() {}
 	virtual void mutate() {}
-	virtual children_t& getchildren() {BOOST_ASSERT(0);}
+	virtual bool mutatable() {return false;}
+	virtual NodeVector& getchildren() {throw NoChildren();}
 	void_fptr_t const fptr;
 };
 
@@ -68,8 +70,8 @@ struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
 	Node_w_children(const FPTR p)
 		: Node_returning<typename ft::result_type<FPTR>::type>(
 				reinterpret_cast<void_fptr_t>(p)) {}
-	virtual children_t& getchildren() {return children;}
-	children_t children;
+	virtual NodeVector& getchildren() {return children;}
+	NodeVector children;
 };
 
 template <class, unsigned int> struct Node_concrete_n;
@@ -136,6 +138,7 @@ struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
 		: base(reinterpret_cast<void_fptr_t>(p)), iptr(i), mptr(m) {}
 	virtual void init() {if(iptr) iptr(state);}
 	virtual void mutate() {if(mptr) mptr(state);}
+	virtual bool mutatable() {return mptr!=0;}
 	virtual result_type run_node() const {
 		return reinterpret_cast<FPTR>(base::fptr)(state);
 	}

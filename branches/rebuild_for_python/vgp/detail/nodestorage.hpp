@@ -17,6 +17,7 @@ extern NodeMultiIndex nodes;
 extern NodesBySequence &nodesbysequence;
 extern NodesByName &nodesbyname;
 extern NodesByResultType &nodesbyresulttype;
+extern NodesByFptr &nodesbyfptr;
 
 void pyexport_nodestorage();
 

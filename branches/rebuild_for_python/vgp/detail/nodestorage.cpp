@@ -18,10 +18,15 @@ NodeMultiIndex nodes;
 NodesBySequence &nodesbysequence = nodes.get<bySequence>();
 NodesByName &nodesbyname = nodes.get<byName>();
 NodesByResultType &nodesbyresulttype = nodes.get<byResultType>();
+NodesByFptr &nodesbyfptr = nodes.get<byFptr>();
+
 std::string printnodes() {
 	std::stringstream ss;
+	bool first = true;
 	BOOST_FOREACH(const NodeEntry& n, nodes) {
-		ss << n << std::endl;
+		if(first) first = false;
+		else ss << ", ";
+		ss << n;
 	}
 	return ss.str();
 }

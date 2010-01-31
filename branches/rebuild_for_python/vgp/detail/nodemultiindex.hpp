@@ -6,6 +6,7 @@
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/key_extractors.hpp>
 
 #include <vgp/detail/nodeentry.hpp>
@@ -17,6 +18,7 @@ namespace detail {
 struct bySequence {};
 struct byName {};
 struct byResultType {};
+struct byFptr {};
 
 using namespace ::boost::multi_index;
 
@@ -36,12 +38,17 @@ typedef multi_index_container<
 				member<NodeEntry, const unsigned int, &NodeEntry::arity>
 			>
 		>
+		, hashed_unique<
+			tag<byFptr>,
+			member<NodeEntry, const void_fptr_t, &NodeEntry::fptr>
+		>
 	>
 > NodeMultiIndex;
 
 typedef NodeMultiIndex::index<bySequence>::type NodesBySequence;
 typedef NodeMultiIndex::index<byName>::type NodesByName;
 typedef NodeMultiIndex::index<byResultType>::type NodesByResultType;
+typedef NodeMultiIndex::index<byFptr>::type NodesByFptr;
 
 } // namespace detail
 } // namespace vgp

@@ -9,19 +9,23 @@
 #define NODEBASE_HPP_
 
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/ptr_list.hpp>
 
 namespace vgp {
 namespace detail {
 
 struct NodeBase;
-typedef boost::ptr_vector<NodeBase> children_t;
+typedef boost::ptr_vector<NodeBase> NodeVector;
+typedef boost::ptr_list<NodeBase> NodeList;
 typedef void(*void_fptr_t)();
 
 // interface (pure virtual and templates)
 struct NodeBase {
+	virtual ~NodeBase() {}
 	virtual void init() = 0;
 	virtual void mutate() = 0;
-	virtual children_t& getchildren() = 0;
+	virtual bool mutatable() = 0;
+	virtual NodeVector & getchildren() = 0;
 	virtual NodeBase* clone() const = 0;
 };
 
