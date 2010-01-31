@@ -8,16 +8,20 @@
 #ifndef NODESTORAGE_HPP_
 #define NODESTORAGE_HPP_
 
-#include <vgp/detail/nodecontainer.hpp>
+#include <vgp/detail/nodemultiindex.hpp>
 
 namespace vgp {
 namespace detail {
 
-extern NodeContainer nodes;
+extern NodeMultiIndex nodes;
+extern NodesBySequence &nodesbysequence;
+extern NodesByName &nodesbyname;
+extern NodesByResultType &nodesbyresulttype;
+
 void pyexport_nodestorage();
 
-}
-}
+} // namespace detail
+} // namespace vgp
 
 
 #endif /* NODESTORAGE_HPP_ */

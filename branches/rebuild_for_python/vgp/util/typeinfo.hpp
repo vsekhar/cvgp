@@ -2,7 +2,7 @@
 #define VGP_TYPEINFO_HPP_
 
 #include <typeinfo>
-#include <iostream>
+#include <ostream>
 #include <list>
 #include <vector>
 
@@ -23,7 +23,7 @@ struct TypeInfo : TypeInfo_base {
 };
 bool operator<(const TypeInfo&, const std::type_info&);
 bool operator==(const TypeInfo&, const std::type_info&);
-std::ostream& operator<<(std::ostream&, const vgp::util::TypeInfo&);
+std::ostream& operator<<(std::ostream&, const TypeInfo&);
 std::size_t hash_value(const std::type_info &);
 
 typedef std::list<TypeInfo> TypeInfoList;

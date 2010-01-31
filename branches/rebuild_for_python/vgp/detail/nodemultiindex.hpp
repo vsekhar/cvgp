@@ -14,6 +14,7 @@ namespace vgp {
 
 namespace detail {
 
+struct bySequence {};
 struct byName {};
 struct byResultType {};
 
@@ -22,7 +23,7 @@ using namespace ::boost::multi_index;
 typedef multi_index_container<
 	NodeEntry,
 	indexed_by<
-		sequenced<>
+		sequenced<tag<bySequence> >
 		, ordered_unique<
 			tag<byName>,
 			member<NodeEntry, const std::string, &NodeEntry::name>
@@ -37,6 +38,10 @@ typedef multi_index_container<
 		>
 	>
 > NodeMultiIndex;
+
+typedef NodeMultiIndex::index<bySequence>::type NodesBySequence;
+typedef NodeMultiIndex::index<byName>::type NodesByName;
+typedef NodeMultiIndex::index<byResultType>::type NodesByResultType;
 
 } // namespace detail
 } // namespace vgp

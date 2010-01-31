@@ -7,15 +7,8 @@
 #include <string>
 
 #include <boost/python.hpp>
-#include <vgp/make_node.hpp>
-#include <vgp/register_node.hpp>
-
-#include <vgp/detail/nodecontainer.hpp>
-#include <vgp/detail/nodestorage.hpp>
-
-#include <vgp/util/typeinfo.hpp>
-
-using namespace boost::python;
+#include <vgp/vgp.hpp>
+#include <vgp/testnodes/testnodes.hpp>
 
 int myinit() {
 	return 6;
@@ -27,11 +20,19 @@ std::string greet() {
 
 BOOST_PYTHON_MODULE(vgp)
 {
+	using namespace boost::python;
+
 	// initialization code here
+
 
 	// random stuff
 	def("myinit", myinit, "this is the myinit docstring");
 	def("greet", greet, "greeting");
+
+	// Register nodes
+	{
+		load_testnodes();
+	}
 
 	// Grab python declarations from elsewhere
 	{
@@ -39,12 +40,12 @@ BOOST_PYTHON_MODULE(vgp)
 		{
 			using namespace vgp::detail;
 			pyexport_nodebase();
-			pyexport_nodecontainer();
+			pyexport_nodeentry();
 			pyexport_nodestorage();
 		}
 		{
 			using namespace util;
-			//pyexport_typeinfo();
+			pyexport_typeinfo();
 		}
 	}
 }

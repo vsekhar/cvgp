@@ -2,7 +2,6 @@
  * node.hpp
  *
  *  Created on: 2010-01-27
- *      Author: vsekhar
  */
 
 #ifndef NODE_HPP_
@@ -50,8 +49,7 @@ struct fptr_to_state_type
 
 // Adds pointer, construct code, and failure to get children
 struct Node_w_ptr : NodeBase {
-	template <class FPTR>
-	Node_w_ptr(const FPTR p) : fptr(reinterpret_cast<void_fptr_t>(p)) {}
+	Node_w_ptr(void_fptr_t p) : fptr(p) {}
 	virtual void init() {}
 	virtual void mutate() {}
 	virtual children_t& getchildren() {BOOST_ASSERT(0);}
@@ -68,7 +66,8 @@ struct Node_returning : Node_w_ptr {
 template <typename FPTR>
 struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
 	Node_w_children(const FPTR p)
-		: Node_returning<typename ft::result_type<FPTR>::type>(p) {}
+		: Node_returning<typename ft::result_type<FPTR>::type>(
+				reinterpret_cast<void_fptr_t>(p)) {}
 	virtual children_t& getchildren() {return children;}
 	children_t children;
 };
@@ -81,12 +80,11 @@ struct Node_concrete_n<FPTR, 1>	: Node_w_children<FPTR> {
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	Node_concrete_n(const FPTR p) : Node_w_children<FPTR>(p) {}
-	Node_concrete_n(const void_fptr_t& p) : Node_w_children<FPTR>(p) {}
 	virtual result_type run_node() const {
 		FPTR f = reinterpret_cast<FPTR>(base::fptr);
 		typedef typename mpl::at<parameter_types,mpl::int_< 0 > >::type arg0;
-		Node_returning<arg0>* child0
-			= reinterpret_cast<Node_returning<arg0> >(&base::children[0]);
+		const Node_returning<arg0>* child0
+			= reinterpret_cast<const Node_returning<arg0>*>(&base::children[0]);
 		return f(child0->run_node());
 	}
 };
@@ -97,15 +95,14 @@ struct Node_concrete_n<FPTR, 2> : Node_w_children<FPTR> {
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	Node_concrete_n(const FPTR p) : Node_w_children<FPTR>(p) {}
-	Node_concrete_n(const void_fptr_t& p) : Node_w_children<FPTR>(p) {}
 	virtual result_type run_node() const {
 		FPTR f = reinterpret_cast<FPTR>(base::fptr);
 		typedef typename mpl::at<parameter_types,mpl::int_< 0 > >::type arg0;
 		typedef typename mpl::at<parameter_types,mpl::int_< 1 > >::type arg1;
-		Node_returning<arg0>* child0
-			= reinterpret_cast<Node_returning<arg0> >(&base::children[0]);
-		Node_returning<arg1>* child1
-			= reinterpret_cast<Node_returning<arg1> >(&base::children[1]);
+		const Node_returning<arg0>* child0
+			= reinterpret_cast<const Node_returning<arg0>*>(&base::children[0]);
+		const Node_returning<arg1>* child1
+			= reinterpret_cast<const Node_returning<arg1>*>(&base::children[1]);
 		return f(child0->run_node(), child1->run_node());
 	}
 };
@@ -113,7 +110,6 @@ struct Node_concrete_n<FPTR, 2> : Node_w_children<FPTR> {
 template <class FPTR>
 struct Node : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value> {
 	Node(const FPTR p) : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value>(p) {}
-	Node(const Node<FPTR>& n) : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value>(n.fptr) {}
 	virtual NodeBase* clone() const {return new Node<FPTR>(*this);}
 };
 
@@ -121,8 +117,7 @@ template <class FPTR>
 struct Terminal : Node_returning<typename ft::result_type<FPTR>::type> {
 	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
 	typedef typename ft::result_type<FPTR>::type result_type;
-	Terminal(const FPTR p) : base(p) {}
-	Terminal(const Terminal& t) : base(t.fptr) {}
+	Terminal(const FPTR p) : base(reinterpret_cast<void_fptr_t>(p)) {}
 	virtual result_type run_node() const {
 		return reinterpret_cast<FPTR>(base::fptr)();
 	}
@@ -136,11 +131,9 @@ struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
 	typedef typename fptr_to_state_type<FPTR>::type state_type;
 	typedef void (*im_ptr)(state_type&);
 	Terminal_w_state(const FPTR p, const state_type& s, im_ptr i, im_ptr m)
-		: base(p), state(s), iptr(i), mptr(m) {}
+		: base(reinterpret_cast<void_fptr_t>(p)), state(s), iptr(i), mptr(m) {}
 	Terminal_w_state(const FPTR p, im_ptr i, im_ptr m)
-		: base(p), iptr(i), mptr(m) {}
-	Terminal_w_state(const Terminal_w_state& t)
-		: base(t.fptr), state(t.state), iptr(t.iptr), mptr(t.mptr) {}
+		: base(reinterpret_cast<void_fptr_t>(p)), iptr(i), mptr(m) {}
 	virtual void init() {if(iptr) iptr(state);}
 	virtual void mutate() {if(mptr) mptr(state);}
 	virtual result_type run_node() const {
@@ -153,11 +146,6 @@ struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
 };
 
 } // namespace detail
-
-// during testing (actual code should refer properly to namespace detail
-using detail::NodeBase;
-using detail::children_t;
-
 } // namespace vgp
 
 #endif /* NODE_HPP_ */

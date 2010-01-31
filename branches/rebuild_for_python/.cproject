@@ -527,6 +527,7 @@
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 <additionalInput kind="additionalinput" paths="$(LIBS)"/>
 </inputType>
+<outputType id="cdt.managedbuild.tool.gnu.cpp.linker.so.release.output.1227251503" outputPrefix="" superClass="cdt.managedbuild.tool.gnu.cpp.linker.so.release.output"/>
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.assembler.so.release.1088856705" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.so.release">
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1801258455" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
