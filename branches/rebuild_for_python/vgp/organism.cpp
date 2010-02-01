@@ -9,19 +9,12 @@
 
 namespace vgp {
 
-void Organism::init() {
-	BOOST_FOREACH(detail::NodeBase& n, trees)
-			do_init(n);
-}
-
-void Organism::do_init(detail::NodeBase& node) {
-	node.init();
-	try {
-		detail::NodeVector& children = node.getchildren();
-		BOOST_FOREACH(detail::NodeBase& n, children)
-			do_init(n);
-	}
-	catch(detail::NoChildren) {}
+std::vector<std::size_t> Organism::adfs(const util::TypeInfo& t) const {
+	std::vector<bool> ret(adf.size());
+	//for(std::size_t i = 0; i < adf.size(); i++)
+		// todo: replace with result_type test code
+		//if(n) ret[i] = true;
+	return std::vector<std::size_t>();
 }
 
 } // namespace vgp

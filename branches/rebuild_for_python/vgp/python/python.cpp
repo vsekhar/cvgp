@@ -4,8 +4,10 @@
  *  Created on: 2010-01-27
  */
 
-#include <string>
+// has to be first b/c it includes Python.h
+#include <vgp/python/gil_wrap.hpp>
 
+#include <string>
 #include <boost/python.hpp>
 #include <vgp/vgp.hpp>
 #include <vgp/testnodes/testnodes.hpp>
@@ -40,12 +42,13 @@ BOOST_PYTHON_MODULE(vgp)
 
 	// random stuff
 	def("myinit", myinit, "this is the myinit docstring");
-	def("greet", greet, "greeting");
+	def("greet", vgp::python::GIL_wrapped(greet), "greeting");
 	def("memtest", memtest, "memory test");
 
 	// Register nodes
 	{
 		load_testnodes();
+		//vgp::registration_done();
 	}
 
 	// Grab python declarations from elsewhere

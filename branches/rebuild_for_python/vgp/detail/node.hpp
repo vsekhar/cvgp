@@ -8,6 +8,7 @@
 #define NODE_HPP_
 
 #include <string>
+#include <stdexcept>
 
 #include <boost/function_types/result_type.hpp>
 #include <boost/function_types/parameter_types.hpp>
@@ -46,7 +47,7 @@ struct fptr_to_state_type
 		  typename getfirstparam_wo_reference<T>::type
 	> {};
 
-struct NoChildren : std::exception {};
+struct NoChildren : virtual std::exception {};
 
 // Adds pointer, construct code, and failure to get children
 struct Node_w_ptr : NodeBase {
