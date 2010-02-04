@@ -18,8 +18,8 @@ void pyexport_nodebase() {
 	class_<NodeBase, boost::noncopyable>("NodeBase", no_init)
 			.def("init", pure_virtual(&NodeBase::init))
 			.def("mutate", pure_virtual(&NodeBase::mutate))
-			.def("getchildren", pure_virtual(&NodeBase::getchildren),
-					return_value_policy<copy_non_const_reference>())
+//			.def("getchildren", pure_virtual(&NodeBase::getchildren),
+//					return_value_policy<copy_non_const_reference>())
 			.def("clone", pure_virtual(&NodeBase::clone),
 					return_value_policy<manage_new_object>());
 }

@@ -34,8 +34,6 @@ std::string printnodes() {
 void pyexport_nodestorage() {
 	using namespace boost::python;
 	def("printnodes", printnodes);
-	//def("getnodes", getnodes, return_value_policy<copy_const_reference>());
-	//class_<NodesByName, boost::noncopyable>("NodesByName", no_init);
 }
 
 } // namespace detail

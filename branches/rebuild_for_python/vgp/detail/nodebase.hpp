@@ -26,6 +26,7 @@ struct NodeBase {
 	virtual void mutate() = 0;
 	virtual bool mutatable() = 0;
 	virtual NodeVector & getchildren() = 0;
+	virtual const NodeVector& getchildren() const = 0;
 	virtual NodeBase* clone() const = 0;
 };
 

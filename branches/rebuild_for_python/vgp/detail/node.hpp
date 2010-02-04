@@ -56,6 +56,7 @@ struct Node_w_ptr : NodeBase {
 	virtual void mutate() {}
 	virtual bool mutatable() {return false;}
 	virtual NodeVector& getchildren() {throw NoChildren();}
+	virtual const NodeVector& getchildren() const {throw NoChildren();}
 	void_fptr_t const fptr;
 };
 
@@ -65,14 +66,17 @@ struct Node_returning : Node_w_ptr {
 	virtual result_type run_node() const = 0;
 };
 
+typedef NodeVector children_t;
+
 // Adds children handling
 template <typename FPTR>
 struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
 	Node_w_children(const FPTR p)
 		: Node_returning<typename ft::result_type<FPTR>::type>(
 				reinterpret_cast<void_fptr_t>(p)) {}
-	virtual NodeVector& getchildren() {return children;}
-	NodeVector children;
+	virtual children_t& getchildren() {return children;}
+	virtual const NodeVector& getchildren() const {return children;}
+	children_t children;
 };
 
 template <class, unsigned int> struct Node_concrete_n;

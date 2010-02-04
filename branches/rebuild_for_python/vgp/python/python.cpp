@@ -25,12 +25,20 @@ void memtest(long i, long j) {
 	using vgp::detail::nodesbyname;
 	vgp::detail::NodeEntry n = *nodesbyname.find("f1");
 	for(long count = 0; count < i; count++)
-	//while(nodes.size() < 1000000)
 		nodes.push_back(n.prototype->clone());
 	for(long count = 0; count < j; count++) {
 		nodes.pop_front();
 		nodes.push_back(n.prototype->clone());
 	}
+}
+
+//using vgp::detail::tree;
+vgp::detail::tree make_int_tree() {
+	return vgp::detail::tree(typeid(int));
+}
+
+int run_as_int(const vgp::detail::tree& t) {
+	return t.run_as<int>();
 }
 
 BOOST_PYTHON_MODULE(vgp)
@@ -44,6 +52,8 @@ BOOST_PYTHON_MODULE(vgp)
 	def("myinit", myinit, "this is the myinit docstring");
 	def("greet", vgp::python::GIL_wrapped(greet), "greeting");
 	def("memtest", memtest, "memory test");
+	def("make_int_tree", make_int_tree);
+	def("run_as_int", run_as_int);
 
 	// Register nodes
 	{
@@ -59,6 +69,7 @@ BOOST_PYTHON_MODULE(vgp)
 			pyexport_nodebase();
 			pyexport_nodeentry();
 			pyexport_nodestorage();
+			pyexport_tree();
 		}
 		{
 			using namespace util;

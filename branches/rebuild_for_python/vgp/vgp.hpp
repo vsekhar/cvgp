@@ -11,6 +11,7 @@
 #include <vgp/register_node.hpp>
 
 #include <vgp/detail/nodestorage.hpp>
+#include <vgp/detail/tree.hpp>
 
 #include <vgp/util/typeinfo.hpp>
 

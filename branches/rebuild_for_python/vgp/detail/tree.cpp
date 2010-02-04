@@ -4,20 +4,21 @@
  *  Created on: 2010-01-31
  */
 
-#include <stdexcept>
+#include <iostream>
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/python.hpp>
 #include <vgp/detail/tree.hpp>
 #include <vgp/detail/node.hpp>
 #include <vgp/detail/nodestorage.hpp>
 #include <vgp/util/random.hpp>
 #include <vgp/defaults.hpp>
 
+using std::cout;
+using std::endl;
+
 namespace vgp {
 namespace detail {
-
-struct TreeGenerateFailed : virtual std::exception {};
-struct MaxDepthReached : virtual std::exception {};
 
 NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 
@@ -29,11 +30,12 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 		throw TreeGenerateFailed();
 
 	// create adjusted probability vector
+	// todo: something is afoot here... leads to crashes below.
 	std::vector<double> probs(count);
 	double depth_ratio = (depth+1) / VGP_MAX_DEPTH;
 	for(std::size_t i = 0; i < count; i++) {
 		double i_ratio = double(i)/count;
-		probs.push_back(std::pow(depth_ratio, i_ratio));
+		probs[i] = std::pow(depth_ratio, i_ratio);
 	}
 
 	// sum and normalize
@@ -57,6 +59,14 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 		else
 			++index;
 	}
+	cout << "Index and count (" << index << ", " << count << ") when looking for '" << t
+			<< "' with random " << threshold << endl;
+	BOOST_FOREACH(const double &d, probs)
+		cout << d << ", ";
+	cout << endl;
+	if(index > count-1) {
+		throw TreeGenerateFailed();
+	}
 	for(std::size_t i = 0; i < index; i++)
 		++beg;
 
@@ -72,6 +82,25 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 
 NodeBase* generate(const util::TypeInfo& t) {return generate_recursive(t,0);}
 
+std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
+	const Node_w_ptr* node = reinterpret_cast<const Node_w_ptr*>(&n);
+	void_fptr_t fptr = node->fptr;
+	NodesByFptr::const_iterator itr = nodesbyfptr.find(fptr);
+	if(itr == nodesbyfptr.end()) return o;
+	o << itr->name << "[" << itr->result_type << "](";
+	if(itr->arity) {
+		const children_t& c = node->getchildren();
+		BOOST_FOREACH(const NodeBase& n, c)
+			o << n;
+	}
+	o << ")";
+	return o;
+}
+
+std::ostream& operator<<(std::ostream& o, const tree& t) {
+	return o << *t.root;
+}
+
 void init_tree(NodeBase& n) {
 	n.init();
 	try {
@@ -84,6 +113,12 @@ void init_tree(NodeBase& n) {
 
 void init_tree(tree& t) {init_tree(*t.root);}
 
+void pyexport_tree() {
+	using namespace boost::python;
+	class_<tree>("tree", no_init)
+			.def(self_ns::str(self)) // gcc hiccups without the namespace here
+			;
+}
 
 } // namespace detail
 } // namespace vgp
