@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <cmath>
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/python.hpp>
@@ -29,16 +30,14 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 	if(count == 0)
 		throw TreeGenerateFailed();
 
-	// create adjusted probability vector
-	// todo: something is afoot here... leads to crashes below.
+	// create adjusted probability vector and normalize
 	std::vector<double> probs(count);
-	double depth_ratio = (depth+1) / VGP_MAX_DEPTH;
-	for(std::size_t i = 0; i < count; i++) {
-		double i_ratio = double(i)/count;
-		probs[i] = std::pow(depth_ratio, i_ratio);
-	}
-
-	// sum and normalize
+	const double base_prob = 1.0/count;
+	const double steepness = depth * VGP_DEPTH_FACTOR;
+	signed int i(0);
+	const signed int c(count);
+	for(; i < c ; i++)
+		probs[i] = base_prob * std::exp((-i)*steepness);
 	double sum = 0;
 	BOOST_FOREACH(const double& d, probs) sum+=d;
 	BOOST_FOREACH(double& d, probs) d/=sum;
@@ -49,7 +48,7 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 	boost::tie(beg, end) = nodesbyresulttype.equal_range(t);
 
 	// find a random one
-	double threshold = boost::uniform_real<>(0,sum)(util::default_generator);
+	const double threshold = boost::uniform_real<>(0,sum)(util::default_generator);
 	double search_sum = 0;
 	std::size_t index = 0;
 	BOOST_FOREACH(const double& d, probs) {
@@ -59,12 +58,12 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 		else
 			++index;
 	}
-	cout << "Index and count (" << index << ", " << count << ") when looking for '" << t
-			<< "' with random " << threshold << endl;
-	BOOST_FOREACH(const double &d, probs)
-		cout << d << ", ";
-	cout << endl;
 	if(index > count-1) {
+		cout << "Index > count (" << index << ", " << count << ") when looking for '" << t
+				<< "' with random " << threshold << endl;
+		BOOST_FOREACH(const double &d, probs)
+			cout << d << ", ";
+		cout << endl;
 		throw TreeGenerateFailed();
 	}
 	for(std::size_t i = 0; i < index; i++)

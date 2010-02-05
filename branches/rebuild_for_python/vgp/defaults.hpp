@@ -8,6 +8,7 @@
 #ifndef DEFAULTS_HPP_
 #define DEFAULTS_HPP_
 
-#define VGP_MAX_DEPTH (1024)
+#define VGP_DEPTH_FACTOR (1.0/20)
+#define VGP_MAX_DEPTH (50)
 
 #endif /* DEFAULTS_HPP_ */
