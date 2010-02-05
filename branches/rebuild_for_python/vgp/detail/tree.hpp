@@ -22,7 +22,6 @@ struct TreeException : virtual std::exception {};
 struct TreeGenerateFailed : virtual TreeException {};
 struct MaxDepthReached : virtual TreeException {};
 
-std::ostream& operator<<(std::ostream&, const NodeBase&);
 NodeBase* generate(const util::TypeInfo&);
 
 struct tree {
@@ -33,7 +32,9 @@ struct tree {
 
 	template <typename R_>
 	R_ run_as() const {
+#		ifdef _DEBUG
 		BOOST_ASSERT(typeid(R_)==result_type);
+#		endif
 		return reinterpret_cast<const Node_returning<R_>*>(root)->run_node();
 	}
 
@@ -42,6 +43,7 @@ struct tree {
 };
 
 void init_tree(tree&);
+std::ostream& operator<<(std::ostream&, const NodeBase&);
 std::ostream& operator<<(std::ostream&, const tree&);
 
 void pyexport_tree();

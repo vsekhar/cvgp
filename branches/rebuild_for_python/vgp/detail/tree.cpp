@@ -21,6 +21,45 @@ using std::endl;
 namespace vgp {
 namespace detail {
 
+// return an index [0,max_index) with an exponentially declining probability
+// curve across the possible values (steepness==0 means flat curve)
+std::size_t probability_curve(std::size_t max_index, double steepness) {
+
+	const double base_prob = 1.0 / max_index;
+	signed int i(0); // prevent signed/unsigned warnings
+	const signed int m(max_index);
+
+	// create probability vector
+	std::vector<double> probs(max_index);
+	double sum = 0;
+	for(; i < m ; i++) {
+		probs[i] = base_prob * std::exp((-i)*steepness);
+		sum += probs[i];
+	}
+
+	// choose
+	const double threshold = boost::uniform_real<>(0,sum)(util::default_generator);
+	double search_sum = 0;
+	std::size_t index = 0;
+	BOOST_FOREACH(const double& d, probs) {
+		search_sum += d;
+		if(search_sum >= threshold) break;
+		else ++index;
+	}
+
+#ifdef _DEBUG
+	cout << "Index: " << index << ", max_index: " << max_index
+			<< ", random: " << threshold << " from " << sum << endl;
+	BOOST_FOREACH(const double &d, probs)
+		cout << d << ", ";
+	cout << endl;
+	if(index > max_index-1)
+		throw TreeGenerateFailed();
+#endif
+
+	return index;
+}
+
 NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 
 	// some checks
@@ -30,42 +69,9 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 	if(count == 0)
 		throw TreeGenerateFailed();
 
-	// create adjusted probability vector and normalize
-	std::vector<double> probs(count);
-	const double base_prob = 1.0/count;
-	const double steepness = depth * VGP_DEPTH_FACTOR;
-	signed int i(0);
-	const signed int c(count);
-	for(; i < c ; i++)
-		probs[i] = base_prob * std::exp((-i)*steepness);
-	double sum = 0;
-	BOOST_FOREACH(const double& d, probs) sum+=d;
-	BOOST_FOREACH(double& d, probs) d/=sum;
-
-	// get iterators
-	NodesByResultType::const_iterator beg;
-	NodesByResultType::const_iterator end;
-	boost::tie(beg, end) = nodesbyresulttype.equal_range(t);
-
-	// find a random one
-	const double threshold = boost::uniform_real<>(0,sum)(util::default_generator);
-	double search_sum = 0;
-	std::size_t index = 0;
-	BOOST_FOREACH(const double& d, probs) {
-		search_sum += d;
-		if(search_sum >= threshold)
-			break;
-		else
-			++index;
-	}
-	if(index > count-1) {
-		cout << "Index > count (" << index << ", " << count << ") when looking for '" << t
-				<< "' with random " << threshold << endl;
-		BOOST_FOREACH(const double &d, probs)
-			cout << d << ", ";
-		cout << endl;
-		throw TreeGenerateFailed();
-	}
+	// get first matching node, advance by chosen index
+	NodesByResultType::const_iterator beg = nodesbyresulttype.lower_bound(t);
+	std::size_t index = probability_curve(count, depth * VGP_DEPTH_FACTOR);
 	for(std::size_t i = 0; i < index; i++)
 		++beg;
 
@@ -88,8 +94,7 @@ std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
 	if(itr == nodesbyfptr.end()) return o;
 	o << itr->name << "[" << itr->result_type << "](";
 	if(itr->arity) {
-		const children_t& c = node->getchildren();
-		BOOST_FOREACH(const NodeBase& n, c)
+		BOOST_FOREACH(const NodeBase& n, node->getchildren())
 			o << n;
 	}
 	o << ")";
