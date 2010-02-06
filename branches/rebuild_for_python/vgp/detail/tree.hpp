@@ -35,7 +35,7 @@ struct tree {
 #		ifdef _DEBUG
 		BOOST_ASSERT(typeid(R_)==result_type);
 #		endif
-		return reinterpret_cast<const Node_returning<R_>*>(root)->run_node();
+		return static_cast<const Node_returning<R_>*>(root)->run_node();
 	}
 
 	NodeBase* root;

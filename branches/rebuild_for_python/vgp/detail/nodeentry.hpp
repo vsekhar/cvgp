@@ -19,7 +19,7 @@ namespace detail {
 struct NodeEntry {
 	NodeEntry(const NodeBase *nb, const util::TypeInfo t, const util::TypeInfoVector p,
 			const std::string& n)
-		: prototype(nb), fptr(reinterpret_cast<const Node_w_ptr*>(nb)->fptr),
+		: prototype(nb), fptr(static_cast<const Node_w_ptr*>(nb)->fptr),
 		  result_type(t), parameter_types(p), name(n), arity(p.size())
 	{}
 	NodeEntry(const NodeEntry& n)

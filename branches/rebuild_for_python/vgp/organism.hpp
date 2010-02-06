@@ -19,7 +19,7 @@ struct Organism {
 	template <typename T>
 	T run() const {
 		const detail::NodeBase* r = root.root;
-		return reinterpret_cast<detail::Node_returning<T>* >(r)->run_node();
+		return static_cast<detail::Node_returning<T>* >(r)->run_node();
 	}
 
 	void init();

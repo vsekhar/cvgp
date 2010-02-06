@@ -91,7 +91,7 @@ struct Node_concrete_n<FPTR, 1>	: Node_w_children<FPTR> {
 		FPTR f = reinterpret_cast<FPTR>(base::fptr);
 		typedef typename mpl::at<parameter_types,mpl::int_< 0 > >::type arg0;
 		const Node_returning<arg0>* child0
-			= reinterpret_cast<const Node_returning<arg0>*>(&base::children[0]);
+			= static_cast<const Node_returning<arg0>*>(&base::children[0]);
 		return f(child0->run_node());
 	}
 };
@@ -107,9 +107,9 @@ struct Node_concrete_n<FPTR, 2> : Node_w_children<FPTR> {
 		typedef typename mpl::at<parameter_types,mpl::int_< 0 > >::type arg0;
 		typedef typename mpl::at<parameter_types,mpl::int_< 1 > >::type arg1;
 		const Node_returning<arg0>* child0
-			= reinterpret_cast<const Node_returning<arg0>*>(&base::children[0]);
+			= static_cast<const Node_returning<arg0>*>(&base::children[0]);
 		const Node_returning<arg1>* child1
-			= reinterpret_cast<const Node_returning<arg1>*>(&base::children[1]);
+			= static_cast<const Node_returning<arg1>*>(&base::children[1]);
 		return f(child0->run_node(), child1->run_node());
 	}
 };
@@ -131,6 +131,7 @@ struct Terminal : Node_returning<typename ft::result_type<FPTR>::type> {
 	virtual NodeBase* clone() const {return new Terminal<FPTR>(*this);}
 };
 
+// state_type must be copy-constructible
 template <class FPTR>
 struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
 	typedef Node_returning<typename ft::result_type<FPTR>::type> base;

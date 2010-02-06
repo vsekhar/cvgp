@@ -20,6 +20,14 @@ NodesByName &nodesbyname = nodes.get<byName>();
 NodesByResultType &nodesbyresulttype = nodes.get<byResultType>();
 NodesByFptr &nodesbyfptr = nodes.get<byFptr>();
 
+const NodeEntry& lookup_node(void_fptr_t p) {return *nodesbyfptr.find(p);}
+const NodeEntry& lookup_node(const NodeBase* n) {
+	return lookup_node(static_cast<const Node_w_ptr*>(n)->fptr);
+}
+
+util::TypeInfo result_type(void_fptr_t p) {return lookup_node(p).result_type;}
+util::TypeInfo result_type(const NodeBase* n) {return lookup_node(n).result_type;}
+
 std::string printnodes() {
 	std::stringstream ss;
 	bool first = true;

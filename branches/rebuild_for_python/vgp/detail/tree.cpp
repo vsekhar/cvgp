@@ -43,19 +43,21 @@ std::size_t probability_curve(std::size_t max_index, double steepness) {
 	std::size_t index = 0;
 	BOOST_FOREACH(const double& d, probs) {
 		search_sum += d;
-		if(search_sum >= threshold) break;
+		if(search_sum >= threshold) break; // must be '>=', not just '>'
 		else ++index;
 	}
 
+	if(index > max_index-1) {
 #ifdef _DEBUG
-	cout << "Index: " << index << ", max_index: " << max_index
-			<< ", random: " << threshold << " from " << sum << endl;
-	BOOST_FOREACH(const double &d, probs)
-		cout << d << ", ";
-	cout << endl;
-	if(index > max_index-1)
-		throw TreeGenerateFailed();
+		cout << "Index: " << index << ", max_index: " << max_index
+				<< ", random: " << threshold << " from " << sum << endl;
+		cout << "Vector: ";
+		BOOST_FOREACH(const double &d, probs)
+			cout << d << ", ";
+		cout << endl;
 #endif
+		throw TreeGenerateFailed();
+	}
 
 	return index;
 }
@@ -88,7 +90,7 @@ NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
 NodeBase* generate(const util::TypeInfo& t) {return generate_recursive(t,0);}
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
-	const Node_w_ptr* node = reinterpret_cast<const Node_w_ptr*>(&n);
+	const Node_w_ptr* node = static_cast<const Node_w_ptr*>(&n);
 	void_fptr_t fptr = node->fptr;
 	NodesByFptr::const_iterator itr = nodesbyfptr.find(fptr);
 	if(itr == nodesbyfptr.end()) return o;
