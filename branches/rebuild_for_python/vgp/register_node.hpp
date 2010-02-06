@@ -28,6 +28,15 @@ NodeBase* make_node(const FPTR f) {
 	return new Node<FPTR>(f);
 }
 
+template <typename FROM, typename TO>
+TO adapter(FROM a) {return a;}
+
+template <typename FROM, typename TO>
+NodeBase* make_adapter() {
+	typedef Node<TO(*)(FROM)> node_t;
+	return new node_t(adapter<FROM,TO>);
+}
+
 template <class FPTR>
 NodeBase* make_terminal(const FPTR f) {
 	return new Terminal<FPTR>(f);
@@ -49,14 +58,26 @@ NodeBase* make_terminal(const FPTR f, STATE s, const IPTR i, const MPTR m)
 namespace register_ {
 
 template <typename FPTR>
-void node(const FPTR f, std::string name) {
-	detail::NodeBase* node = detail::make_node(f);
+void node_common(detail::NodeBase* node, std::string name) {
 	typedef typename ft::result_type<FPTR>::type result_type;
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	util::TypeInfoVector types;
 	mpl::for_each<parameter_types> (util::TypeInfoInserter(types));
 	detail::NodeEntry ne(node, typeid(result_type), types, name);
 	detail::nodesbysequence.push_back(ne);
+}
+
+template <typename FPTR>
+void node(const FPTR f, std::string name) {
+	node_common<FPTR>(detail::make_node(f), name);
+}
+
+template <typename FROM, typename TO>
+void adapter() {
+	typedef FROM(*FPTR)(TO);
+	std::string name = std::string("vgp_adapter_")
+		+ typeid(FROM).name() + "_" + typeid(TO).name();
+	node_common<FPTR>(detail::make_adapter<FROM,TO>(), name);
 }
 
 template <typename FPTR>

@@ -10,7 +10,7 @@
 #include <string>
 #include <boost/python.hpp>
 #include <vgp/vgp.hpp>
-#include <vgp/testnodes/testnodes.hpp>
+#include <vgp/examples/testnodes.hpp>
 
 int myinit() {
 	return 6;
@@ -20,7 +20,9 @@ std::string greet() {
 	return "hello from libvgp";
 }
 
+// re-implement memtest() to use lists of organisms, etc.
 void memtest(long i, long j) {
+#if 0
 	static vgp::detail::NodeList nodes;
 	using vgp::detail::nodesbyname;
 	vgp::detail::NodeEntry n = *nodesbyname.find("f1");
@@ -30,6 +32,7 @@ void memtest(long i, long j) {
 		nodes.pop_front();
 		nodes.push_back(n.prototype->clone());
 	}
+#endif
 }
 
 //using vgp::detail::tree;
