@@ -9,14 +9,12 @@
 #define NODEBASE_HPP_
 
 #include <boost/ptr_container/ptr_vector.hpp>
-#include <boost/ptr_container/ptr_list.hpp>
 
 namespace vgp {
 namespace detail {
 
 struct NodeBase;
 typedef boost::ptr_vector<NodeBase> NodeVector;
-typedef boost::ptr_list<NodeBase> NodeList;
 typedef void(*void_fptr_t)();
 
 // interface (pure virtual and templates)
