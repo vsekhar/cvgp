@@ -8,30 +8,25 @@
 #ifndef ORGANISM_HPP_
 #define ORGANISM_HPP_
 
+#include <stdexcept>
 #include <vector>
-#include <vgp/detail/node.hpp>
-#include <vgp/detail/tree.hpp>
+#include <vgp/detail/trees.hpp>
 #include <vgp/util/typeinfo.hpp>
 
 namespace vgp {
 
+struct OrganismRunError : std::exception {};
+struct OrganismBadRunType : OrganismRunError {};
+
 struct Organism {
-	template <typename T>
-	T run() const {
-		const detail::NodeBase* r = root.root;
-		return static_cast<detail::Node_returning<T>* >(r)->run_node();
-	}
+	Organism(util::TypeInfo);
 
 	void init();
+	void mutate();
+	void make_adf();
+	void collapse_adf();
 
-private:
-	void do_init(detail::NodeBase&);
-	std::vector<std::size_t> adfs(const util::TypeInfo&) const;
-
-	detail::tree root;
-	detail::tree select;
-	detail::tree mate;
-	detail::NodeVector adf;
+	detail::Trees trees;
 };
 
 } // namespace vgp

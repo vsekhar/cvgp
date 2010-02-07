@@ -36,12 +36,18 @@ void memtest(long i, long j) {
 }
 
 //using vgp::detail::tree;
-vgp::detail::tree make_int_tree() {
-	return vgp::detail::tree(typeid(int));
+vgp::detail::tree make_int_org() {
+	using vgp::Organism;
+	using vgp::detail::Trees;
+	using vgp::detail::tree;
+	//using vgp::detail::generate;
+	Trees t;
+	Trees::const_iterator i = t.begin();
+	return tree(vgp::detail::generate(typeid(int), t, i, 0));
 }
 
 int run_as_int(const vgp::detail::tree& t) {
-	return t.run_as<int>();
+	return vgp::detail::run_as<int>(t);
 }
 
 BOOST_PYTHON_MODULE(vgp)

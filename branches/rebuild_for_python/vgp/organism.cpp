@@ -4,17 +4,33 @@
  *  Created on: 2010-01-31
  */
 
-#include <boost/foreach.hpp>
 #include <vgp/organism.hpp>
+#include <vgp/detail/generate.hpp>
 
 namespace vgp {
 
-std::vector<std::size_t> Organism::adfs(const util::TypeInfo& t) const {
-	std::vector<bool> ret(adf.size());
-	//for(std::size_t i = 0; i < adf.size(); i++)
-		// todo: replace with result_type test code
-		//if(n) ret[i] = true;
-	return std::vector<std::size_t>();
+Organism::Organism(util::TypeInfo t) {
+	// create first tree
+	detail::NodeBase* n = detail::generate(t, trees, trees.begin(), 0);
+	trees.push_back(detail::tree(n));
+}
+
+struct init_functor {
+	void operator()(detail::tree& t) {t.init();}
+};
+
+void Organism::init() {
+	detail::Trees::iterator itr = trees.begin();
+	for(; itr != trees.end(); itr++)
+		trees.modify(itr, init_functor());
+}
+
+void Organism::make_adf() {
+
+}
+
+void Organism::collapse_adf() {
+
 }
 
 } // namespace vgp

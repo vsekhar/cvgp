@@ -19,6 +19,7 @@
 #include <boost/mpl/front.hpp>
 
 #include <vgp/detail/nodebase.hpp>
+#include <vgp/detail/adf.hpp>
 
 namespace vgp {
 
@@ -54,7 +55,8 @@ struct Node_w_ptr : NodeBase {
 	Node_w_ptr(void_fptr_t p) : fptr(p) {}
 	virtual void init() {}
 	virtual void mutate() {}
-	virtual bool mutatable() {return false;}
+	virtual bool mutatable() const {return false;}
+	virtual void_fptr_t getpointer() const {return fptr;}
 	virtual NodeVector& getchildren() {throw NoChildren();}
 	virtual const NodeVector& getchildren() const {throw NoChildren();}
 	void_fptr_t const fptr;
@@ -64,6 +66,54 @@ template <typename result_type>
 struct Node_returning : Node_w_ptr {
 	Node_returning(void_fptr_t p) : Node_w_ptr(p) {}
 	virtual result_type run_node() const = 0;
+};
+
+// state_type must be copy-constructible
+template <class FPTR>
+struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
+	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
+	typedef typename ft::result_type<FPTR>::type result_type;
+	typedef typename fptr_to_state_type<FPTR>::type state_type;
+	typedef void (*im_ptr)(state_type&);
+	Terminal_w_state(const FPTR p, const state_type& s, im_ptr i, im_ptr m)
+		: base(reinterpret_cast<void_fptr_t>(p)), state(s), iptr(i), mptr(m) {}
+	Terminal_w_state(const FPTR p, im_ptr i, im_ptr m)
+		: base(reinterpret_cast<void_fptr_t>(p)), iptr(i), mptr(m) {}
+	Terminal_w_state(const FPTR p)
+		: base(reinterpret_cast<void_fptr_t>(p)), iptr(0), mptr(0) {}
+	virtual void init() {if(iptr) iptr(state);}
+	virtual void mutate() {if(mptr) mptr(state);}
+	virtual bool mutatable() const {return mptr!=0;}
+	virtual result_type run_node() const {
+		return reinterpret_cast<FPTR>(base::fptr)(state);
+	}
+	virtual NodeBase* clone() const {return new Terminal_w_state<FPTR>(*this);}
+	virtual NodeBase* clone_adf(Trees::const_iterator i) const {
+		typedef Terminal_w_state<typename adf::fptr_t<result_type>::type> new_node_t;
+		new_node_t *node = new new_node_t(adf::func<result_type>);
+		node->state = i;
+		return node;
+	}
+	state_type state;
+	im_ptr iptr;
+	im_ptr mptr;
+};
+
+template <class FPTR>
+struct Terminal : Node_returning<typename ft::result_type<FPTR>::type> {
+	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
+	typedef typename ft::result_type<FPTR>::type result_type;
+	Terminal(const FPTR p) : base(reinterpret_cast<void_fptr_t>(p)) {}
+	virtual result_type run_node() const {
+		return reinterpret_cast<FPTR>(base::fptr)();
+	}
+	virtual NodeBase* clone() const {return new Terminal<FPTR>(*this);}
+	virtual NodeBase* clone_adf(Trees::const_iterator i) const {
+		typedef Terminal_w_state<typename adf::fptr_t<result_type>::type> new_node_t;
+		new_node_t *node = new new_node_t(adf::func<result_type>);
+		node->state = i;
+		return node;
+	}
 };
 
 typedef NodeVector children_t;
@@ -116,43 +166,17 @@ struct Node_concrete_n<FPTR, 2> : Node_w_children<FPTR> {
 
 template <class FPTR>
 struct Node : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value> {
+	typedef typename ft::result_type<FPTR>::type result_type;
 	Node(const FPTR p) : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value>(p) {}
 	virtual NodeBase* clone() const {return new Node<FPTR>(*this);}
+	virtual NodeBase* clone_adf(Trees::const_iterator i) const {
+		typedef Terminal_w_state<typename adf::fptr_t<result_type>::type> new_node_t;
+		new_node_t *node = new new_node_t(adf::func<result_type>);
+		node->state = i;
+		return node;
+	}
 };
 
-template <class FPTR>
-struct Terminal : Node_returning<typename ft::result_type<FPTR>::type> {
-	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
-	typedef typename ft::result_type<FPTR>::type result_type;
-	Terminal(const FPTR p) : base(reinterpret_cast<void_fptr_t>(p)) {}
-	virtual result_type run_node() const {
-		return reinterpret_cast<FPTR>(base::fptr)();
-	}
-	virtual NodeBase* clone() const {return new Terminal<FPTR>(*this);}
-};
-
-// state_type must be copy-constructible
-template <class FPTR>
-struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
-	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
-	typedef typename ft::result_type<FPTR>::type result_type;
-	typedef typename fptr_to_state_type<FPTR>::type state_type;
-	typedef void (*im_ptr)(state_type&);
-	Terminal_w_state(const FPTR p, const state_type& s, im_ptr i, im_ptr m)
-		: base(reinterpret_cast<void_fptr_t>(p)), state(s), iptr(i), mptr(m) {}
-	Terminal_w_state(const FPTR p, im_ptr i, im_ptr m)
-		: base(reinterpret_cast<void_fptr_t>(p)), iptr(i), mptr(m) {}
-	virtual void init() {if(iptr) iptr(state);}
-	virtual void mutate() {if(mptr) mptr(state);}
-	virtual bool mutatable() {return mptr!=0;}
-	virtual result_type run_node() const {
-		return reinterpret_cast<FPTR>(base::fptr)(state);
-	}
-	virtual NodeBase* clone() const {return new Terminal_w_state<FPTR>(*this);}
-	state_type state;
-	im_ptr iptr;
-	im_ptr mptr;
-};
 
 } // namespace detail
 } // namespace vgp

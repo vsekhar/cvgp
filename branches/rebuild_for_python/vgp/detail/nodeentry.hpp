@@ -10,26 +10,17 @@
 
 #include <string>
 #include <ostream>
-#include <vgp/detail/node.hpp>
+#include <vgp/detail/nodebase_fwd.hpp>
 #include <vgp/util/typeinfo.hpp>
 
 namespace vgp {
 namespace detail {
 
 struct NodeEntry {
-	NodeEntry(const NodeBase *nb, const util::TypeInfo t, const util::TypeInfoVector p,
-			const std::string& n)
-		: prototype(nb), fptr(static_cast<const Node_w_ptr*>(nb)->fptr),
-		  result_type(t), parameter_types(p), name(n), arity(p.size())
-	{}
-	NodeEntry(const NodeEntry& n)
-		: prototype(n.prototype),
-		  fptr(n.fptr),
-		  result_type(n.result_type),
-		  parameter_types(n.parameter_types),
-		  name(n.name),
-		  arity(n.arity)
-	{}
+	NodeEntry(const NodeBase*, const util::TypeInfo, const util::TypeInfoVector,
+			const std::string&);
+	NodeEntry(const NodeEntry&);
+
 	bool terminal() const { return arity==0;}
 
 	const NodeBase* prototype;

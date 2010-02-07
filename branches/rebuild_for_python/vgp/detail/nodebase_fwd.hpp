@@ -11,6 +11,8 @@
 namespace vgp {
 namespace detail {
 struct NodeBase;
+typedef void(*void_fptr_t)();
+
 }
 }
 

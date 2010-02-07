@@ -10,7 +10,7 @@
 
 #include <vgp/detail/nodemultiindex.hpp>
 #include <vgp/util/typeinfo.hpp>
-#include <vgp/detail/nodebase.hpp>
+#include <vgp/detail/nodebase_fwd.hpp>
 
 namespace vgp {
 namespace detail {

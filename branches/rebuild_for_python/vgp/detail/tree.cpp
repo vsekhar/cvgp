@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include <list>
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/python.hpp>
@@ -21,73 +23,48 @@ using std::endl;
 namespace vgp {
 namespace detail {
 
-// return an index [0,max_index) with an exponentially declining probability
-// curve across the possible values (steepness==0 means flat curve)
-std::size_t probability_curve(std::size_t max_index, double steepness) {
+tree::tree(const tree& t) : root(t.root->clone()) {}
+tree::tree(NodeBase* r) : root(r)  {}
+tree::~tree() {delete root;}
 
-	const double base_prob = 1.0 / max_index;
-	signed int i(0); // prevent signed/unsigned warnings
-	const signed int m(max_index);
-
-	// create probability vector
-	std::vector<double> probs(max_index);
-	double sum = 0;
-	for(; i < m ; i++) {
-		probs[i] = base_prob * std::exp((-i)*steepness);
-		sum += probs[i];
+void init_tree(NodeBase& n) {
+	n.init();
+	try {
+		NodeVector& children = n.getchildren();
+		BOOST_FOREACH(detail::NodeBase& child, children)
+			init_tree(child);
 	}
-
-	// choose
-	const double threshold = boost::uniform_real<>(0,sum)(util::default_generator);
-	double search_sum = 0;
-	std::size_t index = 0;
-	BOOST_FOREACH(const double& d, probs) {
-		search_sum += d;
-		if(search_sum >= threshold) break; // must be '>=', not just '>'
-		else ++index;
-	}
-
-	if(index > max_index-1) {
-#ifdef _DEBUG
-		cout << "Index: " << index << ", max_index: " << max_index
-				<< ", random: " << threshold << " from " << sum << endl;
-		cout << "Vector: ";
-		BOOST_FOREACH(const double &d, probs)
-			cout << d << ", ";
-		cout << endl;
-#endif
-		throw TreeGenerateFailed();
-	}
-
-	return index;
+	catch(NoChildren) {}
 }
 
-NodeBase* generate_recursive(const util::TypeInfo &t, std::size_t depth) {
+void tree::init() {init_tree(*root);}
 
-	// some checks
-	if(depth >= VGP_MAX_DEPTH)
-		throw MaxDepthReached();
-	std::size_t count = nodesbyresulttype.count(t);
-	if(count == 0)
-		throw TreeGenerateFailed();
-
-	// get first matching node, advance by chosen index
-	NodesByResultType::const_iterator beg = nodesbyresulttype.lower_bound(t);
-	std::size_t index = probability_curve(count, depth * VGP_DEPTH_FACTOR);
-	for(std::size_t i = 0; i < index; i++)
-		++beg;
-
-	// create and populate children
-	NodeBase* ret = beg->prototype->clone();
-	if(!beg->terminal()) {
-		NodeVector &children = ret->getchildren();
-		BOOST_FOREACH(const util::TypeInfo& t, beg->parameter_types)
-			children.push_back(generate_recursive(t, depth+1));
+void tree::mutate() {
+	std::vector<NodeBase*> mutatables;
+	std::list<NodeBase*> stack;
+	stack.push_back(root);
+	while(!stack.empty()) {
+		NodeBase* cur = stack.back();
+		stack.pop_back();
+		if(cur->mutatable())
+			mutatables.push_back(cur);
+		try {
+			children_t& c = cur->getchildren();
+			BOOST_FOREACH(NodeBase& n, c)
+				stack.push_back(&n);
+		}
+		catch(NoChildren) {}
 	}
-	return ret;
+	if(!mutatables.empty()) {
+		const std::size_t randint
+			= boost::uniform_int<>(0,mutatables.size())(util::default_generator);
+		mutatables[randint]->mutate();
+	}
 }
 
-NodeBase* generate(const util::TypeInfo& t) {return generate_recursive(t,0);}
+util::TypeInfo result_type(const tree& t) {
+	return result_type(t.root);
+}
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
 	const Node_w_ptr* node = static_cast<const Node_w_ptr*>(&n);
@@ -106,18 +83,6 @@ std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
 std::ostream& operator<<(std::ostream& o, const tree& t) {
 	return o << *t.root;
 }
-
-void init_tree(NodeBase& n) {
-	n.init();
-	try {
-		NodeVector& children = n.getchildren();
-		BOOST_FOREACH(detail::NodeBase& child, children)
-			init_tree(child);
-	}
-	catch(NoChildren) {}
-}
-
-void init_tree(tree& t) {init_tree(*t.root);}
 
 void pyexport_tree() {
 	using namespace boost::python;

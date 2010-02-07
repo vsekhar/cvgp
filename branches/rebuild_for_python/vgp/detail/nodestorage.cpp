@@ -10,6 +10,7 @@
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <vgp/detail/nodestorage.hpp>
+#include <vgp/detail/node.hpp>
 
 namespace vgp {
 namespace detail {

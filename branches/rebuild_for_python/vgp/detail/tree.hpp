@@ -8,41 +8,29 @@
 #ifndef TREE_HPP_
 #define TREE_HPP_
 
-#include <stdexcept>
+//#include <stdexcept>
 #include <ostream>
-#include <string>
-#include <vgp/detail/node.hpp>
+//#include <string>
+#include <vgp/detail/nodebase_fwd.hpp>
+//#include <vgp/detail/nodestorage.hpp>
 #include <vgp/util/typeinfo.hpp>
-#include <boost/assert.hpp>
+//#include <boost/assert.hpp>
 
 namespace vgp {
 namespace detail {
 
-struct TreeException : virtual std::exception {};
-struct TreeGenerateFailed : virtual TreeException {};
-struct MaxDepthReached : virtual TreeException {};
-
-NodeBase* generate(const util::TypeInfo&);
-
 struct tree {
-	tree(const tree& t) : root(t.root->clone()), result_type(t.result_type) {}
-	tree(NodeBase* r, const util::TypeInfo& t) : root(r), result_type(t) {}
-	tree(const util::TypeInfo& t) : root(generate(t)), result_type(t) {}
-	~tree() {delete root;}
+	tree(const tree&);
+	tree(NodeBase*);
+	~tree();
 
-	template <typename R_>
-	R_ run_as() const {
-#		ifdef _DEBUG
-		BOOST_ASSERT(typeid(R_)==result_type);
-#		endif
-		return static_cast<const Node_returning<R_>*>(root)->run_node();
-	}
+	void init();
+	void mutate();
 
 	NodeBase* root;
-	util::TypeInfo result_type;
 };
 
-void init_tree(tree&);
+util::TypeInfo result_type(const tree&);
 std::ostream& operator<<(std::ostream&, const NodeBase&);
 std::ostream& operator<<(std::ostream&, const tree&);
 
