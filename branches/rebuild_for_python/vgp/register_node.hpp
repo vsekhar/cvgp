@@ -48,8 +48,7 @@ NodeBase* make_terminal(const FPTR f, const IPTR i, const MPTR m) {
 }
 
 template <class FPTR, class STATE, class IPTR, class MPTR>
-NodeBase* make_terminal(const FPTR f, STATE s, const IPTR i, const MPTR m)
-{
+NodeBase* make_terminal(const FPTR f, STATE s, const IPTR i, const MPTR m) {
 	return new Terminal_w_state<FPTR>(f,s,i,m);
 }
 
@@ -74,7 +73,7 @@ void node(const FPTR f, std::string name) {
 
 template <typename FROM, typename TO>
 void adapter() {
-	typedef FROM(*FPTR)(TO);
+	typedef TO(*FPTR)(FROM);
 	std::string name = std::string("vgp_adapter_")
 		+ typeid(FROM).name() + "_" + typeid(TO).name();
 	node_common<FPTR>(detail::make_adapter<FROM,TO>(), name);
