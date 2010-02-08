@@ -31,6 +31,7 @@ struct types {
 
 struct ADF_base {
 	virtual void set(const state_t&) = 0;
+	virtual state_t get() const = 0;
 };
 
 } // namespace adf
@@ -40,8 +41,13 @@ struct ADF : Terminal_w_state<typename adf::types<result_type>::fptr_type>, adf:
 	typedef Terminal_w_state<typename adf::types<result_type>::fptr_type> base;
 	ADF() : base(adf::func<result_type>) {}
 	virtual void set(const adf::state_t& s) {base::state = s;}
+	virtual adf::state_t get() const {return base::state;}
 	virtual bool isADF() const {return true;}
 };
+
+NodeBase* expand_adf(const NodeBase&);
+void expand_adfs(NodeBase&);
+void expand_adfs(tree&);
 
 } // namespace detail
 } // namespace vgp

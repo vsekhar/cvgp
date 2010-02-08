@@ -8,7 +8,6 @@
 
 #include <vgp/organism.hpp>
 #include <vgp/detail/generate.hpp>
-#include <vgp/util/random.hpp>
 
 namespace vgp {
 

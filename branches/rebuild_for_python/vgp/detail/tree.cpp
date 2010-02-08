@@ -4,7 +4,7 @@
  *  Created on: 2010-01-31
  */
 
-#include <ostream>
+#include <iostream>
 #include <cmath>
 #include <vector>
 #include <list>
@@ -46,6 +46,18 @@ void tree::mutate() {
 			= boost::uniform_int<>(0,g.result.size())(util::default_generator);
 		g.result[randint]->mutate();
 	}
+}
+
+struct counter {
+	std::size_t count;
+	counter() : count(0) {}
+	void operator()(NodeBase&) {++count;}
+};
+
+std::size_t tree::count() const {
+	counter c;
+	walk_tree(*this, c);
+	return c.count;
 }
 
 util::TypeInfo result_type(const tree& t) {

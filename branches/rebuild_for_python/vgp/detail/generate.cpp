@@ -66,7 +66,14 @@ NodeBase* generate(
 	std::size_t index = probability_curve(count, depth * VGP_DEPTH_FACTOR);
 
 	NodeBase *ret;
-	if(index < regular_count) {
+	if(index < adf_count) {
+		TreesByResultType::const_iterator beg = trees.byresulttype.lower_bound(t);
+		std::advance(beg, index - regular_count);
+		Trees::iterator proj_itr = trees.project<bySequence>(beg);
+		ret = node_entry(proj_itr->root).prototype_adf->clone();
+		dynamic_cast<adf::ADF_base*>(ret)->set(proj_itr);
+	}
+	else {
 		NodesByResultType::const_iterator beg = nodesbyresulttype.lower_bound(t);
 		std::advance(beg, index);
 		ret = beg->prototype->clone();
@@ -75,13 +82,6 @@ NodeBase* generate(
 			BOOST_FOREACH(const util::TypeInfo& t, beg->parameter_types)
 				children.push_back(generate(t, trees, cur_tree, depth+1));
 		}
-	}
-	else {
-		TreesByResultType::const_iterator beg = trees.byresulttype.lower_bound(t);
-		std::advance(beg, index - regular_count);
-		Trees::iterator proj_itr = trees.project<bySequence>(beg);
-		ret = node_entry(proj_itr->root).prototype_adf->clone();
-		dynamic_cast<adf::ADF_base*>(ret)->set(proj_itr);
 	}
 	return ret;
 }
