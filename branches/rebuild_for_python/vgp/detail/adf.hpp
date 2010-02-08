@@ -40,6 +40,8 @@ template <typename result_type>
 struct ADF : Terminal_w_state<typename adf::types<result_type>::fptr_type>, adf::ADF_base {
 	typedef Terminal_w_state<typename adf::types<result_type>::fptr_type> base;
 	ADF() : base(adf::func<result_type>) {}
+	ADF(const ADF& a) : base(a) {}
+	virtual NodeBase* clone() const {return new ADF(*this);}
 	virtual void set(const adf::state_t& s) {base::state = s;}
 	virtual adf::state_t get() const {return base::state;}
 	virtual bool isADF() const {return true;}
@@ -48,6 +50,7 @@ struct ADF : Terminal_w_state<typename adf::types<result_type>::fptr_type>, adf:
 NodeBase* expand_adf(const NodeBase&);
 void expand_adfs(NodeBase&);
 void expand_adfs(tree&);
+void make_random_adf(Trees&);
 
 } // namespace detail
 } // namespace vgp

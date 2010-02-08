@@ -30,7 +30,7 @@
 <option id="gnu.cpp.compiler.so.debug.option.optimization.level.1550176775" name="Optimization Level" superClass="gnu.cpp.compiler.so.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 <option id="gnu.cpp.compiler.so.debug.option.debugging.level.616786216" name="Debug Level" superClass="gnu.cpp.compiler.so.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 <option id="gnu.cpp.compiler.option.include.paths.1667898533" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/home/vsekhar/eclipsework/vgp_rebuild"/>
+<listOptionValue builtIn="false" value="&quot;${ProjDirPath}&quot;"/>
 <listOptionValue builtIn="false" value="/usr/include/python3.1"/>
 </option>
 <option id="gnu.cpp.compiler.option.preprocessor.def.262176828" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
@@ -42,7 +42,6 @@
 <option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.so.debug.option.optimization.level.1039655533" name="Optimization Level" superClass="gnu.c.compiler.so.debug.option.optimization.level" valueType="enumerated"/>
 <option id="gnu.c.compiler.so.debug.option.debugging.level.205589753" name="Debug Level" superClass="gnu.c.compiler.so.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 <option id="gnu.c.compiler.option.include.paths.1655117554" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/home/vsekhar/eclipsework/vgp_rebuild"/>
 <listOptionValue builtIn="false" value="/usr/include/python3.1"/>
 </option>
 <option id="gnu.c.compiler.option.preprocessor.def.symbols.532069075" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
@@ -66,7 +65,6 @@
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.assembler.so.debug.921614435" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.so.debug">
 <option id="gnu.both.asm.option.include.paths.957010070" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/home/vsekhar/eclipsework/vgp_rebuild"/>
 <listOptionValue builtIn="false" value="/usr/include/python3.1"/>
 </option>
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1344289153" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>

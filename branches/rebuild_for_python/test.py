@@ -9,3 +9,6 @@ if __name__ == "__main__":
     o = vgp.make_int_org()
     print(str(o))
     print(vgp.run_as_int(o))
+    vgp.make_adf(o)
+    print(str(o))
+    print(vgp.run_as_int(o))

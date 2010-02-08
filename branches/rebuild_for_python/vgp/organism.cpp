@@ -8,6 +8,7 @@
 
 #include <vgp/organism.hpp>
 #include <vgp/detail/generate.hpp>
+#include <vgp/detail/adf.hpp>
 
 namespace vgp {
 
@@ -29,7 +30,7 @@ void Organism::init() {
 }
 
 void Organism::make_adf() {
-
+	detail::make_random_adf(trees);
 }
 
 void Organism::collapse_adf() {
