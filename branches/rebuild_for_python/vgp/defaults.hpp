@@ -2,7 +2,6 @@
  * defaults.hpp
  *
  *  Created on: 2010-01-31
- *      Author: vsekhar
  */
 
 #ifndef DEFAULTS_HPP_

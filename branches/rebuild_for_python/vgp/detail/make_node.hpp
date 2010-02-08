@@ -2,13 +2,14 @@
  * make_node.hpp
  *
  *  Created on: 2010-02-07
- *      Author: vsekhar
  */
 
 #ifndef MAKE_NODE_HPP_
 #define MAKE_NODE_HPP_
 
-#include <vgp/detail/node.hpp>
+#include <vgp/detail/node_concrete.hpp>
+#include <vgp/detail/adf.hpp>
+#include <vgp/detail/tree.hpp>
 
 namespace vgp {
 namespace detail {
@@ -40,6 +41,11 @@ NodeBase* make_terminal(const FPTR f, const IPTR i, const MPTR m) {
 template <class FPTR, class STATE, class IPTR, class MPTR>
 NodeBase* make_terminal(const FPTR f, STATE s, const IPTR i, const MPTR m) {
 	return new Terminal_w_state<FPTR>(f,s,i,m);
+}
+
+template <class result_type>
+NodeBase* make_adf() {
+	return new ADF<result_type>();
 }
 
 } // namespace detail

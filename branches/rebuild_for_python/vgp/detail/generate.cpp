@@ -4,14 +4,14 @@
  *  Created on: 2010-02-07
  */
 
-#include <iostream>
 #include <boost/foreach.hpp>
 
 #include <vgp/defaults.hpp>
 #include <vgp/detail/generate.hpp>
 #include <vgp/detail/nodebase.hpp>
+#include <vgp/detail/nodestorage.hpp>
 #include <vgp/detail/trees.hpp>
-//#include <vgp/detail/adf_terminal.hpp>
+#include <vgp/detail/adf.hpp>
 #include <vgp/util/random.hpp>
 #include <vgp/util/typeinfo.hpp>
 
@@ -45,16 +45,6 @@ std::size_t probability_curve(std::size_t max_index, double steepness) {
 	}
 
 	if(index > max_index-1) {
-#ifdef _DEBUG
-		using std::cout;
-		using std::endl;
-		cout << "Index: " << index << ", max_index: " << max_index
-				<< ", random: " << threshold << " from " << sum << endl;
-		cout << "Vector: ";
-		BOOST_FOREACH(const double &d, probs)
-			cout << d << ", ";
-		cout << endl;
-#endif
 		throw GenerateError();
 	}
 
@@ -90,7 +80,8 @@ NodeBase* generate(
 		TreesByResultType::const_iterator beg = trees.byresulttype.lower_bound(t);
 		std::advance(beg, index - regular_count);
 		Trees::iterator proj_itr = trees.project<bySequence>(beg);
-		ret = node_entry(proj_itr->root).prototype->clone_adf(proj_itr);
+		ret = node_entry(proj_itr->root).prototype_adf->clone();
+		dynamic_cast<adf::ADF_base*>(ret)->set(proj_itr);
 	}
 	return ret;
 }

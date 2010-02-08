@@ -4,26 +4,21 @@
  *  Created on: 2010-02-07
  */
 
-#ifndef RUN_TREE_HPP_
-#define RUN_TREE_HPP_
+#ifndef RUN_HPP_
+#define RUN_HPP_
 
-// Don't include node.hpp here, or it becomes circular with adf.hpp
-//#include <vgp/detail/node.hpp>
-
-#include <vgp/detail/tree.hpp>
 #include <vgp/organism.hpp>
-#include <vgp/detail/nodebase.hpp>
+#include <vgp/detail/tree.hpp>
+#include <vgp/detail/node_intermediate.hpp>
 
 namespace vgp {
-
 namespace detail {
-template <typename T> struct Node_returning;
 
 template <typename R_>
 R_ run_as(const detail::tree& t) {
 	using namespace detail;
 #ifdef _DEBUG
-	BOOST_ASSERT(typeid(R_)==result_type(t.root->getpointer()));
+	BOOST_ASSERT(typeid(R_)==result_type(t.root));
 #endif
 	return static_cast<const Node_returning<R_>*>(t.root)->run_node();
 }
@@ -34,7 +29,7 @@ T run_as(const Organism& o) {
 	// Find first tree with desired result_type T, and run
 	TreesByResultType::const_iterator itr
 		= o.trees.byresulttype.lower_bound(typeid(T));
-	if(itr = o.trees.byresulttype.end())
+	if(itr == o.trees.byresulttype.end())
 		throw OrganismBadRunType();
 	return run_as<T>(*itr);
 }
@@ -42,4 +37,4 @@ T run_as(const Organism& o) {
 } // namespace detail
 } // namespace vgp
 
-#endif /* RUN_TREE_HPP_ */
+#endif /* RUN_HPP_ */

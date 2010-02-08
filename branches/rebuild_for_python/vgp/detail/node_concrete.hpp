@@ -1,11 +1,15 @@
 /*
- * node.hpp
+ * node_concrete.hpp
  *
  *  Created on: 2010-01-27
+ *
+ *  Derives from node_intermediate.hpp to add actual concrete implementations.
+ *
+ *  This header is used by code that needs the ability to create concrete nodes.
  */
 
-#ifndef NODE_HPP_
-#define NODE_HPP_
+#ifndef NODE_CONCRETE_HPP_
+#define NODE_CONCRETE_HPP_
 
 #include <string>
 #include <stdexcept>
@@ -16,10 +20,8 @@
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/int.hpp>
-#include <boost/mpl/front.hpp>
 
-#include <vgp/detail/nodebase.hpp>
-#include <vgp/detail/adf.hpp>
+#include <vgp/detail/node_intermediate.hpp>
 
 namespace vgp {
 
@@ -27,46 +29,6 @@ namespace mpl = ::boost::mpl;
 namespace ft = ::boost::function_types;
 
 namespace detail {
-
-template <typename T>
-struct getfirstparam_wo_reference :
-	boost::remove_reference<
-		typename mpl::front<
-			typename ft::parameter_types<T>::type
-		>::type
-	>
-{};
-
-template <typename T>
-struct fptr_to_imptr {
-	typedef void (*type)(typename getfirstparam_wo_reference<T>::type &);
-};
-
-template <typename T>
-struct fptr_to_state_type
-	: boost::remove_const<
-		  typename getfirstparam_wo_reference<T>::type
-	> {};
-
-struct NoChildren : virtual std::exception {};
-
-// Adds pointer, construct code, and failure to get children
-struct Node_w_ptr : NodeBase {
-	Node_w_ptr(void_fptr_t p) : fptr(p) {}
-	virtual void init() {}
-	virtual void mutate() {}
-	virtual bool mutatable() const {return false;}
-	virtual void_fptr_t getpointer() const {return fptr;}
-	virtual NodeVector& getchildren() {throw NoChildren();}
-	virtual const NodeVector& getchildren() const {throw NoChildren();}
-	void_fptr_t const fptr;
-};
-
-template <typename result_type>
-struct Node_returning : Node_w_ptr {
-	Node_returning(void_fptr_t p) : Node_w_ptr(p) {}
-	virtual result_type run_node() const = 0;
-};
 
 // state_type must be copy-constructible
 template <class FPTR>
@@ -78,9 +40,9 @@ struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
 	Terminal_w_state(const FPTR p, const state_type& s, im_ptr i, im_ptr m)
 		: base(reinterpret_cast<void_fptr_t>(p)), state(s), iptr(i), mptr(m) {}
 	Terminal_w_state(const FPTR p, im_ptr i, im_ptr m)
-		: base(reinterpret_cast<void_fptr_t>(p)), iptr(i), mptr(m) {}
+		: base(reinterpret_cast<void_fptr_t>(p)), state(), iptr(i), mptr(m) {}
 	Terminal_w_state(const FPTR p)
-		: base(reinterpret_cast<void_fptr_t>(p)), iptr(0), mptr(0) {}
+		: base(reinterpret_cast<void_fptr_t>(p)), state(), iptr(0), mptr(0) {}
 	virtual void init() {if(iptr) iptr(state);}
 	virtual void mutate() {if(mptr) mptr(state);}
 	virtual bool mutatable() const {return mptr!=0;}
@@ -88,12 +50,6 @@ struct Terminal_w_state : Node_returning<typename ft::result_type<FPTR>::type> {
 		return reinterpret_cast<FPTR>(base::fptr)(state);
 	}
 	virtual NodeBase* clone() const {return new Terminal_w_state<FPTR>(*this);}
-	virtual NodeBase* clone_adf(Trees::const_iterator i) const {
-		typedef Terminal_w_state<typename adf::fptr_t<result_type>::type> new_node_t;
-		new_node_t *node = new new_node_t(adf::func<result_type>);
-		node->state = i;
-		return node;
-	}
 	state_type state;
 	im_ptr iptr;
 	im_ptr mptr;
@@ -108,25 +64,6 @@ struct Terminal : Node_returning<typename ft::result_type<FPTR>::type> {
 		return reinterpret_cast<FPTR>(base::fptr)();
 	}
 	virtual NodeBase* clone() const {return new Terminal<FPTR>(*this);}
-	virtual NodeBase* clone_adf(Trees::const_iterator i) const {
-		typedef Terminal_w_state<typename adf::fptr_t<result_type>::type> new_node_t;
-		new_node_t *node = new new_node_t(adf::func<result_type>);
-		node->state = i;
-		return node;
-	}
-};
-
-typedef NodeVector children_t;
-
-// Adds children handling
-template <typename FPTR>
-struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
-	Node_w_children(const FPTR p)
-		: Node_returning<typename ft::result_type<FPTR>::type>(
-				reinterpret_cast<void_fptr_t>(p)) {}
-	virtual children_t& getchildren() {return children;}
-	virtual const NodeVector& getchildren() const {return children;}
-	children_t children;
 };
 
 template <class, unsigned int> struct Node_concrete_n;
@@ -169,16 +106,9 @@ struct Node : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value> {
 	typedef typename ft::result_type<FPTR>::type result_type;
 	Node(const FPTR p) : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value>(p) {}
 	virtual NodeBase* clone() const {return new Node<FPTR>(*this);}
-	virtual NodeBase* clone_adf(Trees::const_iterator i) const {
-		typedef Terminal_w_state<typename adf::fptr_t<result_type>::type> new_node_t;
-		new_node_t *node = new new_node_t(adf::func<result_type>);
-		node->state = i;
-		return node;
-	}
 };
-
 
 } // namespace detail
 } // namespace vgp
 
-#endif /* NODE_HPP_ */
+#endif /* NODE_CONCRETE_HPP_ */

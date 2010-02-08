@@ -4,15 +4,18 @@
  *  Created on: 2010-01-31
  */
 
-#include <iostream>
+#include <ostream>
 #include <cmath>
 #include <vector>
 #include <list>
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/python.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <boost/ref.hpp>
+
 #include <vgp/detail/tree.hpp>
-#include <vgp/detail/node.hpp>
+#include <vgp/detail/node_intermediate.hpp>
 #include <vgp/detail/nodestorage.hpp>
 #include <vgp/util/random.hpp>
 #include <vgp/defaults.hpp>
@@ -27,38 +30,21 @@ tree::tree(const tree& t) : root(t.root->clone()) {}
 tree::tree(NodeBase* r) : root(r)  {}
 tree::~tree() {delete root;}
 
-void init_tree(NodeBase& n) {
-	n.init();
-	try {
-		NodeVector& children = n.getchildren();
-		BOOST_FOREACH(detail::NodeBase& child, children)
-			init_tree(child);
-	}
-	catch(NoChildren) {}
-}
+void do_init(NodeBase& n) {n.init();}
+void tree::init() {walk_tree(*this, do_init);}
 
-void tree::init() {init_tree(*root);}
+struct get_mutatables {
+	std::vector<NodeBase*> result;
+	void operator()(NodeBase& n) {if(n.mutatable()) result.push_back(&n);}
+};
 
 void tree::mutate() {
-	std::vector<NodeBase*> mutatables;
-	std::list<NodeBase*> stack;
-	stack.push_back(root);
-	while(!stack.empty()) {
-		NodeBase* cur = stack.back();
-		stack.pop_back();
-		if(cur->mutatable())
-			mutatables.push_back(cur);
-		try {
-			children_t& c = cur->getchildren();
-			BOOST_FOREACH(NodeBase& n, c)
-				stack.push_back(&n);
-		}
-		catch(NoChildren) {}
-	}
-	if(!mutatables.empty()) {
+	get_mutatables g;
+	walk_tree(*this, g);
+	if(!g.result.empty()) {
 		const std::size_t randint
-			= boost::uniform_int<>(0,mutatables.size())(util::default_generator);
-		mutatables[randint]->mutate();
+			= boost::uniform_int<>(0,g.result.size())(util::default_generator);
+		g.result[randint]->mutate();
 	}
 }
 
@@ -67,14 +53,19 @@ util::TypeInfo result_type(const tree& t) {
 }
 
 std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
+	// can't use walk_tree because of the comma handling
 	const Node_w_ptr* node = static_cast<const Node_w_ptr*>(&n);
 	void_fptr_t fptr = node->fptr;
 	NodesByFptr::const_iterator itr = nodesbyfptr.find(fptr);
 	if(itr == nodesbyfptr.end()) return o;
 	o << itr->name << "[" << itr->result_type << "](";
+	bool first = true;
 	if(itr->arity) {
-		BOOST_FOREACH(const NodeBase& n, node->getchildren())
+		BOOST_FOREACH(const NodeBase& n, node->getchildren()) {
+			if(first) first = false;
+			else o << ", ";
 			o << n;
+		}
 	}
 	o << ")";
 	return o;
@@ -82,13 +73,6 @@ std::ostream& operator<<(std::ostream& o, const NodeBase& n) {
 
 std::ostream& operator<<(std::ostream& o, const tree& t) {
 	return o << *t.root;
-}
-
-void pyexport_tree() {
-	using namespace boost::python;
-	class_<tree>("tree", no_init)
-			.def(self_ns::str(self)) // gcc hiccups without the namespace here
-			;
 }
 
 } // namespace detail

@@ -6,8 +6,6 @@ if __name__ == "__main__":
     import vgp
     
     # Put test code here
-    while 1:
-        s = str(vgp.make_int_tree())
-        if "vgp_adapter_" in s:
-            print(s)
-            break
+    o = vgp.make_int_org()
+    print(str(o))
+    print(vgp.run_as_int(o))

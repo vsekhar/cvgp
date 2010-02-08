@@ -2,19 +2,15 @@
  * tree.hpp
  *
  *  Created on: 2010-01-31
- *      Author: vsekhar
  */
 
 #ifndef TREE_HPP_
 #define TREE_HPP_
 
-//#include <stdexcept>
 #include <ostream>
-//#include <string>
-#include <vgp/detail/nodebase_fwd.hpp>
-//#include <vgp/detail/nodestorage.hpp>
+#include <boost/foreach.hpp>
+#include <vgp/detail/node_intermediate.hpp>
 #include <vgp/util/typeinfo.hpp>
-//#include <boost/assert.hpp>
 
 namespace vgp {
 namespace detail {
@@ -34,7 +30,27 @@ util::TypeInfo result_type(const tree&);
 std::ostream& operator<<(std::ostream&, const NodeBase&);
 std::ostream& operator<<(std::ostream&, const tree&);
 
-void pyexport_tree();
+template <typename CALLABLE>
+void walk_tree(NodeBase* n, CALLABLE& c) {
+	std::list<NodeBase*> stack;
+	stack.push_back(n);
+	while(!stack.empty()) {
+		NodeBase* cur_node = stack.back();
+		stack.pop_back();
+		c(*cur_node);
+		try {
+			children_t& children = cur_node->getchildren();
+			BOOST_FOREACH(NodeBase& n, children)
+				stack.push_back(&n);
+		}
+		catch (NoChildren) {}
+	}
+}
+
+template <typename CALLABLE>
+void walk_tree(tree& t, CALLABLE& c) {
+	walk_tree(t.root, c);
+}
 
 } // namespace detail
 } // namespace vgp

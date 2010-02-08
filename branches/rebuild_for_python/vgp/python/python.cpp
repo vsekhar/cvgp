@@ -8,8 +8,10 @@
 #include <vgp/python/gil_wrap.hpp>
 
 #include <string>
+#include <list>
 #include <boost/python.hpp>
 #include <vgp/vgp.hpp>
+#include <vgp/detail/run.hpp>
 #include <vgp/examples/testnodes.hpp>
 
 int myinit() {
@@ -22,32 +24,23 @@ std::string greet() {
 
 // re-implement memtest() to use lists of organisms, etc.
 void memtest(long i, long j) {
-#if 0
-	static vgp::detail::NodeList nodes;
-	using vgp::detail::nodesbyname;
-	vgp::detail::NodeEntry n = *nodesbyname.find("f1");
+	using vgp::Organism;
+	static std::list<Organism> orgs;
 	for(long count = 0; count < i; count++)
-		nodes.push_back(n.prototype->clone());
+		orgs.push_back(Organism(typeid(int)));
 	for(long count = 0; count < j; count++) {
-		nodes.pop_front();
-		nodes.push_back(n.prototype->clone());
+		orgs.pop_front();
+		orgs.push_back(Organism(typeid(int)));
 	}
-#endif
 }
 
 //using vgp::detail::tree;
-vgp::detail::tree make_int_org() {
-	using vgp::Organism;
-	using vgp::detail::Trees;
-	using vgp::detail::tree;
-	//using vgp::detail::generate;
-	Trees t;
-	Trees::const_iterator i = t.begin();
-	return tree(vgp::detail::generate(typeid(int), t, i, 0));
+vgp::Organism make_int_org() {
+	return vgp::Organism(typeid(int));
 }
 
-int run_as_int(const vgp::detail::tree& t) {
-	return vgp::detail::run_as<int>(t);
+int run_as_int(const vgp::Organism& o) {
+	return vgp::detail::run_as<int>(o);
 }
 
 BOOST_PYTHON_MODULE(vgp)
@@ -61,7 +54,7 @@ BOOST_PYTHON_MODULE(vgp)
 	def("myinit", myinit, "this is the myinit docstring");
 	def("greet", vgp::python::GIL_wrapped(greet), "greeting");
 	def("memtest", memtest, "memory test");
-	def("make_int_tree", make_int_tree);
+	def("make_int_org", make_int_org);
 	def("run_as_int", run_as_int);
 
 	// Register nodes
@@ -75,14 +68,12 @@ BOOST_PYTHON_MODULE(vgp)
 		using namespace vgp;
 		{
 			using namespace vgp::detail;
-			pyexport_nodebase();
-			pyexport_nodeentry();
 			pyexport_nodestorage();
-			pyexport_tree();
 		}
 		{
 			using namespace util;
 			pyexport_typeinfo();
 		}
+		pyexport_organism();
 	}
 }

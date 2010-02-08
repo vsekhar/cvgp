@@ -2,7 +2,6 @@
  * nodestorage.hpp
  *
  *  Created on: 2010-01-27
- *      Author: vsekhar
  */
 
 #ifndef NODESTORAGE_HPP_

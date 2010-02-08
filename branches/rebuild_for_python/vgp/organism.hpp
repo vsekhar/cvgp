@@ -2,12 +2,12 @@
  * organism.hpp
  *
  *  Created on: 2010-01-31
- *      Author: vsekhar
  */
 
 #ifndef ORGANISM_HPP_
 #define ORGANISM_HPP_
 
+#include <ostream>
 #include <stdexcept>
 #include <vector>
 #include <vgp/detail/trees.hpp>
@@ -28,6 +28,10 @@ struct Organism {
 
 	detail::Trees trees;
 };
+
+std::ostream& operator<<(std::ostream&, const Organism&);
+
+void pyexport_organism();
 
 } // namespace vgp
 

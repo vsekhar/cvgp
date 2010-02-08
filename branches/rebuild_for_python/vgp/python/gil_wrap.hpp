@@ -2,7 +2,6 @@
  * gil_handling.hpp
  *
  *  Created on: 2010-01-31
- *      Author: vsekhar
  */
 
 #ifndef GIL_HANDLING_HPP_
