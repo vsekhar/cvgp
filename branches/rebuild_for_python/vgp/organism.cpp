@@ -13,7 +13,8 @@ namespace vgp {
 
 Organism::Organism(util::TypeInfo t) {
 	// create first tree
-	detail::NodeBase* n = detail::generate(t, trees, trees.begin(), 0);
+	// todo: problem when trees.count()==0!!
+	detail::NodeBase* n = detail::generate(t, trees, trees.end(), 0);
 	trees.push_back(detail::tree(n));
 	init();
 }
