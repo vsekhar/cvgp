@@ -26,6 +26,8 @@ Trees::Trees(const Trees& t)
 {}
 
 std::ostream& operator<<(std::ostream& o, const Trees& trees) {
+	// need to convert tree::iterator's into indexes, then convert
+	// iterators in ADF nodes into indexes
 	o << "[";
 	bool first = true;
 	BOOST_FOREACH(const tree& cur_tree, trees) {

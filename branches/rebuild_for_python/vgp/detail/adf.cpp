@@ -117,7 +117,7 @@ void make_random_adf(Trees::iterator itr, Trees &trees) {
 			= trees.push_back(tree(itr->root));
 		adf::ADF_base* adf_base = dynamic_cast<adf::ADF_base*>(adf_node);
 		adf_base->set(new_tree_itr);
-		trees.modify(itr, tree_root_setter(adf_node));
+		trees.modify(itr, tree_root_setter(adf_node)); // todo: segfaults
 	}
 	else // logic error
 		BOOST_ASSERT(0);
