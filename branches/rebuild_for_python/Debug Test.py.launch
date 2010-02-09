@@ -22,11 +22,11 @@
 <stringAttribute key="org.eclipse.cdt.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;memoryBlockExpressionList/&gt;&#10;"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_ARGUMENTS" value="test.py Debug"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="/usr/bin/python3"/>
-<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="vgp"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="vgp_rebuild"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="cdt.managedbuild.config.gnu.so.debug.550366791"/>
 <booleanAttribute key="org.eclipse.cdt.launch.use_terminal" value="true"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/vgp"/>
+<listEntry value="/vgp_rebuild"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
