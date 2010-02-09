@@ -1,23 +1,20 @@
-#ifndef VGP_VGP_HPP_
-#define VGP_VGP_HPP_
+/*
+ * vgp.hpp
+ *
+ *  Created on: 2010-01-30
+ */
 
-// Main header
+#ifndef VGP_HPP_
+#define VGP_HPP_
 
-#include <vgp/nodes.hpp>
-#include <vgp/util.hpp>
-#include <vgp/sourcedata.hpp>
+#include <vgp/detail/nodestorage.hpp>
+#include <vgp/detail/trees.hpp>
+#include <vgp/detail/generate.hpp>
+#include <vgp/detail/run.hpp>
+
+#include <vgp/util/typeinfo.hpp>
+
+#include <vgp/register_node.hpp>
 #include <vgp/organism.hpp>
-#include <vgp/population.hpp>
-#include <vgp/evolutionops.hpp>
-#include <vgp/evolver.hpp>
-// #include <vgp/program_options.hpp>
-// #include <vgp/run.hpp>
 
-#include <vgp/detail/text_archives.hpp>
-#include <vgp/detail/binary_archives.hpp>
-
-namespace vgp {
-
-} // end namespace vgp
-
-#endif /*VGP_VGP_HPP_*/
+#endif /* VGP_HPP_ */

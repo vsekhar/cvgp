@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>vgp</name>
+	<name>vgp_rebuild</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.python.pydev.PyDevBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
 			<triggers>clean,full,incremental,</triggers>
@@ -27,7 +32,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildArguments</key>
-					<value>-j4</value>
+					<value></value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildCommand</key>
@@ -35,7 +40,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildLocation</key>
-					<value>${workspace_loc:/vgp/Release}</value>
+					<value>${workspace_loc:/vgp_rebuild/Debug}</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.cleanBuildTarget</key>
@@ -78,9 +83,10 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.cdt.core.ccnature</nature>
-		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
-		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
 </projectDescription>

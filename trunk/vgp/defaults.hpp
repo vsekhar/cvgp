@@ -1,23 +1,17 @@
 /*
  * defaults.hpp
  *
- *  Created on: Sep 26, 2008
- *      Author: vsekhar
+ *  Created on: 2010-01-31
  */
 
-#ifndef VGP_DEFAULTS_HPP_
-#define VGP_DEFAULTS_HPP_
+#ifndef DEFAULTS_HPP_
+#define DEFAULTS_HPP_
 
-#ifndef VGP_DEFAULT_DEPTH_PENALTY
-#define VGP_DEFAULT_DEPTH_PENALTY (0.99)
-#endif
+// Depth penalty factor: smaller number means orgs start preferring terminals
+// at shallower depths, and vice versa.
+#define VGP_DEPTH_FACTOR (1.0/20)
 
-#ifndef VGP_DEFAULT_PC
-#define VGP_DEFAULT_PC (0.1)
-#endif
+// Absolute (hard) limit on organism depth
+#define VGP_MAX_DEPTH (50)
 
-#ifndef VGP_DEFAULT_PM
-#define VGP_DEFAULT_PM (0)
-#endif
-
-#endif /* VGP_DEFAULTS_HPP_ */
+#endif /* DEFAULTS_HPP_ */
