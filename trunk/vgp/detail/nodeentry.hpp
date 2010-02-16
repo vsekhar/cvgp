@@ -23,7 +23,7 @@ struct NodeEntry {
 	bool terminal() const { return arity==0;}
 
 	const NodeBase* prototype;
-	const NodeBase* prototype_adf;
+	// const NodeBase* prototype_adf;
 	const void_fptr_t fptr;
 	const util::TypeInfo result_type;
 	const util::TypeInfoVector parameter_types;

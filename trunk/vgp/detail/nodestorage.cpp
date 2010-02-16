@@ -20,6 +20,12 @@ NodesByName &nodesbyname = nodes.get<byName>();
 NodesByResultType &nodesbyresulttype = nodes.get<byResultType>();
 NodesByFptr &nodesbyfptr = nodes.get<byFptr>();
 
+NodeMultiIndex internal_nodes;
+NodesBySequence &internal_nodesbysequence = internal_nodes.get<bySequence>();
+NodesByName &internal_nodesbyname = internal_nodes.get<byName>();
+NodesByResultType &internal_nodesbyresulttype = internal_nodes.get<byResultType>();
+NodesByFptr &internal_nodesbyfptr = internal_nodes.get<byFptr>();
+
 const NodeEntry& node_entry(void_fptr_t p) {return *nodesbyfptr.find(p);}
 const NodeEntry& node_entry(const NodeBase* n) {
 	return node_entry(static_cast<const Node_w_ptr*>(n)->fptr);
