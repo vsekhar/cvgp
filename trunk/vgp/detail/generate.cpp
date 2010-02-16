@@ -5,6 +5,7 @@
  */
 
 #include <boost/foreach.hpp>
+#include <boost/python.hpp>
 
 #include <vgp/defaults.hpp>
 #include <vgp/detail/generate.hpp>
@@ -18,37 +19,30 @@
 namespace vgp {
 namespace detail {
 
-// return an index [0,max_index) with an exponentially declining probability
+// return an index [0,end) with an exponentially declining probability
 // curve across the possible values (steepness==0 means flat curve)
-std::size_t probability_curve(std::size_t max_index, double steepness) {
+std::size_t probability_curve(std::size_t end, double steepness) {
 
-	const double base_prob = 1.0 / max_index;
-	signed int i(0); // prevent signed/unsigned warnings
-	const signed int m(max_index);
+	using std::exp;
 
-	// create probability vector
-	std::vector<double> probs(max_index);
-	double sum = 0;
-	for(; i < m ; i++) {
-		probs[i] = base_prob * std::exp((-i)*steepness);
-		sum += probs[i];
-	}
-
-	// choose
+	/**********************************************************
+	 * Using partial sum of e^x:
+	 * sum_(k=0)^ne^(-k x) = (e^(n (-x)) (e^(n x+x)-1))/(e^x-1)
+	 * http://www.wolframalpha.com/input/?i=sum+of+e^%28-k*x%29
+	 **********************************************************/
+	const signed int m = end - 1;
+	const double sum =
+		(exp((-m)*steepness) * (exp((m+1) * steepness) - 1)) / (exp(steepness) - 1);
 	const double threshold = boost::uniform_real<>(0,sum)(util::default_generator);
+
 	double search_sum = 0;
-	std::size_t index = 0;
-	BOOST_FOREACH(const double& d, probs) {
-		search_sum += d;
+	std::size_t i;
+	for(i = 0; i < end ; i++) {
+		search_sum += exp(signed(-i)*steepness);
 		if(search_sum >= threshold) break; // must be '>=', not just '>'
-		else ++index;
 	}
 
-	if(index > max_index-1) {
-		throw GenerateError();
-	}
-
-	return index;
+	return i;
 }
 
 NodeBase* generate(
@@ -58,7 +52,7 @@ NodeBase* generate(
 		std::size_t depth)
 {
 	if(depth >= VGP_MAX_DEPTH)
-		throw MaxDepthReached();
+		throw MaxDepthReached("generate reached max depth");
 
 	std::size_t regular_count = nodesbyresulttype.count(t);
 	std::size_t adf_count;
@@ -67,7 +61,7 @@ NodeBase* generate(
 	else
 		adf_count = trees.byresulttype.count(t) - 1; // at least 1 is in there (the cur_tree)
 	std::size_t count = regular_count + adf_count;
-	std::size_t index = probability_curve(count, depth * VGP_DEPTH_FACTOR);
+	std::size_t index = probability_curve(count, (depth+1) * VGP_DEPTH_FACTOR);
 
 	NodeBase *ret;
 	if(index < adf_count) {
@@ -88,6 +82,12 @@ NodeBase* generate(
 		}
 	}
 	return ret;
+}
+
+void pyexport_generate() {
+	using namespace boost::python;
+	def("pcurve", probability_curve);
+	class_<GenerateError>("GenerateError", no_init);
 }
 
 } // namespace detail

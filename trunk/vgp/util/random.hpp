@@ -19,7 +19,7 @@ struct SeededGenerator : GENERATOR {
 
 template <class GENERATOR>
 struct TimeSeededGenerator : GENERATOR {
-	TimeSeededGenerator() : GENERATOR(std::time(0)) {};
+	TimeSeededGenerator() : GENERATOR(static_cast<unsigned int>(std::time(0))) {};
 };
 
 typedef TimeSeededGenerator<boost::mt19937> time_seeded_mersenne_t;
@@ -36,7 +36,6 @@ struct RandomBool : RandomBool_base {
 		return RandomBool_base::operator()() < probability_of_true;
 	}
 };
-
 
 } // namespace util
 } // namespace vgp

@@ -72,6 +72,7 @@ BOOST_PYTHON_MODULE(vgp)
 		{
 			using namespace vgp::detail;
 			pyexport_nodestorage();
+			pyexport_generate();
 		}
 		{
 			using namespace util;
