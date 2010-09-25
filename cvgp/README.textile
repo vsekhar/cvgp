@@ -1,0 +1,60 @@
+h1. VGP
+
+A highly general C++ and Python framework for building distributed evolutionary computing systems
+
+h2. Features:
+
+* Representation-agnostic structure: build systems that represent organisms using function trees, opcode strings, or any other data structure
+** Helper code provided for common representations: trees, strings
+* Type-agnostic execution: organisms can create, pass and return arbitrary types
+* Speed: organism/population operations and simulation are done in C++ code, python code used for light-weight message passing and node management
+
+h2. Components:
+
+Each component provides a 
+
+* cvgp: c++ library that is compiled with user code to produce a python module
+** Input: user code for representation, input, intermediate and output data types, fitness evaluation, etc
+** Provides: libraries to aid in writing user code
+** Output: vgp.so dynamically linked module --> pyvgp
+
+* pyvgp: python module that dynamically loads the module produced by cvgp, and wraps its interface into a 'kernel' object for running computations
+** Input: vgp.so module compiled by cvgp
+** Provides: pythonic interface (the "Kernel" class)
+** Output: python module for managing compute kernel, linked to a compiled C++ kernel
+
+* pymesh: python module for managing interconnected compute kernels on multiple machines
+** Input: python module providing a "Kernel" (e.g. pyvgp)
+** Provides: mesh functionality to interlink multiple compute kernels over a network
+** Output: Functional distributed computation mesh
+
+h2. Prerequisites:
+
+* "Boost 1.34+":http://boost.org
+* "Python 3+":http://python.org
+* "gcc 3.5+":http://gcc.gnu.org
+* "Git":http://gitscm.org (for development on the framework itself)
+
+h2. Repository structure:
+
+* cvgp
+** doc
+** include (header files for user code to include)
+** lib (cvgp pre-compiled static libraries)
+** src (source code for cvgp static libraries)
+** templates (templates for usercode)
+*** string_template.cpp (one-file toy implementation)
+** usersrc
+*** (what about letting the user code just directly in the cvgp directory?)
+** user
+** Makefile
+* pyvgp
+** __init__.py
+* pymesh
+** src
+** pymesh (launch script)
+
+h2. Possible future developments:
+
+* Move from makefiles to a python-based build system so it's all in one? (pyvgp/pymesh could even compile its own cvgp, etc.)
+** Might be easier to just have python invoke make and watch the return code
