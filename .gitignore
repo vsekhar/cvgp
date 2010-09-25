@@ -1,0 +1,10 @@
+*.o
+*.o.*
+*.a
+*.so
+*.so.dbg
+*.bin
+*~
+
+!.gitignore
+
