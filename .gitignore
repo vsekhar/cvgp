@@ -1,3 +1,4 @@
+# Compiled files
 *.o
 *.o.*
 *.a
@@ -6,5 +7,11 @@
 *.bin
 *~
 
+# eclipse cruft
+.settings
+.cproject
+.project
+
+# Be sure to include gitignore eventhough it is a dot file
 !.gitignore
 
