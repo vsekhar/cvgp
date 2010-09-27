@@ -12,6 +12,9 @@
 .cproject
 .project
 
+# scons cruft
+.sconsign.dblite
+
 # Be sure to include gitignore eventhough it is a dot file
 !.gitignore
 
