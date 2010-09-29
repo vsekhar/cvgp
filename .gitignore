@@ -19,3 +19,6 @@
 # Be sure to include gitignore eventhough it is a dot file
 !.gitignore
 
+# python stuff
+.pyc
+.pyo

@@ -1,0 +1,4 @@
+pyvgp is a small python wrapper that pulls in the shared module compiled by cvgp and wraps it into a python interface suitable for use with vmesh
+
+Please see the github wiki for cvgp more information:
+http://www.github.com/vsekhar/cvgp/wiki
