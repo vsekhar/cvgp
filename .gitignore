@@ -6,11 +6,11 @@
 *.so
 *.so.dbg
 *.bin
-*~
-
-# python stuff
 *.pyc
 *.pyo
+
+# editor files
+*~
 
 # eclipse cruft
 .settings
