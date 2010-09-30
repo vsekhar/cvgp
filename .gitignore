@@ -1,11 +1,16 @@
 # Compiled files
 *.o
+*.os
 *.o.*
 *.a
 *.so
 *.so.dbg
 *.bin
 *~
+
+# python stuff
+*.pyc
+*.pyo
 
 # eclipse cruft
 .settings
@@ -19,6 +24,3 @@
 # Be sure to include gitignore eventhough it is a dot file
 !.gitignore
 
-# python stuff
-.pyc
-.pyo
