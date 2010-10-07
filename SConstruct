@@ -1,26 +1,10 @@
-lib_target  = 'hello'
-subdirs = Split("""
-src
-src/detail
-src/util
-""")
+release_env = Environment(variant = 'release')
+release_env.Append(CCFLAGS=['-O'])
 
-DEBUG = True
+debug_env = Environment(variant = 'debug')
+debug_env.Append(CCFLAGS=['-g','-O0'])
+debug_env.Append(CPPDEFINES=['_DEBUG'])
 
-env = Environment()
-env.Append(CPPPATH = ['include', '/usr/include/python3.1'])
-env.Append(LIBS = ['boost_python3'])
-env.Append(CCFLAGS = ['-Wall', '-fmessage-length=0'])
-if DEBUG:
-	env.Append(CCFLAGS=['-g','-O0'])
-	env.Append(CPPDEFINES=['_DEBUG'])
-else:
-	env.Append(CCFLAGS=['-O'])
-
-globpatterns = [s+'/*.cpp' for s in subdirs]
-filelist = map(Glob, globpatterns)
-files = reduce(lambda x,y:x+y, filelist)
-
-lib = env.SharedLibrary(target = lib_target, source = files)
-Default(lib)
+SConscript('SConscript', variant_dir="Release", exports={'env':release_env}, duplicate=0)
+SConscript('SConscript', variant_dir="Debug", exports={'env':debug_env}, duplicate=0)
 

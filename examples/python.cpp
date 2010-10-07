@@ -46,7 +46,7 @@ int run_as_int(const vgp::Organism& o) {
 	return vgp::detail::run_as<int>(o);
 }
 
-BOOST_PYTHON_MODULE(vgp)
+BOOST_PYTHON_MODULE(libvgp)
 {
 	using namespace boost::python;
 
