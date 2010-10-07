@@ -24,3 +24,7 @@
 # Be sure to include gitignore eventhough it is a dot file
 !.gitignore
 
+# build directories
+Debug/
+Release/
+
