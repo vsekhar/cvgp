@@ -4,7 +4,7 @@
  *  Created on: 2010-01-30
  */
 
-#include <vgp/vgp.hpp>
+#include <cvgp/vgp.hpp>
 #include "testnodes.hpp"
 
 int add(int a, int b) {return a+b;}
