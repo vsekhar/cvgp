@@ -12,8 +12,12 @@
 #include <boost/function_types/parameter_types.hpp>
 #include <boost/function_types/function_arity.hpp>
 #include <boost/mpl/for_each.hpp>
+#include <boost/preprocessor/stringize.hpp>
+
 #include <cvgp/detail/nodestorage.hpp>
 #include <cvgp/detail/make_node.hpp>
+
+#define VGP_NAME(x) x,BOOST_PP_STRINGIZE(x)
 
 namespace vgp {
 

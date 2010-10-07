@@ -26,17 +26,17 @@ double f4(const double& state) {return state;}
 
 void load_testnodes() {
 	using namespace vgp::register_;
-	node(add, "add");
-	node(subtract, "subtract");
-	node(multiply, "multiply");
-	node(divide, "divide");
-	node(f1, "f1");
-	terminal(f2, "f2");
-	terminal(f3, "f3");
+	node(VGP_NAME(add));
+	node(VGP_NAME(subtract));
+	node(VGP_NAME(multiply));
+	node(VGP_NAME(divide));
+	node(VGP_NAME(f1));
+	terminal(VGP_NAME(f2));
+	terminal(VGP_NAME(f3));
 	terminal(f4, f4_init, f4_mutate, "f4");
-	terminal(const_0, "const_0");
-	terminal(const_1, "const_1");
-	terminal(const_2, "const_2");
-	terminal(const_10, "const_10");
+	terminal(VGP_NAME(const_0));
+	terminal(VGP_NAME(const_1));
+	terminal(VGP_NAME(const_2));
+	terminal(VGP_NAME(const_10));
 	adapter<char,int>();
 }
