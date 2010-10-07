@@ -12,7 +12,8 @@
 #include <boost/python.hpp>
 #include <cvgp/vgp.hpp>
 #include <cvgp/detail/run.hpp>
-#include <cvgp/examples/testnodes.hpp>
+
+#include "testnodes.hpp"
 
 int myinit() {
 	return 6;
