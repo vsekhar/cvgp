@@ -11,9 +11,8 @@
 #include <list>
 #include <boost/python.hpp>
 #include <cvgp/vgp.hpp>
+#include <cvgp/library.hpp>
 #include <cvgp/detail/run.hpp>
-
-#include "testnodes.hpp"
 
 int myinit() {
 	return 6;
@@ -58,11 +57,13 @@ BOOST_PYTHON_MODULE(libvgp)
 	def("make_int_org", make_int_org);
 	def("run_as_int", run_as_int);
 
-	// Register nodes
-	{
-		load_testnodes();
-		//vgp::registration_done();
-	}
+	// register vgp pre-defined nodes
+	vgp::library::int_arithmetic();
+	vgp::library::double_arithmetic();
+	vgp::library::test_nodes();
+
+	// register user's own nodes
+	//  (n/a)
 
 	// Grab python declarations from elsewhere
 	{
