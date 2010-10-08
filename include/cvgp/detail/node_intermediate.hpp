@@ -44,8 +44,9 @@ struct Node_w_ptr : NodeBase {
  *
  * Leaf/nullary functions use this as a base
  */
-template <typename result_type>
+template <typename RESULT>
 struct Node_returning : Node_w_ptr {
+	typedef RESULT result_type;
 	Node_returning(void_fptr_t p) : Node_w_ptr(p) {}
 	virtual result_type run_node() const = 0;
 };
