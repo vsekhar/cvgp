@@ -35,14 +35,22 @@ struct Node_w_ptr : NodeBase {
 	void_fptr_t const fptr;
 };
 
+/*
+ * Adds a result_type for the contained function
+ *
+ * Separating this from Node_w_ptr allows code to refer to a node
+ * via Node_w_ptr, and even execute that node without knowing the
+ * function's return type
+ *
+ * Leaf/nullary functions use this as a base
+ */
 template <typename result_type>
 struct Node_returning : Node_w_ptr {
 	Node_returning(void_fptr_t p) : Node_w_ptr(p) {}
 	virtual result_type run_node() const = 0;
 };
 
-
-// Adds children handling
+// Adds children handling for non-leaf functions
 template <typename FPTR>
 struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
 	Node_w_children(const FPTR p)
@@ -52,8 +60,6 @@ struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
 	virtual const children_t& getchildren() const {return children;}
 	children_t children;
 };
-
-
 
 } // namespace detail
 } // namespace vgp
