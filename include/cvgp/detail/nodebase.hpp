@@ -14,9 +14,7 @@
 namespace vgp {
 namespace detail {
 
-struct NodeBase;
-typedef boost::ptr_vector<NodeBase> NodeVector;
-typedef boost::ptr_list<NodeBase> NodeList;
+typedef boost::ptr_vector<NodeBase> children_t;
 
 // interface (pure virtual and templates)
 struct NodeBase {
@@ -26,8 +24,8 @@ struct NodeBase {
 	virtual bool mutatable() const = 0;
 	virtual bool isADF() const = 0;
 	virtual void_fptr_t getpointer() const = 0;
-	virtual NodeVector & getchildren() = 0;
-	virtual const NodeVector& getchildren() const = 0;
+	virtual children_t & getchildren() = 0;
+	virtual const children_t& getchildren() const = 0;
 	virtual NodeBase* clone() const = 0;
 };
 
