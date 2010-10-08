@@ -26,12 +26,15 @@ struct NoChildren : virtual std::exception {};
 // Adds pointer, construct code, and failure to get children
 struct Node_w_ptr : NodeBase {
 	Node_w_ptr(void_fptr_t p) : fptr(p) {}
+
 	virtual void init() {}
 	virtual void mutate() {}
 	virtual bool mutatable() const {return false;}
+
 	virtual void_fptr_t getpointer() const {return fptr;}
 	virtual children_t& getchildren() {throw NoChildren();}
 	virtual const children_t& getchildren() const {throw NoChildren();}
+
 	void_fptr_t const fptr;
 };
 
@@ -47,16 +50,19 @@ struct Node_w_ptr : NodeBase {
 template <typename RESULT>
 struct Node_returning : Node_w_ptr {
 	typedef RESULT result_type;
+
 	Node_returning(void_fptr_t p) : Node_w_ptr(p) {}
+
 	virtual result_type run_node() const = 0;
 };
 
 // Adds children handling for non-leaf functions
 template <typename FPTR>
 struct Node_w_children : Node_returning<typename ft::result_type<FPTR>::type> {
-	Node_w_children(const FPTR p)
-		: Node_returning<typename ft::result_type<FPTR>::type>(
-				reinterpret_cast<void_fptr_t>(p)) {}
+	typedef Node_returning<typename ft::result_type<FPTR>::type> base;
+
+	Node_w_children(const FPTR p) : base(reinterpret_cast<void_fptr_t>(p)) {}
+
 	virtual children_t& getchildren() {return children;}
 	virtual const children_t& getchildren() const {return children;}
 	children_t children;
