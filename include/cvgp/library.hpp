@@ -12,7 +12,7 @@ namespace library {
 
 extern void int_arithmetic();
 extern void double_arithmetic();
-
+extern void helloworld();
 extern void test_nodes();
 
 } // namespace library

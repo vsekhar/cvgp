@@ -60,6 +60,7 @@ BOOST_PYTHON_MODULE(libvgp)
 	// register vgp pre-defined nodes
 	vgp::library::int_arithmetic();
 	vgp::library::double_arithmetic();
+	vgp::library::helloworld();
 	vgp::library::test_nodes();
 
 	// register user's own nodes

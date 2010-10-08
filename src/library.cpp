@@ -4,6 +4,8 @@
  *  Created on: 2010-10-08
  */
 
+#include <string>
+
 #include <cvgp/library.hpp>
 #include <cvgp/register.hpp>
 
@@ -38,6 +40,17 @@ void double_arithmetic() {
 	node(VGP_NAME(dsubtract));
 	node(VGP_NAME(dmultiply));
 	node(VGP_NAME(ddivide));
+}
+
+///////////////
+// Hello World
+///////////////
+
+std::string hw() {return "Hello World\n";}
+
+void helloworld() {
+	using namespace vgp::register_;
+	terminal(VGP_NAME(hw));
 }
 
 //////////////
