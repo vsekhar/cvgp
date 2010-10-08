@@ -61,7 +61,7 @@ NodeBase* generate(
 	std::advance(beg, index);
 	ret = beg->prototype->clone();
 	if(!beg->terminal()) {
-		NodeVector &children = ret->getchildren();
+		children_t &children = ret->getchildren();
 		BOOST_FOREACH(const util::TypeInfo& t, beg->parameter_types)
 			children.push_back(generate(t, trees, cur_tree, depth+1));
 	}
