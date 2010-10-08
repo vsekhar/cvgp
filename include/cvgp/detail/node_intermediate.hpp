@@ -57,7 +57,6 @@ struct Node_w_ptr : NodeBase {
 	virtual void init() {}
 	virtual void mutate() {}
 	virtual bool mutatable() const {return false;}
-	virtual bool isADF() const {return false;}
 	virtual void_fptr_t getpointer() const {return fptr;}
 	virtual NodeVector& getchildren() {throw NoChildren();}
 	virtual const NodeVector& getchildren() const {throw NoChildren();}

@@ -23,8 +23,6 @@ struct Organism {
 
 	void init();
 	void mutate();
-	void make_adf();
-	void collapse_adf();
 
 	detail::Trees trees;
 };

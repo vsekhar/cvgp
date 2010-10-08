@@ -32,8 +32,7 @@ void node_common(detail::NodeBase* node, std::string name) {
 	typedef typename ft::parameter_types<FPTR>::type parameter_types;
 	util::TypeInfoVector types;
 	mpl::for_each<parameter_types> (util::TypeInfoInserter(types));
-	detail::NodeBase* adf = detail::make_adf<result_type>();
-	detail::NodeEntry ne(node, adf, typeid(result_type), types, name);
+	detail::NodeEntry ne(node, typeid(result_type), types, name);
 	detail::nodesbysequence.push_back(ne);
 }
 
@@ -53,8 +52,7 @@ void adapter() {
 template <typename FPTR>
 void terminal_common(detail::NodeBase* node, std::string name) {
 	typedef typename ft::result_type<FPTR>::type result_type;
-	detail::NodeBase* adf = detail::make_adf<result_type>();
-	detail::NodeEntry ne(node, adf, typeid(result_type), util::TypeInfoVector(), name);
+	detail::NodeEntry ne(node, typeid(result_type), util::TypeInfoVector(), name);
 	detail::nodesbysequence.push_back(ne);
 }
 

@@ -8,7 +8,6 @@
 #define MAKE_NODE_HPP_
 
 #include <cvgp/detail/node_concrete.hpp>
-#include <cvgp/detail/adf.hpp>
 #include <cvgp/detail/tree.hpp>
 
 namespace vgp {
@@ -41,11 +40,6 @@ NodeBase* make_terminal(const FPTR f, const IPTR i, const MPTR m) {
 template <class FPTR, class STATE, class IPTR, class MPTR>
 NodeBase* make_terminal(const FPTR f, STATE s, const IPTR i, const MPTR m) {
 	return new Terminal_w_state<FPTR>(f,s,i,m);
-}
-
-template <class result_type>
-NodeBase* make_adf() {
-	return new ADF<result_type>();
 }
 
 } // namespace detail

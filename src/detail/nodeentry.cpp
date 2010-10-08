@@ -12,14 +12,13 @@
 namespace vgp {
 namespace detail {
 
-NodeEntry::NodeEntry(const NodeBase *nb, const NodeBase *nb_adf,
-		const util::TypeInfo t, const util::TypeInfoVector p, const std::string& n)
-	: prototype(nb), prototype_adf(nb_adf), fptr(nb->getpointer()),
+NodeEntry::NodeEntry(const NodeBase *nb, const util::TypeInfo t,
+		const util::TypeInfoVector p, const std::string& n)
+	: prototype(nb), fptr(nb->getpointer()),
 	  result_type(t), parameter_types(p), name(n), arity(p.size())
 {}
 NodeEntry::NodeEntry(const NodeEntry& n)
 	: prototype(n.prototype),
-	  prototype_adf(n.prototype_adf),
 	  fptr(n.fptr),
 	  result_type(n.result_type),
 	  parameter_types(n.parameter_types),

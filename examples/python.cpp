@@ -40,8 +40,6 @@ vgp::Organism make_int_org() {
 	return vgp::Organism(typeid(int));
 }
 
-void make_adf(vgp::Organism& o) {o.make_adf();}
-
 int run_as_int(const vgp::Organism& o) {
 	return vgp::detail::run_as<int>(o);
 }
@@ -59,7 +57,6 @@ BOOST_PYTHON_MODULE(libvgp)
 	def("memtest", memtest, "memory test");
 	def("make_int_org", make_int_org);
 	def("run_as_int", run_as_int);
-	def("make_adf", make_adf);
 
 	// Register nodes
 	{
