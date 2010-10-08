@@ -15,39 +15,11 @@
 #include <string>
 #include <stdexcept>
 
-#include <boost/function_types/result_type.hpp>
-#include <boost/function_types/parameter_types.hpp>
-#include <boost/type_traits/remove_reference.hpp>
-#include <boost/mpl/front.hpp>
-
 #include <cvgp/detail/nodebase.hpp>
+#include <cvgp/detail/fptr.hpp>
 
 namespace vgp {
-
-namespace mpl = ::boost::mpl;
-namespace ft = ::boost::function_types;
-
 namespace detail {
-
-template <typename T>
-struct getfirstparam_wo_reference :
-	boost::remove_reference<
-		typename mpl::front<
-			typename ft::parameter_types<T>::type
-		>::type
-	>
-{};
-
-template <typename T>
-struct fptr_to_imptr {
-	typedef void (*type)(typename getfirstparam_wo_reference<T>::type &);
-};
-
-template <typename T>
-struct fptr_to_state_type
-	: boost::remove_const<
-		  typename getfirstparam_wo_reference<T>::type
-	> {};
 
 struct NoChildren : virtual std::exception {};
 
