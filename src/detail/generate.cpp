@@ -12,6 +12,7 @@
 #include <cvgp/detail/nodebase.hpp>
 #include <cvgp/detail/nodestorage.hpp>
 #include <cvgp/detail/trees.hpp>
+#include <cvgp/detail/adf.hpp>
 #include <cvgp/util/random.hpp>
 #include <cvgp/util/typeinfo.hpp>
 
@@ -53,17 +54,32 @@ NodeBase* generate(
 	if(depth >= VGP_MAX_DEPTH)
 		throw MaxDepthReached("generate reached max depth");
 
-	std::size_t count = nodesbyresulttype.count(t);
+	std::size_t regular_count = nodesbyresulttype.count(t);
+	std::size_t adf_count;
+	if(cur_tree == trees.end())
+		adf_count = 0; // nothing there, we must be creating the first tree
+	else
+		adf_count = trees.byresulttype.count(t) - 1; // at least 1 is in there (the cur_tree)
+	std::size_t count = regular_count + adf_count;
 	std::size_t index = probability_curve(count, (depth+1) * VGP_DEPTH_FACTOR);
 
 	NodeBase *ret;
-	NodesByResultType::const_iterator beg = nodesbyresulttype.lower_bound(t);
-	std::advance(beg, index);
-	ret = beg->prototype->clone();
-	if(!beg->terminal()) {
-		NodeVector &children = ret->getchildren();
-		BOOST_FOREACH(const util::TypeInfo& t, beg->parameter_types)
-			children.push_back(generate(t, trees, cur_tree, depth+1));
+	if(index < adf_count) {
+		TreesByResultType::const_iterator beg = trees.byresulttype.lower_bound(t);
+		std::advance(beg, index);
+		Trees::iterator proj_itr = trees.project<bySequence>(beg);
+		ret = node_entry(proj_itr->root).prototype_adf->clone();
+		dynamic_cast<adf::ADF_base*>(ret)->set(proj_itr);
+	}
+	else {
+		NodesByResultType::const_iterator beg = nodesbyresulttype.lower_bound(t);
+		std::advance(beg, index - adf_count);
+		ret = beg->prototype->clone();
+		if(!beg->terminal()) {
+			NodeVector &children = ret->getchildren();
+			BOOST_FOREACH(const util::TypeInfo& t, beg->parameter_types)
+				children.push_back(generate(t, trees, cur_tree, depth+1));
+		}
 	}
 	return ret;
 }

@@ -24,6 +24,7 @@ struct NodeBase {
 	virtual void init() = 0;
 	virtual void mutate() = 0;
 	virtual bool mutatable() const = 0;
+	virtual bool isADF() const = 0;
 	virtual void_fptr_t getpointer() const = 0;
 	virtual NodeVector & getchildren() = 0;
 	virtual const NodeVector& getchildren() const = 0;

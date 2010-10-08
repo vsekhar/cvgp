@@ -8,6 +8,7 @@
 
 #include <cvgp/organism.hpp>
 #include <cvgp/detail/generate.hpp>
+#include <cvgp/detail/adf.hpp>
 
 namespace vgp {
 
@@ -26,6 +27,14 @@ void Organism::init() {
 	detail::Trees::iterator itr = trees.begin();
 	for(; itr != trees.end(); itr++)
 		trees.modify(itr, init_functor());
+}
+
+void Organism::make_adf() {
+	detail::make_random_adf(trees);
+}
+
+void Organism::collapse_adf() {
+
 }
 
 std::ostream& operator<<(std::ostream& o, const Organism& org) {
