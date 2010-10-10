@@ -53,8 +53,9 @@ BOOST_PYTHON_MODULE(libvgp)
 
 	// random python access functions
 	def("myinit", myinit, "this is the myinit docstring");
-	def("greet", vgp::python::GIL_wrapped(greet), "greeting");
+	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
+	def("memtest_mt", vgp::python::GIL_wrapped(memtest), "memory test (multi-threaded)");
 	def("make_int_org", make_int_org);
 	def("run_as_int", run_as_int);
 
