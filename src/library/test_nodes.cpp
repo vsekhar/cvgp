@@ -1,16 +1,20 @@
 /*
- * testnodes.cpp
+ * test_nodes.cpp
  *
- *  Created on: 2010-01-30
+ *  Created on: 2010-10-08
  */
 
-#include <cvgp/vgp.hpp>
-#include "testnodes.hpp"
+#include <string>
 
-int add(int a, int b) {return a+b;}
-int subtract(int a, int b) {return a-b;}
-int multiply(int a, int b) {return a*b;}
-int divide(int a, int b) {if(b) return a/b; else return 0;}
+#include <cvgp/library.hpp>
+#include <cvgp/register.hpp>
+
+namespace vgp {
+namespace library {
+
+//////////////
+// Test nodes
+//////////////
 
 int f1(char c, double d) {if(d>0) return c+1; else return c;}
 char f2() {return 'b';}
@@ -24,12 +28,8 @@ void f4_init(double& state) {state = 0.0;}
 void f4_mutate(double& state) {state+=1;}
 double f4(const double& state) {return state;}
 
-void load_testnodes() {
+void test_nodes() {
 	using namespace vgp::register_;
-	node(VGP_NAME(add));
-	node(VGP_NAME(subtract));
-	node(VGP_NAME(multiply));
-	node(VGP_NAME(divide));
 	node(VGP_NAME(f1));
 	terminal(VGP_NAME(f2));
 	terminal(VGP_NAME(f3));
@@ -40,3 +40,6 @@ void load_testnodes() {
 	terminal(VGP_NAME(const_10));
 	adapter<char,int>();
 }
+
+} // namespace library
+} // namespace vgp

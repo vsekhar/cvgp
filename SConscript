@@ -6,6 +6,7 @@ lib_target  = 'vgp'
 subdirs = Split("""
 src
 src/detail
+src/library
 src/util
 """)
 subdirs.append(usrdir)

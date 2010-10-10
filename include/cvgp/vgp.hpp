@@ -14,7 +14,7 @@
 
 #include <cvgp/util/typeinfo.hpp>
 
-#include <cvgp/register_node.hpp>
+#include <cvgp/register.hpp>
 #include <cvgp/organism.hpp>
 
 #endif /* VGP_HPP_ */

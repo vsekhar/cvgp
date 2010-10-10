@@ -4,8 +4,8 @@
  *  Created on: 2010-01-27
  */
 
-#ifndef REGISTER_NODE_HPP_
-#define REGISTER_NODE_HPP_
+#ifndef REGISTER_HPP_
+#define REGISTER_HPP_
 
 #include <string>
 #include <boost/function_types/result_type.hpp>
@@ -77,4 +77,4 @@ void terminal(const FPTR f, const STATE s, const PTR i, const PTR m, std::string
 } // namespace register
 } // namespace vgp
 
-#endif /* REGISTER_NODE_HPP_ */
+#endif /* REGISTER_HPP_ */
