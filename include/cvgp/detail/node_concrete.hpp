@@ -112,7 +112,9 @@ struct Node_concrete_n<FPTR, 2> : Node_w_children<FPTR> {
 
 template <class FPTR>
 struct Node : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value> {
-	Node(const FPTR p) : Node_concrete_n<FPTR, ft::function_arity<FPTR>::value>(p) {}
+	typedef Node_concrete_n<FPTR, ft::function_arity<FPTR>::value> base;
+	
+	Node(const FPTR p) : base(p) {}
 
 	virtual NodeBase* clone() const {return new Node<FPTR>(*this);}
 };
