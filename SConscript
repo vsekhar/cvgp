@@ -8,6 +8,7 @@ src
 src/detail
 src/library
 src/util
+usr
 """)
 subdirs.append(usrdir)
 

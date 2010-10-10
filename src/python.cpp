@@ -11,7 +11,7 @@
 #include <list>
 #include <boost/python.hpp>
 #include <cvgp/vgp.hpp>
-#include <cvgp/library.hpp>
+#include <cvgp/usrcode.hpp>
 #include <cvgp/detail/run.hpp>
 
 int myinit() {
@@ -48,23 +48,16 @@ BOOST_PYTHON_MODULE(libvgp)
 	using namespace boost::python;
 
 	// initialization code here
+	// (load data files?)
+	vgp::usr::register_usrcode(); // register nodes
 
-
-	// random stuff
+	// random python access functions
 	def("myinit", myinit, "this is the myinit docstring");
 	def("greet", vgp::python::GIL_wrapped(greet), "greeting");
 	def("memtest", memtest, "memory test");
 	def("make_int_org", make_int_org);
 	def("run_as_int", run_as_int);
 
-	// register vgp pre-defined nodes
-	vgp::library::int_arithmetic();
-	vgp::library::double_arithmetic();
-	vgp::library::helloworld();
-	vgp::library::test_nodes();
-
-	// register user's own nodes
-	//  (n/a)
 
 	// Grab python declarations from elsewhere
 	{
