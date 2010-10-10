@@ -10,13 +10,13 @@
 #include <string>
 #include <list>
 #include <boost/python.hpp>
+#include <boost/python/dict.hpp>
 #include <cvgp/vgp.hpp>
 #include <cvgp/usrcode.hpp>
 #include <cvgp/detail/run.hpp>
 
-int myinit() {
-	return 6;
-}
+namespace vgp {
+namespace python {
 
 std::string greet() {
 	return "hello from libvgp";
@@ -43,16 +43,20 @@ int run_as_int(const vgp::Organism& o) {
 	return vgp::detail::run_as<int>(o);
 }
 
+bool init(boost::python::dict kwargs) {
+	return vgp::usr::initialize(kwargs);
+}
+
 BOOST_PYTHON_MODULE(libvgp)
 {
 	using namespace boost::python;
 
 	// initialization code here
 	// (load data files?)
-	vgp::usr::register_usrcode(); // register nodes
+	vgp::usr::register_nodes();
 
-	// random python access functions
-	def("myinit", myinit, "this is the myinit docstring");
+	// python access functions
+	def("init", init, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
 	def("memtest_mt", vgp::python::GIL_wrapped(memtest), "memory test (multi-threaded)");
@@ -74,4 +78,9 @@ BOOST_PYTHON_MODULE(libvgp)
 		}
 		pyexport_organism();
 	}
-}
+
+} // BOOST_PYTHON_MODULE(libvgp)
+
+} // namespace python
+} // namespace vgp
+

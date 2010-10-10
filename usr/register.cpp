@@ -1,5 +1,5 @@
 /*
- * usrcode.cpp
+ * register.cpp
  *
  *  Created on: 2010-10-10
  */
@@ -19,7 +19,6 @@ when the module is initialized.
 
 namespace mynamespace {
 
-
 double custom_usrcode() {return 3.141592685;}
 
 } // namespace mynamespace
@@ -27,7 +26,7 @@ double custom_usrcode() {return 3.141592685;}
 namespace vgp {
 namespace usr {
 
-void register_usrcode() {
+int register_nodes() {
 	// register vgp pre-defined nodes
 	vgp::library::int_arithmetic();
 	vgp::library::double_arithmetic();
@@ -37,6 +36,8 @@ void register_usrcode() {
 	// register user's own nodes
 	using namespace vgp::register_;
 	terminal(mynamespace::custom_usrcode, "custom_usrcode");
+
+	return 1; // << this should be the number of nodes registered
 }
 
 } // namespace usr
