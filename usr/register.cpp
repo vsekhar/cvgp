@@ -2,16 +2,12 @@
  * register.cpp
  *
  *  Created on: 2010-10-10
+ *
+ * This file demonstrates how custom usr code can be added to the
+ * framework. Nodes from both the vgp library and the user's own code can
+ * be registered here. vgp will call vgp::usr::register_usrcode() once
+ * when the module is initialized.
  */
-
-/**********************************************************************
-
-This file demonstrates how custom usr code can be added to the
-framework. Nodes from both the vgp library and the user's own code can
-be registered here. vgp will call vgp::usr::register_usrcode() once
-when the module is initialized.
-
-**********************************************************************/
 
 #include <cvgp/usrcode.hpp>
 #include <cvgp/library.hpp>
