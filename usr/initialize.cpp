@@ -10,15 +10,15 @@
 #include <boost/python/extract.hpp>
 
 #include <cvgp/usrcode.hpp>
-#include <cvgp/util/pyhelp.hpp>
+#include <cvgp/python/helpers.hpp>
 
 namespace vgp {
 namespace usr {
 
 bool initialize(boost::python::dict kwargs) {
 	// access and use kwargs
-	using vgp::util::pyget;
-	std::cout << pyget<std::string>("testarg", kwargs) << std::endl;
+	using vgp::python::pyget;
+	std::cout << pyget<std::string>("hello", kwargs) << std::endl;
 	return true;
 }
 

@@ -9,11 +9,13 @@
 
 #include <string>
 #include <list>
+#include <iostream>
 #include <boost/python.hpp>
 #include <boost/python/dict.hpp>
 #include <cvgp/vgp.hpp>
 #include <cvgp/usrcode.hpp>
 #include <cvgp/detail/run.hpp>
+#include <cvgp/python/helpers.hpp>
 
 namespace vgp {
 namespace python {
@@ -53,16 +55,18 @@ BOOST_PYTHON_MODULE(libvgp)
 
 	// initialization code here
 	// (load data files?)
-	vgp::usr::register_nodes();
+	size_t count = vgp::usr::register_nodes();
+	std::cout << count << " nodes" << std::endl;
 
 	// python access functions
+	vgp::python::register_helpers();
 	def("init", init, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
 	def("memtest_mt", vgp::python::GIL_wrapped(memtest), "memory test (multi-threaded)");
 	def("make_int_org", make_int_org);
 	def("run_as_int", run_as_int);
-
+	
 
 	// Grab python declarations from elsewhere
 	{

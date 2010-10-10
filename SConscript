@@ -7,6 +7,7 @@ subdirs = Split("""
 src
 src/detail
 src/library
+src/python
 src/util
 usr
 """)
