@@ -5,9 +5,9 @@
  */
 
 #include <sstream>
+#include <list>
 #include <boost/foreach.hpp>
 #include <boost/python.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <cvgp/detail/nodestorage.hpp>
 #include <cvgp/detail/node_intermediate.hpp>
 
@@ -34,20 +34,20 @@ const NodeEntry& node_entry(const NodeBase* n) {
 util::TypeInfo result_type(void_fptr_t p) {return node_entry(p).result_type;}
 util::TypeInfo result_type(const NodeBase* n) {return node_entry(n).result_type;}
 
-std::string printnodes() {
-	std::stringstream ss;
-	bool first = true;
+std::vector<std::string> listnodes() {
+	std::vector<std::string> ret;
+	ret.reserve(nodes.size());
 	BOOST_FOREACH(const NodeEntry& n, nodes) {
-		if(first) first = false;
-		else ss << ", ";
+		std::stringstream ss;
 		ss << n;
+		ret.push_back(ss.str());
 	}
-	return ss.str();
+	return ret;
 }
 
 void pyexport_nodestorage() {
 	using namespace boost::python;
-	def("printnodes", printnodes);
+	def("listnodes", listnodes);
 }
 
 } // namespace detail
