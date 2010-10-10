@@ -13,7 +13,7 @@ namespace vgp {
 namespace usr {
 
 extern bool initialize(boost::python::dict);
-extern int register_nodes();
+extern size_t register_nodes();
 
 } // namespace usr
 } // namespace vgp

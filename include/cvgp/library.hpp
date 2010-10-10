@@ -10,10 +10,10 @@
 namespace vgp {
 namespace library {
 
-extern void int_arithmetic();
-extern void double_arithmetic();
-extern void helloworld();
-extern void test_nodes();
+extern size_t int_arithmetic();
+extern size_t double_arithmetic();
+extern size_t helloworld();
+extern size_t test_nodes();
 
 } // namespace library
 } // namespace vgp

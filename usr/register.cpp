@@ -26,18 +26,19 @@ double custom_usrcode() {return 3.141592685;}
 namespace vgp {
 namespace usr {
 
-int register_nodes() {
+size_t register_nodes() {
+	int count = 0;
 	// register vgp pre-defined nodes
-	vgp::library::int_arithmetic();
-	vgp::library::double_arithmetic();
-	vgp::library::helloworld();
-	vgp::library::test_nodes();
+	count += vgp::library::int_arithmetic();
+	count += vgp::library::double_arithmetic();
+	count += vgp::library::helloworld();
+	count += vgp::library::test_nodes();
 
 	// register user's own nodes
 	using namespace vgp::register_;
 	terminal(mynamespace::custom_usrcode, "custom_usrcode");
 
-	return 1; // << this should be the number of nodes registered
+	return count + 1; // number of nodes registered
 }
 
 } // namespace usr

@@ -28,7 +28,7 @@ void f4_init(double& state) {state = 0.0;}
 void f4_mutate(double& state) {state+=1;}
 double f4(const double& state) {return state;}
 
-void test_nodes() {
+size_t test_nodes() {
 	using namespace vgp::register_;
 	node(VGP_NAME(f1));
 	terminal(VGP_NAME(f2));
@@ -39,6 +39,7 @@ void test_nodes() {
 	terminal(VGP_NAME(const_2));
 	terminal(VGP_NAME(const_10));
 	adapter<char,int>();
+	return 9;
 }
 
 } // namespace library
