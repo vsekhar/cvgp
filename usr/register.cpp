@@ -24,13 +24,12 @@ double overloaded(double d) {return d;}
 namespace vgp {
 namespace usr {
 
-size_t register_nodes() {
-	int count = 0;
+void register_nodes() {
 	// register vgp pre-defined nodes
-	count += vgp::library::int_arithmetic();
-	count += vgp::library::double_arithmetic();
-	count += vgp::library::helloworld();
-	count += vgp::library::test_nodes();
+	vgp::library::int_arithmetic();
+	vgp::library::double_arithmetic();
+	vgp::library::helloworld();
+	vgp::library::test_nodes();
 
 	// register user's own nodes
 	using namespace vgp::register_;
@@ -41,8 +40,6 @@ size_t register_nodes() {
 	double (*n2)(double) = mynamespace::overloaded;
 	node(n1, "overloaded");
 	node(n2, "overloaded");
-
-	return count + 1; // number of nodes registered
 }
 
 } // namespace usr

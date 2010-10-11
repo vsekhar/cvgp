@@ -73,8 +73,7 @@ BOOST_PYTHON_MODULE(libvgp)
 
 	// initialization code here
 	// (load data files?)
-	size_t count = vgp::usr::register_nodes();
-	std::cout << count << " nodes" << std::endl;
+	vgp::usr::register_nodes();
 
 	// python access functions
 	def("init", init, "initialize module and user code");

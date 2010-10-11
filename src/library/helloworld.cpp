@@ -18,10 +18,9 @@ namespace library {
 
 std::string hw() {return "Hello World\n";}
 
-size_t helloworld() {
+void helloworld() {
 	using namespace vgp::register_;
 	terminal(VGP_NAME(hw));
-	return 1;
 }
 
 } // namespace library
