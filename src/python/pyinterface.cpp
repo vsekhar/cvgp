@@ -8,10 +8,12 @@
 #include <cvgp/gil_wrap.hpp>
 
 #include <string>
+#include <sstream>
 #include <list>
 #include <iostream>
 #include <boost/python.hpp>
 #include <boost/python/dict.hpp>
+#include <boost/python/list.hpp>
 #include <cvgp/vgp.hpp>
 #include <cvgp/usrcode.hpp>
 #include <cvgp/detail/run.hpp>
@@ -49,6 +51,21 @@ bool init(boost::python::dict kwargs) {
 	return vgp::usr::initialize(kwargs);
 }
 
+boost::python::list send(int count) {
+	boost::python::list ret;
+	static int counter = 1;
+	for(int i=0; i < count; i++) {
+		std::stringstream ss;
+		ss << "Msg " << counter;
+		ret.append(ss.str());
+		counter++;
+	}
+	return ret;
+}
+
+void receive(boost::python::list) {}
+void advance(int) {}
+
 BOOST_PYTHON_MODULE(libvgp)
 {
 	using namespace boost::python;
@@ -66,6 +83,9 @@ BOOST_PYTHON_MODULE(libvgp)
 	def("memtest_mt", vgp::python::GIL_wrapped(memtest), "memory test (multi-threaded)");
 	def("make_int_org", make_int_org);
 	def("run_as_int", run_as_int);
+	def("send", send);
+	def("receive", receive);
+	def("advance", advance);
 	
 
 	// Grab python declarations from elsewhere
