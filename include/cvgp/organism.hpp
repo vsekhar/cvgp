@@ -27,6 +27,9 @@ struct Organism {
 	detail::Trees trees;
 };
 
+template <class R_>
+Organism make_org_returning() {return Organism(typeid(R_));}
+
 std::ostream& operator<<(std::ostream&, const Organism&);
 
 } // namespace vgp

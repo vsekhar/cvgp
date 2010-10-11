@@ -39,19 +39,6 @@ void memtest(long i, long j) {
 	}
 }
 
-//using vgp::detail::tree;
-vgp::Organism make_int_org() {
-	return vgp::Organism(typeid(int));
-}
-
-int run_as_int(const vgp::Organism& o) {
-	return vgp::detail::run_as<int>(o);
-}
-
-bool init(boost::python::dict kwargs) {
-	return vgp::usr::initialize(kwargs);
-}
-
 boost::python::list send(int count) {
 	boost::python::list ret;
 	static int counter = 1;
@@ -76,12 +63,12 @@ BOOST_PYTHON_MODULE(libvgp)
 	vgp::usr::register_nodes();
 
 	// python access functions
-	def("init", init, "initialize module and user code");
+	def("init", usr::initialize, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
 	def("memtest_mt", vgp::python::GIL_wrapped(memtest), "memory test (multi-threaded)");
-	def("make_int_org", make_int_org);
-	def("run_as_int", run_as_int);
+	def("make_int_org", make_org_returning<int>);
+	def("run_as_int", detail::run_as<int>);
 	def("send", send);
 	def("receive", receive);
 	def("advance", advance);
