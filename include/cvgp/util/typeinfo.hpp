@@ -1,5 +1,5 @@
-#ifndef VGP_TYPEINFO_HPP_
-#define VGP_TYPEINFO_HPP_
+#ifndef VGP_UTIL_TYPEINFO_HPP_
+#define VGP_UTIL_TYPEINFO_HPP_
 
 #include <typeinfo>
 #include <ostream>
@@ -46,4 +46,4 @@ void pyexport_typeinfo();
 } // namespace util
 } // namespace vgp
 
-#endif /*VGP_TYPEINFO_HPP_*/
+#endif /*VGP_UTIL_TYPEINFO_HPP_*/

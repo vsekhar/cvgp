@@ -7,7 +7,9 @@ subdirs = Split("""
 src
 src/detail
 src/library
+src/python
 src/util
+usr
 """)
 subdirs.append(usrdir)
 
