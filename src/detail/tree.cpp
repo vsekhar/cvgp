@@ -9,10 +9,6 @@
 #include <vector>
 #include <list>
 #include <boost/foreach.hpp>
-#include <boost/tuple/tuple.hpp>
-#include <boost/python.hpp>
-#include <boost/lambda/lambda.hpp>
-#include <boost/ref.hpp>
 
 #include <cvgp/detail/tree.hpp>
 #include <cvgp/detail/node_intermediate.hpp>

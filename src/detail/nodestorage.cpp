@@ -4,10 +4,10 @@
  *  Created on: 2010-01-27
  */
 
+#include <string>
+#include <vector>
 #include <sstream>
-#include <list>
 #include <boost/foreach.hpp>
-#include <boost/python.hpp>
 #include <cvgp/detail/nodestorage.hpp>
 #include <cvgp/detail/node_intermediate.hpp>
 
@@ -16,15 +16,9 @@ namespace detail {
 
 NodeMultiIndex nodes;
 NodesBySequence &nodesbysequence = nodes.get<bySequence>();
-NodesByName &nodesbyname = nodes.get<byName>();
+NodesById &nodesbyid = nodes.get<byId>();
 NodesByResultType &nodesbyresulttype = nodes.get<byResultType>();
 NodesByFptr &nodesbyfptr = nodes.get<byFptr>();
-
-NodeMultiIndex internal_nodes;
-NodesBySequence &internal_nodesbysequence = internal_nodes.get<bySequence>();
-NodesByName &internal_nodesbyname = internal_nodes.get<byName>();
-NodesByResultType &internal_nodesbyresulttype = internal_nodes.get<byResultType>();
-NodesByFptr &internal_nodesbyfptr = internal_nodes.get<byFptr>();
 
 const NodeEntry& node_entry(void_fptr_t p) {return *nodesbyfptr.find(p);}
 const NodeEntry& node_entry(const NodeBase* n) {
@@ -43,11 +37,6 @@ std::vector<std::string> listnodes() {
 		ret.push_back(ss.str());
 	}
 	return ret;
-}
-
-void pyexport_nodestorage() {
-	using namespace boost::python;
-	def("listnodes", listnodes);
 }
 
 } // namespace detail

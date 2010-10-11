@@ -4,6 +4,8 @@
  *  Created on: 2010-01-30
  */
 
+#include <sstream>
+
 #include <boost/foreach.hpp>
 
 #include <cvgp/detail/nodeentry.hpp>
@@ -27,16 +29,21 @@ NodeEntry::NodeEntry(const NodeEntry& n)
 	  arity(n.arity)
 {}
 
-std::ostream& operator<<(std::ostream& o, const NodeEntry& n) {
-	o << n.name << "[" << n.result_type << "](";
+std::string NodeEntry::id() const {
+	std::stringstream ret;
+	ret << name << "[" << result_type << "](";
 	bool first = true;
-	BOOST_FOREACH(const util::TypeInfo& t, n.parameter_types) {
+	BOOST_FOREACH(const util::TypeInfo& t, parameter_types) {
 		if(first) first = false;
-		else o << ",";
-		o << t;
+		else ret << ",";
+		ret << t;
 	}
-	o << ")";
-	return o;
+	ret << ")";
+	return ret.str();
+}
+
+std::ostream& operator<<(std::ostream& o, const NodeEntry& n) {
+	return o<<n.id();
 }
 
 } // namespace detail

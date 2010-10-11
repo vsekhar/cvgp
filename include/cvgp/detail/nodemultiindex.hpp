@@ -9,6 +9,7 @@
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multi_index/member.hpp>
+#include <boost/multi_index/mem_fun.hpp>
 
 #include <cvgp/detail/nodeentry.hpp>
 
@@ -17,7 +18,7 @@ namespace vgp {
 namespace detail {
 
 struct bySequence;
-struct byName;
+struct byId;
 struct byResultType;
 struct byFptr;
 
@@ -28,8 +29,8 @@ typedef multi_index_container<
 	indexed_by<
 		sequenced<tag<bySequence> >
 		, ordered_unique<
-			tag<byName>,
-			member<NodeEntry, const std::string, &NodeEntry::name>
+			tag<byId>,
+			const_mem_fun<NodeEntry, std::string, &NodeEntry::id>
 		>
 		, ordered_non_unique<
 			tag<byResultType>,
@@ -47,7 +48,7 @@ typedef multi_index_container<
 > NodeMultiIndex;
 
 typedef NodeMultiIndex::index<bySequence>::type NodesBySequence;
-typedef NodeMultiIndex::index<byName>::type NodesByName;
+typedef NodeMultiIndex::index<byId>::type NodesById;
 typedef NodeMultiIndex::index<byResultType>::type NodesByResultType;
 typedef NodeMultiIndex::index<byFptr>::type NodesByFptr;
 

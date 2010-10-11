@@ -7,7 +7,12 @@
 #ifndef VGP_UTIL_PYTHON_HPP_
 #define VGP_UTIL_PYTHON_HPP_
 
+#include <string>
+#include <vector>
+#include <ostream>
+
 #include <boost/python/dict.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 namespace vgp {
 namespace python {
@@ -18,9 +23,8 @@ RESULT pyget(std::string name, boost::python::dict d) {
 	return extract<std::string>(d[name]);
 }
 
-extern void register_helpers();
-
 } // namespace python
 } // namespace vgp
 
 #endif // VGP_UTIL_PYTHON_HPP_
+

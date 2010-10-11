@@ -5,15 +5,17 @@
  */
 
 // has to be first b/c it includes Python.h
-#include <cvgp/gil_wrap.hpp>
+#include <cvgp/python/gil_wrap.hpp>
 
 #include <string>
 #include <sstream>
 #include <list>
+#include <vector>
 #include <iostream>
 #include <boost/python.hpp>
 #include <boost/python/dict.hpp>
 #include <boost/python/list.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <cvgp/vgp.hpp>
 #include <cvgp/usrcode.hpp>
 #include <cvgp/detail/run.hpp>
@@ -26,7 +28,6 @@ std::string greet() {
 	return "hello from libvgp";
 }
 
-// re-implement memtest() to use lists of organisms, etc.
 void memtest(long i, long j) {
 	using vgp::Organism;
 	static std::list<Organism> orgs;
@@ -36,21 +37,6 @@ void memtest(long i, long j) {
 		orgs.pop_front();
 		orgs.push_back(Organism(typeid(int)));
 	}
-}
-
-//using vgp::detail::tree;
-vgp::Organism make_int_org() {
-	return vgp::Organism(typeid(int));
-}
-
-void make_adf(vgp::Organism& o) {o.make_adf();}
-
-int run_as_int(const vgp::Organism& o) {
-	return vgp::detail::run_as<int>(o);
-}
-
-bool init(boost::python::dict kwargs) {
-	return vgp::usr::initialize(kwargs);
 }
 
 boost::python::list send(int count) {
@@ -74,17 +60,15 @@ BOOST_PYTHON_MODULE(libvgp)
 
 	// initialization code here
 	// (load data files?)
-	size_t count = vgp::usr::register_nodes();
-	std::cout << count << " nodes" << std::endl;
+	vgp::usr::register_nodes();
 
 	// python access functions
-	vgp::python::register_helpers();
-	def("init", init, "initialize module and user code");
+	def("init", usr::initialize, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
 	def("memtest_mt", vgp::python::GIL_wrapped(memtest), "memory test (multi-threaded)");
-	def("make_int_org", make_int_org);
-	def("run_as_int", run_as_int);
+	def("make_int_org", make_org_returning<int>);
+	def("run_as_int", detail::run_as<int>);
 	def("make_adf", make_adf);
 	def("send", send);
 	def("receive", receive);
@@ -95,14 +79,30 @@ BOOST_PYTHON_MODULE(libvgp)
 		using namespace vgp;
 		{
 			using namespace vgp::detail;
-			pyexport_nodestorage();
-			pyexport_generate();
+			def("listnodes", listnodes);
+			def("pcurve", probability_curve);
+			class_<GenerateError>("GenerateError", no_init);
 		}
 		{
 			using namespace util;
-			pyexport_typeinfo();
+			class_<TypeInfo>("TypeInfo", no_init)
+				.def(self_ns::str(self)) // gcc hiccups without the namespace here
+				.def(self == self)
+				.def(self < self)
+				;
+			class_<TypeInfoVector>("TypeInfoVector")
+					.def(vector_indexing_suite<TypeInfoVector>())
+					;
 		}
-		pyexport_organism();
+		{
+			using namespace python;
+			typedef std::vector<std::string> VecOfStr;
+			class_<VecOfStr>("VectorOfStrings")
+				.def(vector_indexing_suite<VecOfStr>());
+		}
+		class_<Organism>("Organism", no_init)
+			.def(self_ns::str(self)) // gcc hiccups without the namespace here
+			;
 	}
 
 } // BOOST_PYTHON_MODULE(libvgp)

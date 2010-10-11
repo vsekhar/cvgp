@@ -29,9 +29,10 @@ struct Organism {
 	detail::Trees trees;
 };
 
-std::ostream& operator<<(std::ostream&, const Organism&);
+template <class R_>
+Organism make_org_returning() {return Organism(typeid(R_));}
 
-void pyexport_organism();
+std::ostream& operator<<(std::ostream&, const Organism&);
 
 } // namespace vgp
 
