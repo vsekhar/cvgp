@@ -21,6 +21,7 @@ struct NodeEntry {
 	NodeEntry(const NodeEntry&);
 
 	bool terminal() const { return arity==0;}
+	std::string id() const;
 
 	const NodeBase* prototype;
 	const void_fptr_t fptr;

@@ -19,15 +19,9 @@ namespace detail {
 
 extern NodeMultiIndex nodes;
 extern NodesBySequence &nodesbysequence;
-extern NodesByName &nodesbyname;
+extern NodesById &nodesbyid;
 extern NodesByResultType &nodesbyresulttype;
 extern NodesByFptr &nodesbyfptr;
-
-extern NodeMultiIndex internal_nodes;
-extern NodesBySequence &internal_nodesbysequence;
-extern NodesByName &internal_nodesbyname;
-extern NodesByResultType &internal_nodesbyresulttype;
-extern NodesByFptr &internal_nodesbyfptr;
 
 const NodeEntry& node_entry(void_fptr_t);
 const NodeEntry& node_entry(const NodeBase*);

@@ -16,6 +16,8 @@
 namespace mynamespace {
 
 double custom_usrcode() {return 3.141592685;}
+int overloaded(int i) {return i;}
+double overloaded(double d) {return d;}
 
 } // namespace mynamespace
 
@@ -33,6 +35,12 @@ size_t register_nodes() {
 	// register user's own nodes
 	using namespace vgp::register_;
 	terminal(mynamespace::custom_usrcode, "custom_usrcode");
+	
+	// register overloaded functions (ok as long as signatures are unique)
+	int (*n1)(int) = mynamespace::overloaded;
+	double (*n2)(double) = mynamespace::overloaded;
+	node(n1, "overloaded");
+	node(n2, "overloaded");
 
 	return count + 1; // number of nodes registered
 }
