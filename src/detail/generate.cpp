@@ -5,7 +5,6 @@
  */
 
 #include <boost/foreach.hpp>
-#include <boost/python.hpp>
 
 #include <cvgp/defaults.hpp>
 #include <cvgp/detail/generate.hpp>
@@ -66,12 +65,6 @@ NodeBase* generate(
 			children.push_back(generate(t, trees, cur_tree, depth+1));
 	}
 	return ret;
-}
-
-void pyexport_generate() {
-	using namespace boost::python;
-	def("pcurve", probability_curve);
-	class_<GenerateError>("GenerateError", no_init);
 }
 
 } // namespace detail

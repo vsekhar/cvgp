@@ -23,8 +23,7 @@ struct MaxDepthReached : virtual std::length_error {
 };
 
 NodeBase* generate(util::TypeInfo, const Trees&, const Trees::iterator&, std::size_t);
-
-void pyexport_generate();
+std::size_t probability_curve(std::size_t, double);
 
 } // namespace detail
 } // namespace vgp

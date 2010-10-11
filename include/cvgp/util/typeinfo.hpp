@@ -41,9 +41,8 @@ struct TypeInfoInserter {
 	util::TypeInfoVector& vector;
 };
 
-void pyexport_typeinfo();
-
 } // namespace util
 } // namespace vgp
 
 #endif /*VGP_UTIL_TYPEINFO_HPP_*/
+

@@ -7,6 +7,10 @@
 #ifndef VGP_UTIL_PYTHON_HPP_
 #define VGP_UTIL_PYTHON_HPP_
 
+#include <string>
+#include <vector>
+#include <ostream>
+
 #include <boost/python/dict.hpp>
 
 namespace vgp {
@@ -18,9 +22,16 @@ RESULT pyget(std::string name, boost::python::dict d) {
 	return extract<std::string>(d[name]);
 }
 
-extern void register_helpers();
+typedef std::vector<std::string> VecOfStr;
 
 } // namespace python
 } // namespace vgp
 
+namespace std {
+
+ostream& operator<<(ostream&, const vgp::python::VecOfStr&);
+
+} // namespace std
+
 #endif // VGP_UTIL_PYTHON_HPP_
+

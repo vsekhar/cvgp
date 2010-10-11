@@ -5,7 +5,7 @@
  */
 
 // has to be first b/c it includes Python.h
-#include <cvgp/gil_wrap.hpp>
+#include <cvgp/python/gil_wrap.hpp>
 
 #include <string>
 #include <sstream>
@@ -14,6 +14,7 @@
 #include <boost/python.hpp>
 #include <boost/python/dict.hpp>
 #include <boost/python/list.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <cvgp/vgp.hpp>
 #include <cvgp/usrcode.hpp>
 #include <cvgp/detail/run.hpp>
@@ -76,7 +77,6 @@ BOOST_PYTHON_MODULE(libvgp)
 	std::cout << count << " nodes" << std::endl;
 
 	// python access functions
-	vgp::python::register_helpers();
 	def("init", init, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
@@ -93,14 +93,32 @@ BOOST_PYTHON_MODULE(libvgp)
 		using namespace vgp;
 		{
 			using namespace vgp::detail;
-			pyexport_nodestorage();
-			pyexport_generate();
+			def("listnodes", listnodes);
+			def("pcurve", probability_curve);
+			class_<GenerateError>("GenerateError", no_init);
 		}
 		{
 			using namespace util;
-			pyexport_typeinfo();
+			class_<TypeInfo>("TypeInfo", no_init)
+				.def(self_ns::str(self)) // gcc hiccups without the namespace here
+				.def(self == self)
+				.def(self < self)
+				;
+			class_<TypeInfoVector>("TypeInfoVector")
+					.def(vector_indexing_suite<TypeInfoVector>())
+					;
+
 		}
-		pyexport_organism();
+		{
+			using namespace python;
+			class_<VecOfStr>("VectorOfStrings")
+				.def(vector_indexing_suite<VecOfStr>())
+				.def(self_ns::str(self));
+
+		}
+		class_<Organism>("Organism", no_init)
+			.def(self_ns::str(self)) // gcc hiccups without the namespace here
+			;
 	}
 
 } // BOOST_PYTHON_MODULE(libvgp)

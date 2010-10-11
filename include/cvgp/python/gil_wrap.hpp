@@ -7,7 +7,7 @@
 #ifndef GIL_HANDLING_HPP_
 #define GIL_HANDLING_HPP_
 
-#include <Python.h>
+#include <Python.h>	// must be first
 #include <boost/shared_ptr.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/type_traits/add_reference.hpp>

@@ -4,8 +4,6 @@
  *  Created on: 2010-01-31
  */
 
-#include <boost/python.hpp>
-
 #include <cvgp/organism.hpp>
 #include <cvgp/detail/generate.hpp>
 
@@ -30,13 +28,6 @@ void Organism::init() {
 
 std::ostream& operator<<(std::ostream& o, const Organism& org) {
 	return o << org.trees;
-}
-
-void pyexport_organism() {
-	using namespace boost::python;
-	class_<Organism>("Organism", no_init)
-			.def(self_ns::str(self)) // gcc hiccups without the namespace here
-			;
 }
 
 } // namespace vgp

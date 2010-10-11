@@ -29,8 +29,6 @@ struct Organism {
 
 std::ostream& operator<<(std::ostream&, const Organism&);
 
-void pyexport_organism();
-
 } // namespace vgp
 
 

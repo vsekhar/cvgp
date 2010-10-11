@@ -4,10 +4,10 @@
  *  Created on: 2010-01-27
  */
 
+#include <string>
+#include <vector>
 #include <sstream>
-#include <list>
 #include <boost/foreach.hpp>
-#include <boost/python.hpp>
 #include <cvgp/detail/nodestorage.hpp>
 #include <cvgp/detail/node_intermediate.hpp>
 
@@ -43,11 +43,6 @@ std::vector<std::string> listnodes() {
 		ret.push_back(ss.str());
 	}
 	return ret;
-}
-
-void pyexport_nodestorage() {
-	using namespace boost::python;
-	def("listnodes", listnodes);
 }
 
 } // namespace detail
