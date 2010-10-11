@@ -12,6 +12,7 @@
 #include <ostream>
 
 #include <boost/python/dict.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 namespace vgp {
 namespace python {
@@ -22,16 +23,8 @@ RESULT pyget(std::string name, boost::python::dict d) {
 	return extract<std::string>(d[name]);
 }
 
-typedef std::vector<std::string> VecOfStr;
-
 } // namespace python
 } // namespace vgp
-
-namespace std {
-
-ostream& operator<<(ostream&, const vgp::python::VecOfStr&);
-
-} // namespace std
 
 #endif // VGP_UTIL_PYTHON_HPP_
 

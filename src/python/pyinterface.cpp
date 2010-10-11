@@ -10,6 +10,7 @@
 #include <string>
 #include <sstream>
 #include <list>
+#include <vector>
 #include <iostream>
 #include <boost/python.hpp>
 #include <boost/python/dict.hpp>
@@ -27,7 +28,6 @@ std::string greet() {
 	return "hello from libvgp";
 }
 
-// re-implement memtest() to use lists of organisms, etc.
 void memtest(long i, long j) {
 	using vgp::Organism;
 	static std::list<Organism> orgs;
@@ -93,14 +93,12 @@ BOOST_PYTHON_MODULE(libvgp)
 			class_<TypeInfoVector>("TypeInfoVector")
 					.def(vector_indexing_suite<TypeInfoVector>())
 					;
-
 		}
 		{
 			using namespace python;
+			typedef std::vector<std::string> VecOfStr;
 			class_<VecOfStr>("VectorOfStrings")
-				.def(vector_indexing_suite<VecOfStr>())
-				.def(self_ns::str(self));
-
+				.def(vector_indexing_suite<VecOfStr>());
 		}
 		class_<Organism>("Organism", no_init)
 			.def(self_ns::str(self)) // gcc hiccups without the namespace here
