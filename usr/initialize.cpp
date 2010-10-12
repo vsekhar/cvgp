@@ -17,7 +17,6 @@
 #include <string>
 
 #include <boost/python/dict.hpp>
-#include <boost/python/extract.hpp>
 
 #include <cvgp/usrcode.hpp>
 #include <cvgp/python/helpers.hpp>
@@ -28,8 +27,7 @@ namespace usr {
 bool initialize(boost::python::dict kwargs) {
 	// access and use kwargs
 	using vgp::python::pyget;
-	std::cout << pyget<std::string>("hello", kwargs) << std::endl;
-	return true;
+	return pyget<std::string>("initparam", kwargs) == "Ok";
 }
 
 } // namespace usr

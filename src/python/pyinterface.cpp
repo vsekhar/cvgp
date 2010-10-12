@@ -63,7 +63,7 @@ BOOST_PYTHON_MODULE(libvgp)
 	vgp::usr::register_nodes();
 
 	// python access functions
-	def("init", usr::initialize, "initialize module and user code");
+	def("initialize", usr::initialize, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
 	def("memtest_mt", GIL_wrapped(memtest), "memory test (multi-threaded)");
