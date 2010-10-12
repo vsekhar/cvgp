@@ -66,7 +66,7 @@ BOOST_PYTHON_MODULE(libvgp)
 	def("init", usr::initialize, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
-	def("memtest_mt", vgp::python::GIL_wrapped(memtest), "memory test (multi-threaded)");
+	def("memtest_mt", GIL_wrapped(memtest), "memory test (multi-threaded)");
 	def("make_int_org", make_org_returning<int>);
 	def("run_as_int", detail::run_as<int>);
 	def("send", send);
@@ -76,34 +76,31 @@ BOOST_PYTHON_MODULE(libvgp)
 
 	// Grab python declarations from elsewhere
 	{
-		using namespace vgp;
-		{
-			using namespace vgp::detail;
-			def("listnodes", listnodes);
-			def("pcurve", probability_curve);
-			class_<GenerateError>("GenerateError", no_init);
-		}
-		{
-			using namespace util;
-			class_<TypeInfo>("TypeInfo", no_init)
-				.def(self_ns::str(self)) // gcc hiccups without the namespace here
-				.def(self == self)
-				.def(self < self)
-				;
-			class_<TypeInfoVector>("TypeInfoVector")
-					.def(vector_indexing_suite<TypeInfoVector>())
-					;
-		}
-		{
-			using namespace python;
-			typedef std::vector<std::string> VecOfStr;
-			class_<VecOfStr>("VectorOfStrings")
-				.def(vector_indexing_suite<VecOfStr>());
-		}
-		class_<Organism>("Organism", no_init)
-			.def(self_ns::str(self)) // gcc hiccups without the namespace here
-			;
+		using namespace detail;
+		def("listnodes", listnodes);
+		def("pcurve", probability_curve);
+		class_<GenerateError>("GenerateError", no_init);
 	}
+	{
+		using namespace util;
+		class_<TypeInfo>("TypeInfo", no_init)
+			.def(self_ns::str(self)) // gcc hiccups without the namespace here
+			.def(self == self)
+			.def(self < self)
+			;
+		class_<TypeInfoVector>("TypeInfoVector")
+				.def(vector_indexing_suite<TypeInfoVector>())
+				;
+	}
+	{
+		using namespace python;
+		typedef std::vector<std::string> VecOfStr;
+		class_<VecOfStr>("VectorOfStrings")
+			.def(vector_indexing_suite<VecOfStr>());
+	}
+	class_<Organism>("Organism", no_init)
+		.def(self_ns::str(self)) // gcc hiccups without the namespace here
+		;
 
 } // BOOST_PYTHON_MODULE(libvgp)
 
