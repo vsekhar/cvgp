@@ -19,8 +19,7 @@ namespace python {
 
 template <class RESULT>
 RESULT pyget(std::string name, boost::python::dict d) {
-	using namespace boost::python;
-	return extract<std::string>(d[name]);
+	return boost::python::extract<RESULT>(d[name]);
 }
 
 } // namespace python
