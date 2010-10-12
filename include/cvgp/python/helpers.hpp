@@ -8,11 +8,9 @@
 #define VGP_UTIL_PYTHON_HPP_
 
 #include <string>
-#include <vector>
-#include <ostream>
 
+#include <boost/python.hpp>
 #include <boost/python/dict.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 namespace vgp {
 namespace python {

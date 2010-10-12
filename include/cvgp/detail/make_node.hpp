@@ -8,7 +8,6 @@
 #define MAKE_NODE_HPP_
 
 #include <cvgp/detail/node_concrete.hpp>
-#include <cvgp/detail/tree.hpp>
 
 namespace vgp {
 namespace detail {
