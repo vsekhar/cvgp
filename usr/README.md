@@ -93,3 +93,8 @@ Repository Example
 ------------------
 
 The two files in the repository (register.cpp and initialize.cpp) provide a more detailed example of how to write, initialize and register user code with vgp. They should be replaced with actual user code files written as detailed above.
+
+Compilation
+-----------
+
+The Scons files are configured to compile all .cpp files in the 'usr' directory. If any subdirectories containing .cpp files are added to the 'usr' directory, those subdirectories should be added to the list at the top of the SConstruct file as well.
