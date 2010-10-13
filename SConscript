@@ -1,4 +1,8 @@
-usrdir = "examples"
+# add additional user code [sub]directories to this list, relative to the repository root
+
+usrdirs = Split("""
+usr
+""")
 
 ### END USER MODIFIABLES ###
 
@@ -9,9 +13,8 @@ src/detail
 src/library
 src/python
 src/util
-usr
 """)
-subdirs.append(usrdir)
+subdirs.append(usrdirs)
 
 Import('env')
 env.Append(CPPPATH = ['include', '/usr/include/python3.1'])
