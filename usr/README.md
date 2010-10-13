@@ -66,8 +66,7 @@ cvgp also provides some libraries of common functions and can be pulled in by ad
 	void register_nodes() {
 		vgp::library::int_arithmetic();
 		vgp::library::double_arithmetic();
-		vgp::library::helloworld();
-		vgp::library::test_nodes();
+		// etc...
 	}
 	
 Overloaded Functions
