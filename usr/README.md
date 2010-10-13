@@ -96,4 +96,4 @@ The two files in the repository (register.cpp and initialize.cpp) provide a more
 Compilation
 -----------
 
-The Scons files are configured to compile all .cpp files in the 'usr' directory. If any subdirectories containing .cpp files are added to the 'usr' directory, those subdirectories should be added to the list at the top of the SConstruct file as well.
+The Scons files are configured to compile all .cpp files in the 'usr' directory. If any subdirectories containing .cpp files are added to the 'usr' directory, those subdirectories should be added to the list at the top of the SConscript file as well.
