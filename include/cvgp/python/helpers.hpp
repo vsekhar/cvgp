@@ -9,18 +9,18 @@
 
 #include <string>
 
-#include <boost/python.hpp>
+#include <boost/python/extract.hpp>
 #include <boost/python/dict.hpp>
 
 namespace vgp {
-namespace python {
+namespace usr {
 
 template <class RESULT>
-RESULT pyget(std::string name, boost::python::dict d) {
+RESULT getarg(std::string name, boost::python::dict d) {
 	return boost::python::extract<RESULT>(d[name]);
 }
 
-} // namespace python
+} // namespace usr
 } // namespace vgp
 
 #endif // VGP_UTIL_PYTHON_HPP_

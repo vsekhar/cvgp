@@ -20,10 +20,9 @@
 namespace vgp {
 namespace usr {
 
-bool initialize(boost::python::dict kwargs) {
+bool initialize(kwargs_t kwargs) {
 	// access and use kwargs
-	using vgp::python::pyget;
-	return pyget<std::string>("initparam", kwargs) == "Ok";
+	return getarg<std::string>("initparam", kwargs) == "Ok";
 }
 
 } // namespace usr

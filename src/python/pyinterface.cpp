@@ -59,7 +59,6 @@ BOOST_PYTHON_MODULE(libvgp)
 	using namespace boost::python;
 
 	// initialization code here
-	// (load data files?)
 	vgp::usr::register_nodes();
 
 	// python access functions
