@@ -58,48 +58,55 @@ BOOST_PYTHON_MODULE(libvgp)
 {
 	using namespace boost::python;
 
-	// initialization code here
+	/*
+	 * Module setup
+	 * register nodes on import, since python may ask for node information
+	 * before any other code
+	*/
 	vgp::usr::register_nodes();
 
-	// python access functions
+	// Startup and diagnostics
 	def("initialize", usr::initialize, "initialize module and user code");
 	def("greet", greet, "greeting");
 	def("memtest", memtest, "memory test");
 	def("memtest_mt", GIL_wrapped(memtest), "memory test (multi-threaded)");
-	def("make_int_org", make_org_returning<int>);
-	def("run_as_int", detail::run_as<int>);
+
+	// Query functions
+	def("listnodes", detail::listnodes);
+	
+	// Message-passing functions
 	def("send", send);
 	def("receive", receive);
+	
+	// Evolution control functions
 	def("advance", advance);
 	
+	// Testing functions
+	def("make_int_org", make_org_returning<int>);
+	def("run_as_int", detail::run_as<int>);
+	def("pcurve", detail::probability_curve);
 
-	// Grab python declarations from elsewhere
-	{
-		using namespace detail;
-		def("listnodes", listnodes);
-		def("pcurve", probability_curve);
-		class_<GenerateError>("GenerateError", no_init);
-	}
-	{
-		using namespace util;
-		class_<TypeInfo>("TypeInfo", no_init)
-			.def(self_ns::str(self)) // gcc hiccups without the namespace here
-			.def(self == self)
-			.def(self < self)
-			;
-		class_<TypeInfoVector>("TypeInfoVector")
-				.def(vector_indexing_suite<TypeInfoVector>())
-				;
-	}
-	{
-		using namespace python;
-		typedef std::vector<std::string> VecOfStr;
-		class_<VecOfStr>("VectorOfStrings")
-			.def(vector_indexing_suite<VecOfStr>());
-	}
+	// VGP data types
 	class_<Organism>("Organism", no_init)
 		.def(self_ns::str(self)) // gcc hiccups without the namespace here
 		;
+
+	// Utility, error and other data types
+	class_<detail::GenerateError>("GenerateError", no_init);
+
+	class_<util::TypeInfo>("TypeInfo", no_init)
+		.def(self_ns::str(self)) // gcc hiccups without the namespace here
+		.def(self == self)
+		.def(self < self)
+		;
+
+	class_<util::TypeInfoVector>("TypeInfoVector")
+			.def(vector_indexing_suite<util::TypeInfoVector>())
+			;
+
+	typedef std::vector<std::string> VecOfStr;
+	class_<VecOfStr>("VectorOfStrings")
+		.def(vector_indexing_suite<VecOfStr>());
 
 } // BOOST_PYTHON_MODULE(libvgp)
 
