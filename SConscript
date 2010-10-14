@@ -14,7 +14,7 @@ src/library
 src/python
 src/util
 """)
-subdirs.append(usrdirs)
+subdirs += usrdirs
 
 Import('env')
 env.Append(CPPPATH = ['include', '/usr/include/python3.1'])
