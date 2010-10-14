@@ -29,10 +29,7 @@ This code is then initialized and registered with cvgp as follows:
 
 initialize_and_register.cpp:
 
-	#include <boost/python/dict.hpp>
-	#include <cvgp/usrcode.hpp>  // TODO: eventually this header will be the only one required
-	#include <cvgp/python/helpers.hpp>
-	#include <cvgp/register.hpp>
+	#include <cvgp/usrcode.hpp>
 	
 	#include "mycode.hpp"
 	
@@ -61,7 +58,7 @@ Node Library
 
 cvgp also provides some libraries of common functions and can be pulled in by adding the appropriate calls to the register_nodes() function:
 
-	#include <cvgp/library.hpp> // (in addition to the usual headers)
+	#include <cvgp/usrcode.hpp>
 	
 	void register_nodes() {
 		vgp::library::int_arithmetic();

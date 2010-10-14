@@ -13,13 +13,9 @@
  *
  */
 
-#include <iostream>
 #include <string>
 
-#include <boost/python/dict.hpp>
-
 #include <cvgp/usrcode.hpp>
-#include <cvgp/python/helpers.hpp>
 
 namespace vgp {
 namespace usr {

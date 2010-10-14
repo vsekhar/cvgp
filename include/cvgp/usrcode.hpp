@@ -7,7 +7,13 @@
 #ifndef VGP_USRCODE_HPP_
 #define VGP_USRCODE_HPP_
 
+
 #include <boost/python/dict.hpp>
+
+// Include these here so user code doesn't have to
+#include <cvgp/register.hpp>
+#include <cvgp/python/helpers.hpp>
+#include <cvgp/library.hpp>
 
 namespace vgp {
 namespace usr {

@@ -10,8 +10,6 @@
  */
 
 #include <cvgp/usrcode.hpp>
-#include <cvgp/library.hpp>
-#include <cvgp/register.hpp>
 
 namespace mynamespace {
 
