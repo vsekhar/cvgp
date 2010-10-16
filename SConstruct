@@ -1,5 +1,5 @@
 release_env = Environment(variant = 'release')
-release_env.Append(CCFLAGS=['-O'])
+release_env.Append(CCFLAGS=['-O3', '-march=pentium4'])
 
 debug_env = Environment(variant = 'debug')
 debug_env.Append(CCFLAGS=['-g','-O0'])
